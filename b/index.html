@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>책 여는 중…</title>
+<meta name="robots" content="noindex">
+<style>
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#eceae5;color:#6b6560;font:500 14px 'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif}
+.b{text-align:center;padding:24px}
+.b h1{font-size:16px;color:#15130f;margin:0 0 8px}
+.b p{margin:0;line-height:1.7}
+.b a{color:#c8811f}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#c8811f;animation:p 1s infinite alternate;margin-bottom:14px}
+@keyframes p{to{opacity:.2}}
+</style>
+</head>
+<body>
+<div class="b" id="m"><div class="dot"></div><p>책을 여는 중입니다…</p></div>
+<script>
+// 발행된 책을 읽는 페이지.  주소: /ebook/b/?책이름   (예: /ebook/b/?book-r9vx8c#p3)
+// 책 파일은 수파베이스 저장소에 있고, 이 페이지가 받아서 그대로 화면에 씁니다.
+(function(){
+ var STORAGE='https://dxhmprqfgigljgbstqrg.supabase.co/storage/v1/object/public/webbook/';
+ var slug=(location.search||'').replace(/^\?/,'').split('&')[0];
+ var m=document.getElementById('m');
+ function fail(t){document.title='책을 열 수 없어요';m.innerHTML='<h1>책을 열 수 없어요</h1><p>'+t+'</p><p style="margin-top:10px"><a href="../maker.html">내 책 만들기 ›</a></p>';}
+ if(!/^[a-z0-9-]{3,60}$/.test(slug)){fail('주소가 올바르지 않습니다.');return;}
+ // 저장소 CDN 이 잠시 옛 파일을 줄 수 있어 매번 새 주소로 받는다
+ fetch(STORAGE+slug+'/index.html?t='+Date.now(),{cache:'no-store'}).then(function(r){
+  if(r.status===404||r.status===400) throw new Error('nf');
+  if(!r.ok) throw new Error('bad');
+  return r.text();
+ }).then(function(html){
+  if(html.indexOf('id="deck"')<0) throw new Error('nf');
+  window.EBOOK_BASE=STORAGE+slug+'/index';   // 책이 PDF·읽던 쪽 저장에 씀
+  document.open(); document.write(html); document.close();
+ }).catch(function(e){
+  fail(e.message==='nf'?'이 주소의 책이 없습니다. 주소를 다시 확인해 주세요.':'연결이 잘 안 됩니다. 잠시 후 다시 열어 주세요.');
+ });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>웹북 — 글만 있으면 전자책이 됩니다</title>
+<meta name="description" content="글만 있으면 넘겨 읽는 전자책이 됩니다. 화면을 보며 그대로 따라 하는 5분 안내서.">
+<meta property="og:title" content="전자책 만들기 — 따라 하는 안내서">
+<meta property="og:description" content="글만 있으면 넘겨 읽는 전자책이 됩니다. 5분이면 됩니다.">
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+:root{--bg:#eceae5;--paper:#fdfcfa;--ink:#15130f;--ink2:#33302a;--muted:#6b6560;--dim:#a39c93;--line:#e6e1d9;--line2:#d6d0c6;--wash:#f5f2ec;--accent:#c8811f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.75}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 80px}
+
+header{text-align:center;padding:56px 16px 40px}
+header .eyebrow{font-size:11px;font-weight:800;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+header h1{font-size:clamp(28px,6vw,40px);font-weight:900;letter-spacing:-1.5px;line-height:1.2;margin:12px 0 14px}
+header p{font-size:clamp(15px,3.6vw,17px);color:var(--muted);margin:0;word-break:keep-all}
+.go{display:inline-block;margin-top:26px;background:var(--ink);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:2px}
+.go:hover{background:#000}
+
+.card{background:var(--paper);border:1px solid var(--line2);border-radius:2px;padding:24px;margin:0 0 20px}
+.card h2{font-size:clamp(19px,4.4vw,24px);font-weight:900;letter-spacing:-.8px;margin:0 0 4px;display:flex;align-items:baseline;gap:10px;word-break:keep-all}
+.card h2 .n{flex:none;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;background:var(--ink);color:#fff;border-radius:50%;font-size:14px;font-weight:800;letter-spacing:0}
+.card .sub{color:var(--muted);font-size:14.5px;margin:0 0 18px;padding-left:40px;word-break:keep-all}
+.card p{font-size:15px;color:var(--ink2);margin:0 0 12px;word-break:keep-all}
+.card p:last-child{margin-bottom:0}
+.card b{color:var(--ink);font-weight:700}
+
+figure{margin:16px 0 4px}
+figure img{width:100%;display:block;border:1px solid var(--line2);border-radius:2px;background:#fff}
+figcaption{font-size:12.5px;color:var(--dim);margin-top:8px;text-align:center;word-break:keep-all}
+
+.tip{background:var(--wash);border-left:3px solid var(--accent);padding:14px 16px;margin:16px 0 0;font-size:14.5px;line-height:1.8;word-break:keep-all}
+.tip b{color:var(--ink)}
+.warn{background:#fff;border:1px solid var(--line2);padding:14px 16px;margin:16px 0 0;font-size:14px;color:var(--muted);line-height:1.8}
+
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin:16px 0}
+th,td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;line-height:1.6}
+th{font-size:11px;font-weight:800;color:var(--dim);letter-spacing:.8px;text-transform:uppercase}
+td:first-child{white-space:nowrap;font-weight:700}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--wash);border:1px solid var(--line);padding:2px 6px;font-size:.92em;border-radius:2px;overflow-wrap:anywhere}
+table{table-layout:fixed}
+td{overflow-wrap:anywhere}
+@media (max-width:520px){
+ td:first-child{white-space:normal}
+ .card,.big{padding:20px 16px}
+ th,td{padding:10px 6px;font-size:13.5px}
+ .big code{font-size:12px}
+}
+
+.marks td:first-child{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:500;color:var(--accent);font-size:13px}
+
+.big{background:var(--ink);color:#fff;padding:28px 24px;border-radius:2px;margin:0 0 20px}
+.big h2{color:#fff;margin:0 0 16px;font-size:20px;font-weight:900;letter-spacing:-.6px}
+.big table{margin:0}
+.big th,.big td{border-bottom-color:rgba(255,255,255,.16);color:#fff}
+.big th{color:rgba(255,255,255,.55)}
+.big code{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);color:#fff}
+
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 0}
+.three div{background:var(--wash);border:1px solid var(--line);padding:14px;font-size:13.5px;line-height:1.7;word-break:keep-all}
+.three b{display:block;font-size:12px;color:var(--accent);font-weight:800;margin-bottom:4px}
+@media (max-width:560px){.three{grid-template-columns:1fr}}
+
+footer{text-align:center;padding:40px 16px 0;font-size:13.5px;color:var(--muted)}
+footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">5분이면 됩니다</span>
+  <h1>글만 있으면<br>전자책이 됩니다</h1>
+  <p>깔 프로그램도, 가입도 없습니다.<br>쓰던 글을 붙여 넣고 버튼 두 번이면 끝이에요.</p>
+  <a class="go" href="maker.html">제작기 열기 ›</a>
+</header>
+
+<div class="big">
+  <h2>기억할 건 이 세 가지뿐</h2>
+  <table>
+    <tr><th>무엇</th><th>값</th></tr>
+    <tr><td>제작기 주소</td><td><code>epibrief.github.io/ebook/maker.html</code></td></tr>
+    <tr><td>발행 코드</td><td>안내글에 적힌 코드 (주소를 만들 때만 필요)</td></tr>
+    <tr><td>잠금 코드</td><td>내가 아무거나 정합니다 (책을 잠글 때만)</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h2><span class="n">1</span>제작기를 엽니다</h2>
+  <p class="sub">주소를 누르면 이 화면이 나옵니다. 설치할 것은 없습니다.</p>
+  <p>왼쪽은 <b>내가 글을 넣는 곳</b>, 오른쪽은 <b>책이 미리 보이는 곳</b>입니다. 왼쪽에 한 글자만 고쳐도 오른쪽 책이 바로 바뀝니다.</p>
+  <figure>
+    <img src="guide-img/01-first.png" alt="제작기를 처음 열었을 때 화면. 왼쪽에 입력칸, 오른쪽에 책 미리보기." loading="lazy">
+    <figcaption>처음 열면 예시 원고가 들어 있습니다. 지우고 내 글을 넣으면 됩니다.</figcaption>
+  </figure>
+  <div class="tip"><b>폰으로 보면</b> 위에 <b>원고 / 미리보기</b> 단추가 생깁니다. 번갈아 누르며 쓰면 됩니다.</div>
+</div>
+
+<div class="card">
+  <h2><span class="n">2</span>제목과 글을 넣습니다</h2>
+  <p class="sub">책 제목, 글쓴이, 그리고 본문. 이게 전부입니다.</p>
+  <p>글은 <b>평소 쓰던 대로</b> 쓰면 됩니다. 클로드나 챗GPT가 써 준 글을 그대로 복사해 붙여 넣어도 됩니다.</p>
+  <figure>
+    <img src="guide-img/02-typed.png" alt="제목과 글을 넣자 오른쪽에 표지가 만들어진 화면." loading="lazy">
+    <figcaption>왼쪽에 글을 넣는 순간 오른쪽에 표지가 만들어집니다.</figcaption>
+  </figure>
+  <p>왼쪽 위 작은 글씨에 <b>지금 몇 쪽인지</b> 나옵니다. 글이 길어지면 알아서 쪽이 늘어납니다.</p>
+</div>
+
+<div class="card">
+  <h2><span class="n">3</span>장과 쪽을 나눕니다</h2>
+  <p class="sub">기호 두 개만 알면 됩니다. <code>#</code> 과 <code>##</code></p>
+  <p>글 맨 앞에 <b>우물 정(#) 기호</b>를 붙이면 그게 제목이 됩니다. 하나면 큰 장, 두 개면 작은 쪽입니다.</p>
+  <table class="marks">
+    <tr><th>이렇게 쓰면</th><th>이렇게 됩니다</th></tr>
+    <tr><td># 1장 시작하기</td><td>새로운 <b>장</b>. 표지와 차례가 저절로 생깁니다</td></tr>
+    <tr><td>## 준비물</td><td>새로운 <b>쪽</b></td></tr>
+    <tr><td>**중요**</td><td><b>굵은 글씨</b></td></tr>
+    <tr><td>&gt; 문장</td><td>눈에 띄는 인용 상자</td></tr>
+    <tr><td>- 항목</td><td>· 점 목록</td></tr>
+    <tr><td>::: 메모</td><td>회색 메모 상자</td></tr>
+    <tr><td>---</td><td>여기서 쪽 나누기</td></tr>
+  </table>
+  <figure>
+    <img src="guide-img/03-left.png" alt="왼쪽 입력칸을 확대한 모습. 우물 정 기호로 장과 쪽을 나눈 글." loading="lazy">
+    <figcaption>우물 정(#) 기호가 장과 쪽을 나눕니다. 나머지는 그냥 글입니다.</figcaption>
+  </figure>
+  <div class="tip"><b>다 외울 필요 없어요.</b> 제작기 안의 <b>쓰는 법</b>을 누르면 이 표가 그대로 들어 있습니다. <br>더 쉬운 방법도 있어요. AI에게 <b>"마크다운으로 써 줘"</b>라고 하면 이 형식으로 써 줍니다.</div>
+</div>
+
+<div class="card">
+  <h2><span class="n">4</span>책을 받거나 주소를 만듭니다</h2>
+  <p class="sub">나누는 방법은 세 가지. 상황에 맞는 걸 고르면 됩니다.</p>
+  <figure>
+    <img src="guide-img/04-buttons.png" alt="책 파일 내려받기, PDF로 저장, 새 창에서 보기, 예시 원고 다시 버튼." loading="lazy">
+  </figure>
+  <div class="three">
+    <div><b>파일로 보내기</b>책 파일 내려받기 → 카톡·메일로 전송. 받는 사람은 누르기만 하면 열립니다.</div>
+    <div><b>종이·PDF로</b>PDF로 저장 → 인쇄 창에서 "PDF로 저장"을 고릅니다.</div>
+    <div><b>인터넷 주소로</b>아래 발행하기. 유튜브 설명란에 붙일 주소가 생깁니다.</div>
+  </div>
+</div>
+
+<div class="card">
+  <h2><span class="n">5</span>발행해서 주소를 만듭니다</h2>
+  <p class="sub">안내글에 적힌 발행 코드를 넣고 버튼 한 번.</p>
+  <figure>
+    <img src="guide-img/05-publish.png" alt="발행 코드 입력칸과 발행하기 버튼." loading="lazy">
+    <figcaption>발행 코드를 넣고 <b>발행하기</b>를 누릅니다.</figcaption>
+  </figure>
+  <p>몇 초 기다리면 <b>인터넷 주소</b>가 나옵니다. <b>주소 복사</b>를 누르고 카톡, 블로그, 유튜브 설명란 어디든 붙이세요.</p>
+  <figure>
+    <img src="guide-img/06-published.png" alt="발행이 끝나 주소가 나온 화면. 주소 복사와 열어 보기 버튼." loading="lazy">
+    <figcaption>이 주소를 받은 사람은 누구나 책을 읽을 수 있습니다.</figcaption>
+  </figure>
+  <div class="tip"><b>글을 고치면요?</b> 고친 뒤 <b>발행하기</b>를 한 번 더 누르세요. <b>같은 주소</b>가 새 내용으로 바뀝니다. 이미 주소를 나눠 준 사람들도 새 내용을 보게 됩니다.</div>
+  <div class="warn">주소를 만든 브라우저에서만 그 책을 고칠 수 있습니다. 컴퓨터를 바꾸면 새 주소로 발행됩니다. 중요한 책은 <b>책 파일 내려받기</b>로 원본도 챙겨 두세요.</div>
+</div>
+
+<div class="card">
+  <h2><span class="n">6</span>원하면 코드로 잠급니다</h2>
+  <p class="sub">돈 받고 파는 책, 멤버십 전용 책을 만들 때.</p>
+  <figure>
+    <img src="guide-img/07-lock.png" alt="코드로 잠그기 체크박스와 코드 입력칸." loading="lazy">
+    <figcaption><b>코드로 잠그기</b>에 체크하고, 쓸 코드를 정해 넣습니다.</figcaption>
+  </figure>
+  <p>잠근 책은 주소를 알아도 <b>코드 없이는 한 글자도 안 보입니다.</b> 코드는 멤버십 글이나 구매하신 분께만 알려 주세요.</p>
+  <figure>
+    <img src="guide-img/10-gate.png" alt="잠긴 책을 열었을 때 나오는 코드 입력 화면." loading="lazy">
+    <figcaption>독자에게는 이 화면이 먼저 보입니다.</figcaption>
+  </figure>
+  <div class="warn">코드를 아는 사람이 남에게 알려 주는 것까지는 막지 못합니다. 사람마다 다르게 확인해야 한다면 별도 준비가 필요합니다.</div>
+</div>
+
+<div class="card">
+  <h2><span class="n">7</span>독자가 보는 화면</h2>
+  <p class="sub">이렇게 나옵니다. 종이책처럼 한 장씩 넘어갑니다.</p>
+  <figure>
+    <img src="guide-img/08-book-cover.png" alt="완성된 책의 표지 화면." loading="lazy">
+  </figure>
+  <figure>
+    <img src="guide-img/09-book-page.png" alt="완성된 책의 본문 쪽. 인용 상자와 표가 들어간 모습." loading="lazy">
+    <figcaption>인용, 표, 사진, 영상까지 들어갑니다.</figcaption>
+  </figure>
+  <table>
+    <tr><th>독자가 하는 것</th><th>방법</th></tr>
+    <tr><td>다음 쪽</td><td>› 단추, 키보드 → , 손가락으로 밀기</td></tr>
+    <tr><td>목차로 이동</td><td>아래 목록에서 고르기</td></tr>
+    <tr><td>PDF로 받기</td><td>오른쪽 위 PDF 단추</td></tr>
+    <tr><td>이어 읽기</td><td>다시 열면 보던 쪽부터 (저절로)</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h2><span class="n">8</span>폰으로도 만들 수 있습니다</h2>
+  <p class="sub">컴퓨터가 없어도 됩니다.</p>
+  <figure>
+    <img src="guide-img/11-phone.png" alt="폰에서 제작기를 연 화면. 원고와 미리보기 단추가 위에 있음." loading="lazy">
+    <figcaption>폰에서는 <b>원고</b>와 <b>미리보기</b>를 번갈아 누르며 씁니다.</figcaption>
+  </figure>
+  <p>다만 글을 길게 쓰실 거면 컴퓨터가 편합니다. 폰은 <b>확인하고 주소 보내는 용도</b>로 쓰시면 좋아요.</p>
+</div>
+
+<div class="card">
+  <h2>막혔을 때</h2>
+  <table>
+    <tr><th>이런 일이</th><th>이렇게 하세요</th></tr>
+    <tr><td>글이 안 보여요</td><td>오른쪽 미리보기가 빈칸이면 잠시 기다리세요. 그래도 비면 새로고침.</td></tr>
+    <tr><td>발행이 안 돼요</td><td>발행 코드를 다시 확인하세요. 띄어쓰기가 들어가면 안 됩니다.</td></tr>
+    <tr><td>주소를 눌렀는데 안 열려요</td><td>화면을 아래로 당겨 새로고침하세요. 예전 화면이 기억돼 있을 수 있습니다.</td></tr>
+    <tr><td>쪽이 너무 빽빽해요</td><td>나누고 싶은 자리에 <code>---</code> 를 한 줄 넣으세요.</td></tr>
+    <tr><td>글을 날렸어요</td><td>쓰던 글은 이 브라우저에 저절로 저장됩니다. 다시 열면 그대로 있습니다.</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h2>만들어진 책 보기</h2>
+  <p class="sub">이 제작기로 만든 책들입니다. 눌러서 직접 넘겨 보세요.</p>
+  <table>
+   <tr><th>책</th><th>무엇</th></tr>
+   <tr><td><a href="books/seminar-sample.html">세미나 기록</a></td><td>행사 영상·요약·질의응답을 한자리에 (가상 견본)</td></tr>
+   <tr><td><a href="books/aifrenz-paper.html">논문 읽는 법</a></td><td>강연 영상을 시간 목차와 함께 정리한 예</td></tr>
+   <tr><td><a href="books/sermon-sarang.html">설교 묵상 노트</a></td><td>주일 설교를 본문 해설·묵상 질문으로</td></tr>
+   <tr><td><a href="books/cowork-01.html">업무 자동화 (잠김)</a></td><td>55쪽 입문서. 코드를 넣어야 열리는 책의 예</td></tr>
+   <tr><td><a href="sample-locked.html">잠금 예시</a></td><td>코드 <code>1234</code> 를 넣어 보세요</td></tr>
+  </table>
+ </div>
+
+<footer>
+  <p>준비되셨으면 시작해 보세요.</p>
+  <a class="go" href="maker.html">제작기 열기 ›</a>
+  <p style="margin-top:28px;font-size:12.5px;color:var(--dim)">어렵지 않아요. 글 한 편이면 책 한 권이 됩니다.</p>
+</footer>
+
+</div>
+</body>
+</html>

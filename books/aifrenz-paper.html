@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>논문을 읽는 어떤 방법 — AI프렌즈 라이브 세미나 기록</title>
+<meta name="description" content="AI프렌즈 라이브 세미나 기록">
+<meta property="og:type" content="book">
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&display=swap');
+
+/* ── 색·글꼴 토큰 ─────────────────────────────────────── */
+:root{
+ --bg:#eceae5;      /* 화면 배경(책상) */
+ --paper:#fdfcfa;   /* 종이 */
+ --wash:#f5f2ec;    /* 챕터 표지용 종이 */
+ --ink:#15130f; --ink2:#33302a; --muted:#6b6560; --dim:#a39c93;
+ --line:#e6e1d9; --line2:#d6d0c6;
+ --accent:#c8811f;  /* 강조색. 채널 색으로 바꾸세요 */
+ --code:#16161f; --codeink:#e9e9f2;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);overflow:hidden;
+ font-family:'Noto Serif KR',Georgia,serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.eyebrow,.chnum,.foot,.note,.src,.tocrow,table,pre,code,#bar,.kick{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif}
+
+/* ── 진행 바 ─────────────────────────────────────────── */
+#prog{position:fixed;top:0;left:0;height:2px;background:var(--ink);z-index:70;width:0;transition:width .2s}
+
+/* ── 덱(페이지 묶음) ─────────────────────────────────── */
+#deck{position:relative;width:100vw;height:100vh}
+.s{position:absolute;inset:0;display:none;justify-content:center;align-items:center;padding:20px 16px 70px}
+.s.on{display:flex;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── 종이 한 장 (A4 비율 1:1.414) ───────────────────── */
+.paper{position:relative;background:var(--paper);
+ width:min(calc((100vh - 90px) * 0.707), 94vw);
+ height:min(calc(100vh - 90px), 1000px);
+ box-shadow:0 8px 34px rgba(0,0,0,.13);border:1px solid var(--line2);
+ display:flex;flex-direction:column;overflow:hidden}
+.s.alt .paper{background:var(--wash)}
+.pin{flex:1;overflow-y:auto;padding:clamp(28px,4.4vh,52px) clamp(24px,4vh,48px) 12px;
+ display:flex;flex-direction:column;justify-content:center}
+.s.cover .pin,.s.open .pin{text-align:center;align-items:center}
+.foot{flex:none;display:flex;justify-content:space-between;padding:10px clamp(24px,4vh,48px) 14px;
+ font-size:10.5px;color:var(--dim);letter-spacing:.4px;border-top:1px solid var(--line)}
+
+/* ── 글자 ────────────────────────────────────────────── */
+.eyebrow{display:block;font-size:10.5px;font-weight:800;letter-spacing:1.8px;color:var(--dim);text-transform:uppercase;margin-bottom:12px}
+h1{font-size:clamp(26px,4.6vh,40px);font-weight:900;letter-spacing:-1.8px;line-height:1.1;margin:0}
+h2{font-size:clamp(21px,3.5vh,31px);font-weight:900;letter-spacing:-1.2px;line-height:1.2;margin:0}
+h3{font-size:clamp(18px,2.9vh,25px);font-weight:900;letter-spacing:-.8px;line-height:1.25;margin:0 0 16px}
+.chnum{font-size:clamp(44px,9vh,84px);font-weight:900;letter-spacing:-4px;line-height:1;color:var(--line2);margin:0 0 6px}
+.kick{font-size:clamp(13px,1.9vh,15.5px);color:var(--muted);margin:14px 0 0;line-height:1.7}
+.by{margin-top:26px;font-size:12.5px;color:var(--muted);letter-spacing:.3px}
+.prose p{font-size:clamp(13.5px,1.94vh,16px);line-height:1.95;margin:0 0 15px;color:var(--ink2);word-break:keep-all}
+.prose p b{color:var(--ink);font-weight:700}
+.prose p:last-child{margin-bottom:0}
+ul.prose,ol.prose{margin:0 0 15px;padding-left:22px}
+.prose li{font-size:clamp(13.5px,1.94vh,16px);line-height:1.85;color:var(--ink2);margin:0 0 4px;word-break:keep-all}
+.prose a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent)}
+blockquote{margin:16px 0;padding:14px 18px;border-left:3px solid var(--accent);background:#fff;
+ font-size:clamp(14px,2.1vh,17px);line-height:1.8;color:var(--ink);font-weight:500}
+.note{margin:14px 0 0;padding:12px 14px;background:#fff;border:1px solid var(--line);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.note b{color:var(--ink)}
+.src{margin-top:auto;padding-top:12px;font-size:11px;color:var(--dim);line-height:1.6}
+pre{background:var(--code);color:var(--codeink);padding:12px 14px;overflow-x:auto;font-size:11.5px;line-height:1.6;margin:14px 0;border-radius:2px}
+code{font-family:ui-monospace,Menlo,Consolas,monospace}
+p code{background:#fff;border:1px solid var(--line);padding:1px 5px;font-size:.92em}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:14px 0}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;line-height:1.55}
+td:first-child,th:first-child{white-space:nowrap}
+th{font-weight:800;color:var(--muted);font-size:11px;letter-spacing:.6px;text-transform:uppercase}
+.tocrow{display:flex;gap:14px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.tocrow:hover .tt{color:var(--accent)}
+.tocrow .tn{flex:none;width:34px;font-size:12px;font-weight:800;color:var(--dim)}
+.tocrow .tt{flex:1;font-size:clamp(14px,2.1vh,17px);font-weight:700;letter-spacing:-.3px}
+.tocrow .tp{flex:none;font-size:11.5px;color:var(--dim)}
+figure{margin:14px 0}
+figure img{width:100%;display:block;border:1px solid var(--line)}
+figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
+
+/* ── 유튜브 (누르면 그때 불러옴) ─────────────────────── */
+.vwrap{position:relative;aspect-ratio:16/9;background:#000;margin:14px 0;overflow:hidden}
+.vwrap iframe,.vframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vframe{background:#111 center/cover no-repeat;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Pretendard',sans-serif;font-weight:800;letter-spacing:.3px}
+.vframe::after{content:'▶  영상 보기';background:rgba(0,0,0,.55);padding:10px 18px;border-radius:999px}
+
+/* ── 세미나·강연 정리용 ──────────────────────────────── */
+/* 발표자 정보칸 */
+.who{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;margin:0 0 14px;padding:0 0 12px;border-bottom:1px solid var(--line)}
+.who .nm{font-size:clamp(14px,2.1vh,16.5px);font-weight:800;letter-spacing:-.3px;color:var(--ink)}
+.who .af{font-size:12.5px;color:var(--muted)}
+.who .tm{font-size:11.5px;color:var(--dim);margin-left:auto;font-variant-numeric:tabular-nums}
+/* 핵심 한 줄 */
+.key{display:flex;gap:10px;align-items:flex-start;margin:14px 0;padding:13px 15px;background:#fff;border:1px solid var(--accent);border-left-width:3px}
+.key::before{content:'핵심';flex:none;font-size:10px;font-weight:900;letter-spacing:1px;color:var(--accent);padding-top:3px}
+.key span{font-size:clamp(13.5px,2vh,16px);line-height:1.75;font-weight:600;color:var(--ink);word-break:keep-all}
+/* 질의응답 */
+.qa{margin:14px 0;border:1px solid var(--line);background:#fff}
+.qa+.qa{margin-top:10px}
+.qa .q,.qa .a{display:flex;gap:11px;padding:12px 14px;font-size:clamp(13px,1.9vh,15.5px);line-height:1.8;word-break:keep-all}
+.qa .q{border-bottom:1px solid var(--line);font-weight:600;color:var(--ink)}
+.qa .a{color:var(--ink2);background:var(--wash)}
+.qa .mk{flex:none;width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+ font:800 10.5px 'Pretendard',sans-serif;margin-top:3px}
+.qa .q .mk{background:var(--ink);color:#fff}
+.qa .a .mk{background:var(--accent);color:#fff}
+.qa .by{display:block;font-size:11px;color:var(--dim);font-weight:500;margin-top:3px}
+/* 시간 링크 */
+.tj{display:inline-flex;align-items:center;gap:4px;font:700 11.5px ui-monospace,Menlo,Consolas,monospace;
+ color:var(--accent);background:#fff;border:1px solid var(--line2);border-radius:3px;padding:2px 7px;
+ cursor:pointer;vertical-align:baseline;font-variant-numeric:tabular-nums;text-decoration:none}
+.tj:hover{background:var(--wash);border-color:var(--accent)}
+.tj::before{content:'▶';font-size:8px}
+/* 시간 목차 */
+.marks{margin:14px 0;border-top:1px solid var(--line)}
+.marks .mrow{display:flex;gap:12px;align-items:baseline;padding:9px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.marks .mrow:hover{background:var(--wash)}
+.marks .mrow:hover .mt{color:var(--accent)}
+.marks .ms{flex:none;font:700 11.5px ui-monospace,Menlo,Consolas,monospace;color:var(--accent);font-variant-numeric:tabular-nums;min-width:46px}
+.marks .mt{flex:1;font-size:clamp(12.5px,1.85vh,14.5px);line-height:1.65;color:var(--ink2);word-break:keep-all}
+
+/* ── 하단 바 ─────────────────────────────────────────── */
+#bar{position:fixed;left:0;right:0;bottom:0;height:52px;display:flex;justify-content:center;align-items:center;gap:8px;
+ background:linear-gradient(to top,var(--bg) 60%,transparent);z-index:60}
+#bar button{width:40px;height:34px;border:1px solid var(--line2);background:var(--paper);font-size:20px;line-height:1;cursor:pointer;color:var(--ink);border-radius:2px}
+#bar button:hover{background:#fff}
+#jump{height:34px;max-width:52vw;border:1px solid var(--line2);background:var(--paper);color:var(--ink);font-size:12.5px;padding:0 8px;border-radius:2px}
+/* ── 오른쪽 위 메뉴 (PDF·링크) ─────────────────────── */
+#menu{position:fixed;top:12px;right:14px;z-index:60;font-family:'Pretendard',sans-serif}
+#mbtn{font:800 11px 'Pretendard',sans-serif;letter-spacing:.8px;color:var(--muted);cursor:pointer;
+ border:1px solid var(--line2);padding:6px 10px;background:var(--paper);border-radius:2px}
+#mbtn:hover{color:var(--ink)}
+#mlist{display:none;position:absolute;right:0;top:34px;min-width:190px;background:var(--paper);border:1px solid var(--line2);
+ box-shadow:0 6px 24px rgba(0,0,0,.12);border-radius:2px;padding:6px 0}
+#menu.on #mlist{display:block}
+#mlist a,#mlist button{display:block;width:100%;text-align:left;background:none;border:0;cursor:pointer;
+ padding:9px 14px;font:500 13px 'Pretendard',sans-serif;color:var(--ink);text-decoration:none}
+#mlist a:hover,#mlist button:hover{background:var(--wash)}
+#mlist small{display:block;font-size:10.5px;color:var(--dim);margin-top:2px}
+/* ── 잠금 화면 (잠긴 책에서만 보임) ─────────────────── */
+#gate{display:none;position:fixed;inset:0;z-index:90;background:var(--bg);align-items:center;justify-content:center;padding:16px}
+#gate.on{display:flex}
+.gbox{background:var(--paper);border:1px solid var(--line2);box-shadow:0 8px 34px rgba(0,0,0,.13);padding:36px 30px 30px;width:min(360px,100%);text-align:center;font-family:'Pretendard',sans-serif}
+.gbox .gi{font-size:28px;margin-bottom:10px}
+.gbox h3{margin:0 0 8px}
+.gbox p{margin:0 0 18px;font-size:13.5px;line-height:1.7;color:var(--muted)}
+.gcode{width:100%;height:42px;border:1px solid var(--line2);background:#fff;font:500 15px 'Pretendard',sans-serif;text-align:center;letter-spacing:2px;padding:0 10px;margin-bottom:10px;border-radius:2px}
+.gcode:focus{outline:none;border-color:var(--ink)}
+.ga{width:100%;height:42px;border:0;background:var(--ink);color:#fff;font:700 14px 'Pretendard',sans-serif;cursor:pointer;border-radius:2px}
+.ga:hover{background:#000}
+.gerr{min-height:18px;margin:10px 0 0;font-size:12px;color:#b3261e}
+#toast{position:fixed;left:50%;bottom:64px;transform:translateX(-50%);background:var(--ink);color:#fff;
+ font:500 12.5px 'Pretendard',sans-serif;padding:8px 14px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:80}
+#toast.on{opacity:1}
+
+/* ── 인쇄(PDF 저장) ──────────────────────────────────── */
+@page{size:A4;margin:0}
+@media print{
+ html,body{height:auto;overflow:visible;background:#fff}
+ #prog,#bar,#menu,#toast{display:none!important}
+ #deck{width:210mm;height:auto}
+ .s{position:static;display:flex!important;width:210mm;height:297mm;padding:0;animation:none;
+    break-after:page;page-break-after:always;overflow:hidden}
+ .s:last-child{break-after:auto;page-break-after:auto}
+ .s .paper{width:100%;height:100%;max-height:none;box-shadow:none;border:0}
+ .pin{overflow:hidden;padding:18mm 16mm 6mm}
+ .foot{padding:4mm 16mm 8mm}
+ .prose p{font-size:11.5pt;line-height:1.9}
+ h1{font-size:30pt}h2{font-size:22pt}h3{font-size:17pt}.chnum{font-size:60pt}
+ .vwrap{display:none}
+ .tj{color:var(--muted);border-color:var(--line)}
+ .tj::before{content:''}
+ .marks .mrow{cursor:default}
+ a{color:inherit;text-decoration:none}
+}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<div id="menu">
+ <button id="mbtn" type="button" aria-haspopup="true" aria-expanded="false">PDF ▾</button>
+ <div id="mlist" role="menu">
+  <a id="mpdf" href="#" download>PDF 내려받기<small>같은 이름의 .pdf 파일</small></a>
+  <button id="mprint" type="button">인쇄로 PDF 저장<small>Mac ⌘P · Windows Ctrl+P</small></button>
+  <button id="mlink" type="button">이 쪽 링크 복사<small>지금 보는 쪽 주소</small></button>
+ </div>
+</div>
+<div id="toast"></div>
+<div id="gate"><div class="gbox">
+ <div class="gi">🔒</div>
+ <h3 id="gt">코드가 필요합니다</h3>
+ <p id="gp">안내받은 코드를 넣어 주세요.</p>
+ <input id="gc" class="gcode" type="text" autocomplete="off" placeholder="코드">
+ <button id="gb" class="ga" type="button">열기</button>
+ <p class="gerr" id="ge"></p>
+</div></div>
+
+<!-- ════════════════════════════════════════════════════════
+     본문. 페이지 1장 = <section class="s"> 1개.
+     class 종류:  cover(표지)  open(챕터 표지, alt 배경)  일반(없음)
+     쪽 순서대로 위에서 아래로 쓰면 됩니다.
+     ════════════════════════════════════════════════════════ -->
+<div id="deck">
+<section class="s cover">
+ <div class="paper"><div class="pin">
+  <span class="eyebrow">AI프렌즈</span>
+  <h1>논문을 읽는 어떤 방법</h1>
+  <p class="kick">AI프렌즈 라이브 세미나 기록</p>
+  <div class="by">AI프렌즈 · 2026</div>
+ </div><div class="foot"><span>논문을 읽는 어떤 방법</span><span>표지</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <span class="eyebrow">Contents</span>
+  <h2 style="margin-bottom:18px">차례</h2>
+  <div class="tocrow" data-go="01"><span class="tn">01</span><span class="tt">이 기록에 대하여</span><span class="tp">3쪽</span></div>
+  <div class="tocrow" data-go="02"><span class="tn">02</span><span class="tt">무엇을 푸는가</span><span class="tp">6쪽</span></div>
+  <div class="tocrow" data-go="03"><span class="tn">03</span><span class="tt">일곱 단계</span><span class="tp">9쪽</span></div>
+  <div class="tocrow" data-go="04"><span class="tn">04</span><span class="tt">무엇이 나오는가</span><span class="tp">12쪽</span></div>
+  <div class="tocrow" data-go="05"><span class="tn">05</span><span class="tt">배울 점</span><span class="tp">15쪽</span></div>
+  <div class="tocrow" data-go="06"><span class="tn">06</span><span class="tt">발표에서 들은 것</span><span class="tp">18쪽</span></div>
+  <div class="tocrow" data-go="07"><span class="tn">07</span><span class="tt">질의응답</span><span class="tp">21쪽</span></div>
+  <p class="note" style="margin-top:22px"><b>읽는 법</b> ‹ › 단추, 키보드 ← →, 손가락으로 넘기기. 아래 드롭다운으로 바로 이동.</p>
+ </div><div class="foot"><span>차례</span><span>2</span></div></div>
+</section>
+<section class="s open alt">
+ <div class="paper"><div class="pin">
+  <div class="chnum">01</div>
+  <span class="eyebrow">Chapter 1</span>
+  <h2>이 기록에 대하여</h2>
+ </div><div class="foot"><span>01 이 기록에 대하여</span><span>3</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>다루는 발표</h3>
+  <div class="who"><span class="nm">이제현</span><span class="af">paper-curation 제작자</span><span class="tm">AI프렌즈 라이브</span></div>
+  <div class="vwrap" data-v="ejYqblfQejs"><div class="vframe" style="background-image:url(https://i.ytimg.com/vi/ejYqblfQejs/hqdefault.jpg)"></div></div>
+  <div class="prose"><p><b>paper curation : 논문을 읽는 어떤 방법</b><br>채널 <a href="https://www.youtube.com/@aifrenz" target="_blank" rel="noopener">AI프렌즈</a> 라이브 방송</p></div>
+  <div class="key"><span>논문을 다 읽지 말고, 읽을 논문을 고르는 일을 자동화하자는 이야기입니다.</span></div>
+ </div><div class="foot"><span>01 이 기록에 대하여</span><span>4</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>정리한 방식과 한계</h3>
+  <div class="prose"><p>이 기록은 발표에서 다룬 <b>paper-curation</b> 도구의 공개 문서를 바탕으로 정리했습니다. 출처는 <a href="https://github.com/jehyunlee/paper-curation" target="_blank" rel="noopener">github.com/jehyunlee/paper-curation</a> 입니다.</p></div>
+  <p class="note">발표자가 현장에서 덧붙인 말, 질의응답, 시연 장면은 아직 채워지지 않았습니다. 영상 자막을 넣으면 그 부분이 채워집니다.</p>
+  <div class="prose"><p>시간 목차의 시각도 아직 채워지지 않았습니다. 실제 시각을 넣으면 눌러서 그 지점으로 갈 수 있습니다.</p></div>
+ </div><div class="foot"><span>01 이 기록에 대하여</span><span>5</span></div></div>
+</section>
+<section class="s open alt">
+ <div class="paper"><div class="pin">
+  <div class="chnum">02</div>
+  <span class="eyebrow">Chapter 2</span>
+  <h2>무엇을 푸는가</h2>
+ </div><div class="foot"><span>02 무엇을 푸는가</span><span>6</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>논문이 너무 많다</h3>
+  <div class="prose"><p>연구자에게 논문은 늘 밀립니다. 저장해 둔 PDF는 쌓이는데 읽은 것은 몇 편 안 됩니다. 문제는 읽는 속도가 아니라 <b>무엇을 읽을지 고르는 일</b>에 있습니다.</p></div>
+  <div class="prose"><p>paper-curation은 그 고르는 일을 자동으로 처리합니다. 논문을 모으고, 한국어로 요약하고, 주제별로 묶고, 검색되는 웹사이트로 만들어 줍니다.</p></div>
+  <blockquote>다 읽으려 하지 말고, 읽을 것을 고르는 데 힘을 쓰자.</blockquote>
+ </div><div class="foot"><span>02 무엇을 푸는가</span><span>7</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>세 갈래 사용법</h3>
+  <div class="prose"><p>쓰는 사람에 따라 필요한 준비가 다릅니다.</p></div>
+  <table><tr><th>갈래</th><th>하는 일</th><th>준비물</th></tr><tr><td>읽기</td><td>만들어진 리뷰를 보고 검색</td><td>없음</td></tr><tr><td>AI</td><td>내 PDF로 리뷰 생성</td><td>API 키 (선택)</td></tr><tr><td>수집</td><td>전체 큐레이션 자동화</td><td>Zotero, 여러 API</td></tr></table>
+  <p class="note">기본 설치는 API 키가 없어도 됩니다. 만들어진 결과를 보는 것부터 시작할 수 있습니다.</p>
+ </div><div class="foot"><span>02 무엇을 푸는가</span><span>8</span></div></div>
+</section>
+<section class="s open alt">
+ <div class="paper"><div class="pin">
+  <div class="chnum">03</div>
+  <span class="eyebrow">Chapter 3</span>
+  <h2>일곱 단계</h2>
+ </div><div class="foot"><span>03 일곱 단계</span><span>9</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>모으고 요약하기</h3>
+  <div class="prose"><p><b>1. 데이터 수집</b> — 조테로(Zotero)에 담아 둔 논문에서 PDF를 꺼내 옵니다. 평소 쓰던 논문 관리 도구를 그대로 씁니다.</p></div>
+  <div class="prose"><p><b>2. 구조화 리뷰</b> — 논문마다 여섯 개 항목으로 나눈 한국어 리뷰를 만듭니다. 줄글 요약이 아니라 항목이 정해진 형식이라, 논문끼리 비교가 됩니다.</p></div>
+  <div class="prose"><p><b>3. 인용 분석</b> — 이 논문이 누구를 인용했고 누구에게 인용됐는지 모읍니다.</p></div>
+ </div><div class="foot"><span>03 일곱 단계</span><span>10</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>묶고 잇기</h3>
+  <div class="prose"><p><b>4. 토픽 모델링</b> — 논문을 주제별로 자동 분류합니다. 여기서 LLM을 쓰지 않고 SPECTER2와 HDBSCAN이라는 방법을 씁니다. <b>비용이 0원</b>입니다.</p></div>
+  <div class="prose"><p><b>5. 관계 추출</b> — &quot;같이 보면 좋은 논문&quot;을 이어 줍니다.</p></div>
+  <div class="prose"><p><b>6. 딥 리서치</b> — 키워드 검색과 의미 검색을 함께 쓰는 색인을 만듭니다. 질문을 던지면 근거가 되는 논문을 짚어 줍니다.</p></div>
+  <div class="prose"><p><b>7. 배포</b> — 정적 웹사이트로 만들어 올립니다.</p></div>
+ </div><div class="foot"><span>03 일곱 단계</span><span>11</span></div></div>
+</section>
+<section class="s open alt">
+ <div class="paper"><div class="pin">
+  <div class="chnum">04</div>
+  <span class="eyebrow">Chapter 4</span>
+  <h2>무엇이 나오는가</h2>
+ </div><div class="foot"><span>04 무엇이 나오는가</span><span>12</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>결과물</h3>
+  <ul class="prose"><li><b>한국어 리뷰 페이지</b> — 논문마다 구조화된 요약</li><li><b>검색되는 웹사이트</b> — 키워드와 의미 검색 모두</li><li><b>타임라인</b> — 분야별로 연구가 어떻게 흘러왔는지</li><li><b>질의응답</b> — 근거 논문을 짚어 주는 답변</li><li><b>팟캐스트</b> — 음성으로 만든 요약 파일</li></ul>
+  <p class="note">읽는 사람이 자기 API 키를 넣어 질의응답을 쓰는 구조입니다. 만든 사람이 비용을 다 떠안지 않습니다.</p>
+ </div><div class="foot"><span>04 무엇이 나오는가</span><span>13</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>드는 비용</h3>
+  <table><tr><th>항목</th><th>비용</th></tr><tr><td>리뷰 한 편</td><td>약 $0.05 ~ $0.15</td></tr><tr><td>월 20편 기준</td><td>약 $10 ~ $20</td></tr></table>
+  <div class="prose"><p>분류에 LLM을 쓰지 않은 것이 비용을 낮춘 지점입니다. 요약에만 쓰고, 묶는 일은 다른 방법으로 처리했습니다.</p></div>
+ </div><div class="foot"><span>04 무엇이 나오는가</span><span>14</span></div></div>
+</section>
+<section class="s open alt">
+ <div class="paper"><div class="pin">
+  <div class="chnum">05</div>
+  <span class="eyebrow">Chapter 5</span>
+  <h2>배울 점</h2>
+ </div><div class="foot"><span>05 배울 점</span><span>15</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>이 구조가 주는 교훈</h3>
+  <div class="key"><span>자동화의 요령은 &quot;전부 AI에게&quot;가 아니라 &quot;AI가 잘하는 곳에만&quot;입니다.</span></div>
+  <div class="prose"><p>이 도구에서 LLM은 <b>요약 한 군데</b>에만 쓰입니다. 분류는 통계적 방법으로, 검색은 색인으로, 배포는 정적 사이트로 처리했습니다. 그래서 논문이 늘어도 비용이 크게 늘지 않습니다.</p></div>
+  <blockquote>비싼 도구를 어디에 쓸지 정하는 것이 설계입니다.</blockquote>
+ </div><div class="foot"><span>05 배울 점</span><span>16</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>내 일에 옮긴다면</h3>
+  <div class="prose"><p>논문이 아니어도 같은 틀이 됩니다.</p></div>
+  <ul class="prose"><li><b>모으기</b> — 흩어진 자료를 한곳에</li><li><b>요약</b> — 정해진 항목으로 (줄글 말고)</li><li><b>묶기</b> — 주제별 자동 분류</li><li><b>찾기</b> — 검색되게</li><li><b>내보내기</b> — 남이 볼 수 있는 형태로</li></ul>
+  <p class="note">뉴스 클리핑, 고객 문의, 회의록에도 그대로 적용됩니다.</p>
+ </div><div class="foot"><span>05 배울 점</span><span>17</span></div></div>
+</section>
+<section class="s open alt">
+ <div class="paper"><div class="pin">
+  <div class="chnum">06</div>
+  <span class="eyebrow">Chapter 6</span>
+  <h2>발표에서 들은 것</h2>
+ </div><div class="foot"><span>06 발표에서 들은 것</span><span>18</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>시간 목차</h3>
+  <div class="marks"><div class="mrow" data-t="0"><span class="ms">00:00</span><span class="mt">(여는 말)</span></div><div class="mrow" data-t="0"><span class="ms">00:00</span><span class="mt">(문제 제기)</span></div><div class="mrow" data-t="0"><span class="ms">00:00</span><span class="mt">(도구 시연)</span></div><div class="mrow" data-t="0"><span class="ms">00:00</span><span class="mt">(비용과 한계)</span></div><div class="mrow" data-t="0"><span class="ms">00:00</span><span class="mt">(마무리)</span></div></div>
+  <p class="note">영상 자막을 넣으면 실제 시각과 내용으로 채워집니다.</p>
+ </div><div class="foot"><span>06 발표에서 들은 것</span><span>19</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>발표자가 덧붙인 말</h3>
+  <div class="key"><span>(발표자의 결론을 한 줄로)</span></div>
+  <div class="prose"><p>여기에 현장 발표 내용을 정리해 넣습니다. 문장 안에서 <a class="tj" href="#" data-t="750">12:30</a> 처럼 쓰면 그 시점으로 가는 링크가 됩니다.</p></div>
+ </div><div class="foot"><span>06 발표에서 들은 것</span><span>20</span></div></div>
+</section>
+<section class="s open alt">
+ <div class="paper"><div class="pin">
+  <div class="chnum">07</div>
+  <span class="eyebrow">Chapter 7</span>
+  <h2>질의응답</h2>
+ </div><div class="foot"><span>07 질의응답</span><span>21</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>오간 질문들</h3>
+  <div class="qa"><div class="q"><span class="mk">Q</span><span>(시청자 질문)</span></div><div class="a"><span class="mk">A</span><span>(발표자 답변)</span></div></div>
+  <div class="qa"><div class="q"><span class="mk">Q</span><span>(시청자 질문)</span></div><div class="a"><span class="mk">A</span><span>(발표자 답변)</span></div></div>
+  <p class="note">라이브 채팅에서 오간 질문을 정리해 넣으면 좋습니다.</p>
+ </div><div class="foot"><span>07 질의응답</span><span>22</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>이 기록을 채우는 법</h3>
+  <ol class="prose"><li>유튜브에서 영상을 열고 <b>더보기 → 스크립트 표시</b></li><li>자막을 전부 복사</li><li>클로드나 챗GPT에 붙여 넣고 아래를 함께 보냅니다</li></ol>
+  <pre>이 강연 스크립트를 마크다운으로 정리해 줘.
+- ## 으로 주제별 쪽을 나눌 것
+- 각 쪽 첫 줄은 &quot;핵심: 한 줄 결론&quot;
+- 시간 목차는 &quot;12:30 내용&quot; 형식
+- 질의응답은 &quot;Q:&quot; 다음 줄에 &quot;A:&quot;
+- 원문을 옮기지 말고 요약할 것</pre>
+ </div><div class="foot"><span>07 질의응답</span><span>23</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>이 기록을 채우는 법 <span style="color:var(--dim);font-weight:500;font-size:.7em">(계속)</span></h3>
+  <ol class="prose"><li>나온 글을 제작기에 붙여 넣고 <b>발행하기</b></li></ol>
+  <blockquote>남의 발표를 정리할 때는 요약과 짧은 인용까지만 쓰세요. 영상은 원본 링크로 연결되니 조회수는 원저작자에게 갑니다.</blockquote>
+ </div><div class="foot"><span>07 질의응답</span><span>24</span></div></div>
+</section>
+<section class="s cover">
+ <div class="paper"><div class="pin">
+  <span class="eyebrow">The End</span>
+  <h2>여기까지입니다</h2>
+  <p class="kick">읽어 주셔서 고맙습니다.</p>
+  <div class="by">© 2026 AI프렌즈</div>
+ </div><div class="foot"><span>논문을 읽는 어떤 방법</span><span>끝</span></div></div>
+</section>
+</div><!-- /#deck -->
+
+<div id="bar">
+ <button id="prev" aria-label="이전 쪽">‹</button>
+ <select id="jump" aria-label="쪽 이동"></select>
+ <button id="next" aria-label="다음 쪽">›</button>
+</div>
+
+<script>
+(function(){
+ var deck=document.getElementById('deck'), prog=document.getElementById('prog'), jump=document.getElementById('jump');
+ var menu=document.getElementById('menu'), mbtn=document.getElementById('mbtn'), toast=document.getElementById('toast');
+ var gate=document.getElementById('gate'), cipher=document.getElementById('cipher');
+ // 발행된 책은 읽기 페이지(/ebook/b/)가 EBOOK_BASE 를 넣어 준다. 그 값으로 PDF 위치와 저장 키를 정한다.
+ var BASE=(window.EBOOK_BASE)||location.pathname.replace(/\.html?$/,'');
+ var KEY=BASE+'_page', KEYC=BASE+'_code';
+ var S=[], N=0, i=0, code='';
+
+ function say(t){toast.textContent=t;toast.classList.add('on');clearTimeout(say.t);say.t=setTimeout(function(){toast.classList.remove('on');},1800);}
+
+ // ── 암호 풀기 (잠긴 책) ─────────────────────────────
+ // 형식: {"salt","iv","ct"} base64. PBKDF2-SHA256 → AES-GCM-256. scripts/lock_ebook.mjs 와 같은 규칙.
+ function b2a(b){return Uint8Array.from(atob(b),function(c){return c.charCodeAt(0);});}
+ async function keyFrom(pw,salt){
+  var raw=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw.normalize('NFC')),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:200000,hash:'SHA-256'},raw,{name:'AES-GCM',length:256},false,['decrypt']);
+ }
+ async function decrypt(pw,box){
+  var k=await keyFrom(pw,b2a(box.salt));
+  return crypto.subtle.decrypt({name:'AES-GCM',iv:b2a(box.iv)},k,b2a(box.ct));
+ }
+ async function tryOpen(pw,quiet){
+  pw=(pw||'').trim(); if(!pw) return false;
+  var box; try{box=JSON.parse(cipher.textContent);}catch(e){return false;}
+  try{
+   var buf=await decrypt(pw,box);
+   deck.innerHTML=new TextDecoder().decode(buf);
+   code=pw; try{localStorage.setItem(KEYC,pw);}catch(e){}
+   gate.classList.remove('on'); start(); return true;
+  }catch(e){
+   if(!quiet) document.getElementById('ge').textContent='코드가 맞지 않아요. 다시 확인해 주세요.';
+   try{localStorage.removeItem(KEYC);}catch(e2){}
+   return false;
+  }
+ }
+
+ // ── 책 넘기기 ───────────────────────────────────────
+ function start(){
+  S=[].slice.call(document.querySelectorAll('#deck > .s')); N=S.length; if(!N) return;
+  jump.innerHTML='';
+  S.forEach(function(s,n){
+   var t=s.querySelector('h1,h2,h3'); var o=document.createElement('option');
+   var label=t?t.innerHTML.replace(/<br\s*\/?>/gi,' ').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim():'쪽';
+   o.value=n; o.textContent=(n+1)+'. '+label; jump.appendChild(o);
+  });
+  document.querySelectorAll('.tocrow').forEach(function(r){
+   r.onclick=function(){
+    var t=S.findIndex(function(s){var c=s.querySelector('.chnum');return c&&c.textContent.trim()===r.dataset.go;});
+    if(t>=0) go(t);
+   };
+  });
+  document.querySelectorAll('.vframe').forEach(function(b){
+   b.onclick=function(){ playVideo(b.closest('.vwrap')); };
+  });
+  // 시간을 누르면 그 쪽의 영상이 해당 지점부터 재생된다
+  document.querySelectorAll('.tj').forEach(function(el){
+   el.onclick=function(e){ e.preventDefault(); jumpTo(el); };
+  });
+  document.querySelectorAll('.marks .mrow').forEach(function(el){
+   el.onclick=function(){ jumpTo(el); };
+  });
+  var m=location.hash.match(/^#p(\d+)$/), saved=null;
+  try{saved=localStorage.getItem(KEY);}catch(e){}
+  i=0; S.forEach(function(s){s.classList.remove('on');});
+  go(m?(+m[1]-1):(saved!==null?+saved:0));
+ }
+ // 영상 틀기. sec 를 주면 그 시점부터.
+ function playVideo(wrap, sec){
+  if(!wrap) return;
+  var f=document.createElement('iframe');
+  f.src='https://www.youtube-nocookie.com/embed/'+wrap.dataset.v+'?autoplay=1&rel=0'+(sec?'&start='+sec:'');
+  f.setAttribute('allow','autoplay; encrypted-media; picture-in-picture; web-share');
+  f.allowFullscreen=true; f.title='강의 영상';
+  var old=wrap.querySelector('iframe, .vframe');
+  if(old) old.replaceWith(f); else wrap.appendChild(f);
+ }
+ // 같은 쪽의 영상을 찾고, 없으면 앞쪽에서 가장 가까운 영상 쪽으로 이동한다
+ function jumpTo(el){
+  var sec=+el.dataset.t||0, page=el.closest('.s');
+  var wrap=page&&page.querySelector('.vwrap');
+  if(!wrap){
+   var i0=S.indexOf(page);
+   for(var k=i0;k>=0&&!wrap;k--) wrap=S[k].querySelector('.vwrap');
+   if(wrap){ var t=S.indexOf(wrap.closest('.s')); if(t>=0) go(t); }
+  }
+  if(wrap) playVideo(wrap, sec);
+ }
+ function go(n){
+  if(!N) return;
+  n=Math.max(0,Math.min(N-1,n));
+  S[i].classList.remove('on'); i=n; S[i].classList.add('on');
+  var pin=S[i].querySelector('.pin'); if(pin) pin.scrollTop=0;
+  prog.style.width=((i+1)/N*100)+'%'; jump.value=i;
+  try{history.replaceState(null,'','#p'+(i+1));}catch(e){}
+  try{localStorage.setItem(KEY,i);}catch(e){}
+ }
+ document.getElementById('prev').onclick=function(){go(i-1)};
+ document.getElementById('next').onclick=function(){go(i+1)};
+ jump.onchange=function(){go(+jump.value)};
+ addEventListener('keydown',function(e){
+  if(e.target.tagName==='SELECT'||e.target.tagName==='INPUT') return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();go(i+1);}
+  if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(i-1);}
+  if(e.key==='Home')go(0); if(e.key==='End')go(N-1);
+ });
+ var x0=null;
+ addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+ addEventListener('touchend',function(e){
+  if(x0===null)return; var dx=e.changedTouches[0].clientX-x0; x0=null;
+  if(Math.abs(dx)>55) go(i+(dx<0?1:-1));
+ },{passive:true});
+ addEventListener('hashchange',function(){var m=location.hash.match(/^#p(\d+)$/); if(m) go(+m[1]-1);});
+
+ // ── 메뉴: PDF 내려받기 / 인쇄 / 링크 복사 ────────────
+ function closeMenu(){menu.classList.remove('on');mbtn.setAttribute('aria-expanded','false');}
+ mbtn.onclick=function(e){e.stopPropagation();menu.classList.toggle('on');mbtn.setAttribute('aria-expanded',menu.classList.contains('on'));};
+ addEventListener('click',function(e){if(!menu.contains(e.target))closeMenu();});
+ addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu();});
+ var base=BASE, mpdf=document.getElementById('mpdf');
+ var pdfName=(document.title.split(' — ')[0]||'ebook')+'.pdf';
+ // 잠긴 책은 같은 이름의 .pdf.enc 를 받아 코드로 풀어서 내려준다
+ var pdfHref=cipher?base+'.pdf.enc':base+'.pdf';
+ mpdf.href=pdfHref; mpdf.download=pdfName;
+ function saveBlob(blob){var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=pdfName;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},4000);}
+ mpdf.onclick=function(e){
+  closeMenu(); e.preventDefault();
+  if(!cipher && location.protocol==='file:'){ location.href=pdfHref; return; }
+  var t=mpdf.firstChild; t.textContent='받는 중…';
+  fetch(pdfHref).then(function(r){
+   if(!r.ok) throw 0;
+   if(!cipher) return r.blob().then(saveBlob);
+   return r.json().then(function(box){return decrypt(code,box);}).then(function(buf){saveBlob(new Blob([buf],{type:'application/pdf'}));});
+  }).catch(function(){ say('아직 PDF 파일이 없어요. 인쇄로 저장을 눌러 주세요.'); })
+  .then(function(){ t.textContent='PDF 내려받기'; });
+ };
+ document.getElementById('mprint').onclick=function(){closeMenu();window.print();};
+ document.getElementById('mlink').onclick=function(){
+  closeMenu(); var u=location.origin+location.pathname+location.search+'#p'+(i+1);
+  (navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){say('링크를 복사했어요');},function(){prompt('링크',u);});
+ };
+
+ // ── 시작 ────────────────────────────────────────────
+ if(cipher){
+  gate.classList.add('on');
+  var inp=document.getElementById('gc'), btn=document.getElementById('gb');
+  btn.onclick=function(){tryOpen(inp.value,false);};
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')btn.click();});
+  var saved=''; try{saved=localStorage.getItem(KEYC)||'';}catch(e){}
+  if(saved) tryOpen(saved,true);          // 한 번 넣었으면 다시 묻지 않는다
+  setTimeout(function(){try{inp.focus();}catch(e){}},100);
+ } else {
+  start();
+ }
+})();
+</script>
+</body>
+</html>

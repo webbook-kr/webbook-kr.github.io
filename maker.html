@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>웹북 제작기 — 마크다운을 넘겨 읽는 전자책으로</title>
+<meta name="description" content="마크다운 원고를 붙여넣으면 넘겨 읽는 전자책 HTML 파일을 만들어 줍니다. 코드로 잠글 수도 있습니다. 서버 없음, 설치 없음.">
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+:root{--bg:#eceae5;--paper:#fdfcfa;--ink:#15130f;--ink2:#33302a;--muted:#6b6560;--dim:#a39c93;--line:#e6e1d9;--line2:#d6d0c6;--wash:#f5f2ec;--accent:#c8811f}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif;-webkit-font-smoothing:antialiased}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line2);background:var(--paper)}
+header h1{font-size:16px;font-weight:900;letter-spacing:-.5px;margin:0}
+header h1 small{font-weight:500;color:var(--muted);margin-left:8px;font-size:12px}
+header a{color:var(--muted);font-size:12px;text-decoration:none}
+main{display:grid;grid-template-columns:minmax(360px,520px) 1fr;height:calc(100% - 49px)}
+#edit{display:flex;flex-direction:column;gap:10px;padding:14px 16px;overflow-y:auto;border-right:1px solid var(--line2);background:var(--wash)}
+label{display:block;font-size:11px;font-weight:800;letter-spacing:.6px;color:var(--dim);text-transform:uppercase;margin-bottom:4px}
+input[type=text],textarea{width:100%;border:1px solid var(--line2);background:#fff;font:500 14px 'Pretendard',sans-serif;padding:9px 10px;border-radius:2px;color:var(--ink)}
+input[type=text]:focus,textarea:focus{outline:none;border-color:var(--ink)}
+textarea{flex:1;min-height:320px;resize:vertical;font:13.5px/1.7 ui-monospace,Menlo,Consolas,monospace;tab-size:2}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lock{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#fff;border:1px solid var(--line2);border-radius:2px;font-size:13px}
+.lock input[type=text]{flex:1;width:auto;padding:6px 8px;font-size:13px}
+.lock input[type=checkbox]{width:16px;height:16px;margin:0}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+button{border:1px solid var(--line2);background:#fff;color:var(--ink);font:700 13px 'Pretendard',sans-serif;padding:10px 14px;cursor:pointer;border-radius:2px}
+button:hover{background:var(--wash)}
+button.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+button.pri:hover{background:#000}
+button:disabled{opacity:.5;cursor:default}
+.hint{font-size:12px;color:var(--muted);line-height:1.7;margin:0}
+.hint code{background:#fff;border:1px solid var(--line);padding:0 4px;font-size:11.5px}
+details{font-size:12.5px;color:var(--ink2);background:#fff;border:1px solid var(--line2);padding:8px 12px;border-radius:2px}
+details summary{cursor:pointer;font-weight:700;color:var(--ink)}
+details table{width:100%;border-collapse:collapse;margin-top:8px}
+details td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5}
+details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--muted)}
+#view{position:relative;background:var(--bg)}
+#view iframe{width:100%;height:100%;border:0;display:block}
+#stat{position:absolute;left:12px;top:10px;font-size:11px;color:var(--muted);background:var(--paper);border:1px solid var(--line2);padding:4px 8px;border-radius:2px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:12.5px;padding:8px 14px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
+#toast.on{opacity:1}
+.pub{background:#fff;border:1px solid var(--line2);border-radius:2px;padding:12px}
+.pub h3{margin:0 0 6px;font-size:13px;font-weight:800}
+.pub .row2{display:flex;gap:8px}
+.pub .row2 input[type=text]{flex:1}
+.pub .res{display:none;margin-top:10px;padding:10px;background:var(--wash);border:1px solid var(--line);font-size:12.5px;line-height:1.7;word-break:break-all}
+.pub .res.on{display:block}
+.pub .res a{color:var(--accent);font-weight:700}
+.pub .res .u{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;background:#fff;border:1px solid var(--line);padding:6px 8px;margin:6px 0;user-select:all}
+.share{font-size:12.5px;color:var(--ink2);line-height:1.8;background:#fff;border:1px solid var(--line2);padding:10px 12px;border-radius:2px}
+.share b{color:var(--ink)}
+.tabs{display:none}
+@media (max-width:860px){
+ main{grid-template-columns:1fr;grid-template-rows:auto 1fr;height:auto;min-height:calc(100% - 49px)}
+ #edit{border-right:0;border-bottom:1px solid var(--line2)}
+ #view{height:80vh}
+ .tabs{display:flex;gap:6px}
+ .tabs button{flex:1}
+ body.tab-view #edit{display:none}
+ body.tab-edit #view{display:none}
+}
+</style>
+</head>
+<body>
+<header>
+ <h1>웹북 제작기<small>마크다운 → 넘겨 읽는 전자책</small></h1>
+ <a href="./">처음이세요? 안내서 보기 ›</a>
+</header>
+<main>
+ <section id="edit">
+  <div class="tabs"><button id="tabE" class="pri" type="button">원고</button><button id="tabV" type="button">미리보기</button></div>
+  <div class="row">
+   <div><label for="ti">책 제목</label><input id="ti" type="text" placeholder="예: 엑셀 자동화 첫걸음 (표지 줄바꿈은 | )"></div>
+   <div><label for="au">글쓴이</label><input id="au" type="text" placeholder="이름 · 채널명"></div>
+  </div>
+  <div><label for="su">부제 (한 줄)</label><input id="su" type="text" placeholder="표지에 작게 들어가는 한 줄"></div>
+  <div style="display:flex;flex-direction:column;flex:1;min-height:340px">
+   <label for="md">원고 (마크다운)</label>
+   <textarea id="md" spellcheck="false"></textarea>
+  </div>
+  <details>
+   <summary>쓰는 법</summary>
+   <table>
+    <tr><td># 제목</td><td>새 챕터. 챕터 표지가 자동으로 생기고 차례에 들어감</td></tr>
+    <tr><td>## 소제목</td><td>새 쪽</td></tr>
+    <tr><td>---</td><td>같은 소제목으로 쪽 나누기</td></tr>
+    <tr><td>**굵게**</td><td>강조</td></tr>
+    <tr><td>&gt; 문장</td><td>인용 상자</td></tr>
+    <tr><td>- 항목</td><td>목록</td></tr>
+    <tr><td>| a | b |</td><td>표 (첫 줄이 머리글)</td></tr>
+    <tr><td>```</td><td>코드 상자</td></tr>
+    <tr><td>![설명](주소)</td><td>사진</td></tr>
+    <tr><td>youtube: 영상ID</td><td>유튜브 (누르면 재생). 주소 전체를 붙여도 됨</td></tr>
+    <tr><td>::: 메모</td><td>회색 메모 상자 (한 줄)</td></tr>
+   </table>
+   <p class="hint" style="margin:10px 0 4px"><b>세미나·강연 정리용</b></p>
+   <table>
+    <tr><td>발표자: 이름 | 소속 | 시간</td><td>발표자 정보칸 (| 로 구분, 뒤는 생략 가능)</td></tr>
+    <tr><td>핵심: 한 줄</td><td>눈에 띄는 결론 상자</td></tr>
+    <tr><td>Q: 질문<br>A: 답변</td><td>질의응답 카드. 끝에 <code>-- 이름</code> 을 붙이면 말한 사람 표시</td></tr>
+    <tr><td>12:30 내용</td><td>시간 목차. 누르면 영상이 그 지점부터 재생</td></tr>
+    <tr><td>문장 속 (37:20)</td><td>글 안에서도 시간을 누르면 그 지점으로</td></tr>
+   </table>
+   <p class="hint" style="margin-top:8px">시간을 쓰려면 그 쪽(또는 앞쪽)에 <code>youtube:</code> 로 영상이 하나 있어야 합니다.</p>
+   <p class="hint" style="margin-top:8px">긴 쪽은 자동으로 나뉩니다. 클로드·챗GPT에 "마크다운으로 써 줘" 하고 그대로 붙여넣으면 됩니다.</p>
+  </details>
+  <div class="lock">
+   <input id="lk" type="checkbox"><label for="lk" style="margin:0;text-transform:none;font-size:13px;color:var(--ink);letter-spacing:0">코드로 잠그기</label>
+   <input id="lc" type="text" placeholder="코드 (예: 멤버십 글에 올릴 코드)" disabled>
+  </div>
+  <div class="btns">
+   <button id="dl" class="pri" type="button">책 파일 내려받기</button>
+   <button id="pdfb" type="button">PDF로 저장</button>
+   <button id="open" type="button">새 창에서 보기</button>
+   <button id="reset" type="button">예시 원고 다시</button>
+  </div>
+  <div class="pub">
+   <h3>인터넷 주소 만들기 (발행)</h3>
+   <div class="row2">
+    <input id="pc" type="text" placeholder="발행 코드" autocomplete="off">
+    <button id="pubb" class="pri" type="button">발행하기</button>
+   </div>
+   <p class="hint" style="margin-top:6px">발행 코드는 멤버십·수강생 안내글에 있습니다. 버튼 하나로 주소가 나오고, 그 주소를 카톡·유튜브 설명란에 붙이면 끝입니다.</p>
+   <div class="res" id="pres"></div>
+  </div>
+  <div class="share">
+   <b>주소 없이 나누려면</b><br>
+   내려받은 파일을 카톡·메일로 보내면 받는 사람이 열기만 하면 됩니다. 종이로 뽑거나 PDF가 편하면 "PDF로 저장"을 누르세요.<br>
+   원고는 이 브라우저에 자동 저장됩니다.
+  </div>
+ </section>
+ <section id="view">
+  <div id="stat"></div>
+  <iframe id="pv" title="미리보기"></iframe>
+ </section>
+</main>
+<div id="toast"></div>
+
+<script>
+(function(){
+ var $=function(id){return document.getElementById(id);};
+ var ti=$('ti'),au=$('au'),su=$('su'),md=$('md'),lk=$('lk'),lc=$('lc'),pv=$('pv'),stat=$('stat'),toast=$('toast');
+ var TPL=null, KEY='ebook_maker_draft', KEYP='ebook_maker_pub';
+ var PUBLISH_FN='https://dxhmprqfgigljgbstqrg.supabase.co/functions/v1/webbook-publish';
+ var SAMPLE=[
+  '# 시작하기 전에',
+  '## 이 책은 무엇인가',
+  '이 책은 **웹북 제작기**로 만든 예시입니다. 왼쪽 원고를 지우고 여러분 글을 넣어 보세요.',
+  '',
+  '> 쪽마다 한 가지 이야기만. 넘치면 자동으로 나뉩니다.',
+  '',
+  '## 준비물',
+  '- 원고 (마크다운)',
+  '- 브라우저',
+  '- 5분',
+  '',
+  '::: 설치할 프로그램은 없습니다.',
+  '',
+  '# 실제로 해 보기',
+  '## 표와 코드',
+  '| 할 일 | 방법 |',
+  '|---|---|',
+  '| 새 챕터 | `# 제목` |',
+  '| 새 쪽 | `## 소제목` 또는 `---` |',
+  '',
+  '```',
+  'node scripts/lock_ebook.mjs ebook/drafts/book1.html "코드"',
+  '```',
+  '',
+  '## 영상 넣기',
+  'youtube: dQw4w9WgXcQ',
+  '',
+  '영상은 누를 때만 불러옵니다.',
+  '',
+  '# 마치며',
+  '## 다음 단계',
+  '내려받은 HTML을 어디든 올리면 주소가 생깁니다. 코드로 잠그면 코드를 아는 분만 읽을 수 있습니다.'
+ ].join('\n');
+
+ // ── 마크다운 → 쪽 ────────────────────────────────────
+ function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+ function inline(s){
+  s=esc(s);
+  s=s.replace(/`([^`]+)`/g,'<code>$1</code>');
+  s=s.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
+  s=s.replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  // 문장 속 (12:30) 또는 (1:02:30) → 그 시점으로 가는 시간 링크
+  s=s.replace(/\((\d{1,2}:\d{2}(?::\d{2})?)\)/g,function(_,t){return timeTag(t);});
+  // 글에 섞여 들어온 간단한 꾸밈 태그는 그대로 살린다 (나머지 태그는 글자로 남는다)
+  s=s.replace(/&lt;(\/?)(b|strong|i|em|u|s|mark|small|sub|sup)&gt;/gi,'<$1$2>');
+  s=s.replace(/&lt;br\s*\/?&gt;/gi,'<br>');
+  return s;
+ }
+ function ytid(s){var m=s.match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/)||s.match(/^([\w-]{11})$/);return m?m[1]:null;}
+ // "12:30" 또는 "1:02:30" → 초
+ function toSec(t){
+  var a=t.split(':').map(Number); if(a.some(isNaN))return 0;
+  return a.length===3?a[0]*3600+a[1]*60+a[2]:(a.length===2?a[0]*60+a[1]:a[0]);
+ }
+ function timeTag(t){return '<a class="tj" href="#" data-t="'+toSec(t)+'">'+esc(t)+'</a>';}
+ // 블록 하나: {html, len}
+ function blocks(lines){
+  var out=[],i=0;
+  // 줄을 나눠 쓰면 나뉘어 보인다 (빈 줄은 문단 나눔, 한 줄 띄움은 줄바꿈)
+  function para(t){out.push({html:'<div class="prose"><p>'+inline(t).replace(/\n/g,'<br>')+'</p></div>',len:t.length});}
+  while(i<lines.length){
+   var L=lines[i];
+   if(!L.trim()){i++;continue;}
+   if(/^```/.test(L)){var c=[];i++;while(i<lines.length&&!/^```/.test(lines[i]))c.push(lines[i++]);i++;out.push({html:'<pre>'+esc(c.join('\n'))+'</pre>',len:c.join('\n').length*1.3+40});continue;}
+   if(/^>\s?/.test(L)){var q=[];while(i<lines.length&&/^>\s?/.test(lines[i]))q.push(lines[i++].replace(/^>\s?/,''));out.push({html:'<blockquote>'+inline(q.join(' '))+'</blockquote>',len:q.join(' ').length+60});continue;}
+   if(/^:::\s?/.test(L)){out.push({html:'<p class="note">'+inline(L.replace(/^:::\s?/,''))+'</p>',len:L.length+40});i++;continue;}
+   // 발표자:  홍길동 | 소속 | 14:00-14:40
+   if(/^(발표자|연사|speaker)\s*[::]/i.test(L)){
+    var w=L.replace(/^[^::]*[::]\s*/,'').split('|').map(function(x){return x.trim();});
+    out.push({html:'<div class="who"><span class="nm">'+inline(w[0]||'')+'</span>'
+      +(w[1]?'<span class="af">'+inline(w[1])+'</span>':'')
+      +(w[2]?'<span class="tm">'+inline(w[2])+'</span>':'')+'</div>',len:70});
+    i++;continue;
+   }
+   // 핵심: 한 줄 결론
+   if(/^(핵심|요점|결론)\s*[::]/.test(L)){
+    out.push({html:'<div class="key"><span>'+inline(L.replace(/^[^::]*[::]\s*/,''))+'</span></div>',len:L.length+70});
+    i++;continue;
+   }
+   // Q: 질문  /  A: 답변   (여러 줄 이어쓰기 가능)
+   if(/^Q\s*[::]/i.test(L)){
+    var qt=[L.replace(/^Q\s*[::]\s*/i,'')]; i++;
+    while(i<lines.length&&lines[i].trim()&&!/^(A\s*[::]|Q\s*[::]|#|##|---)/i.test(lines[i])) qt.push(lines[i++]);
+    var at=[];
+    if(i<lines.length&&/^A\s*[::]/i.test(lines[i])){
+     at.push(lines[i].replace(/^A\s*[::]\s*/i,'')); i++;
+     while(i<lines.length&&lines[i].trim()&&!/^(A\s*[::]|Q\s*[::]|#|##|---)/i.test(lines[i])) at.push(lines[i++]);
+    }
+    function speaker(arr){ // 끝에 " -- 이름" 이 있으면 말한 사람으로
+     var t=arr.join(' '), m=t.match(/\s+--\s*(.+)$/);
+     return m?{t:t.slice(0,m.index),by:m[1].trim()}:{t:t,by:''};
+    }
+    var Q=speaker(qt), A=speaker(at);
+    var h='<div class="qa"><div class="q"><span class="mk">Q</span><span>'+inline(Q.t)
+      +(Q.by?'<span class="by">'+esc(Q.by)+'</span>':'')+'</span></div>';
+    if(A.t) h+='<div class="a"><span class="mk">A</span><span>'+inline(A.t)
+      +(A.by?'<span class="by">'+esc(A.by)+'</span>':'')+'</span></div>';
+    h+='</div>';
+    out.push({html:h,len:(Q.t+A.t).length+110});
+    continue;
+   }
+   // 시간 목차:  12:30 내용   (줄 맨 앞이 시각)
+   if(/^(\d{1,2}:\d{2}(?::\d{2})?)\s+\S/.test(L)){
+    var rows=[];
+    while(i<lines.length&&/^(\d{1,2}:\d{2}(?::\d{2})?)\s+\S/.test(lines[i])){
+     var mm=lines[i].match(/^(\d{1,2}:\d{2}(?::\d{2})?)\s+(.+)$/);
+     rows.push('<div class="mrow" data-t="'+toSec(mm[1])+'"><span class="ms">'+esc(mm[1])+'</span><span class="mt">'+inline(mm[2])+'</span></div>');
+     i++;
+    }
+    out.push({html:'<div class="marks">'+rows.join('')+'</div>',len:rows.length*46+30});
+    continue;
+   }
+   if(/^[-*]\s+/.test(L)){var li=[];while(i<lines.length&&/^[-*]\s+/.test(lines[i]))li.push('<li>'+inline(lines[i++].replace(/^[-*]\s+/,''))+'</li>');out.push({html:'<ul class="prose">'+li.join('')+'</ul>',len:li.join('').length});continue;}
+   if(/^\d+[.)]\s+/.test(L)){var ol=[];while(i<lines.length&&/^\d+[.)]\s+/.test(lines[i]))ol.push('<li>'+inline(lines[i++].replace(/^\d+[.)]\s+/,''))+'</li>');out.push({html:'<ol class="prose">'+ol.join('')+'</ol>',len:ol.join('').length});continue;}
+   if(/^\|/.test(L)){var rows=[];while(i<lines.length&&/^\|/.test(lines[i]))rows.push(lines[i++]);
+    rows=rows.filter(function(r){return !/^\|\s*:?-+/.test(r);}).map(function(r){return r.replace(/^\||\|$/g,'').split('|').map(function(c){return c.trim();});});
+    var h='<table>'+rows.map(function(r,n){var tag=n?'td':'th';return '<tr>'+r.map(function(c){return '<'+tag+'>'+inline(c)+'</'+tag+'>';}).join('')+'</tr>';}).join('')+'</table>';
+    out.push({html:h,len:rows.length*70+40});continue;}
+   var im=L.match(/^!\[([^\]]*)\]\(([^)\s]+)\)/);
+   if(im){out.push({html:'<figure><img src="'+esc(im[2])+'" alt="'+esc(im[1])+'" loading="lazy">'+(im[1]?'<figcaption>'+esc(im[1])+'</figcaption>':'')+'</figure>',len:420});i++;continue;}
+   var yt=/^youtube:\s*(.+)$/i.test(L)?ytid(L.replace(/^youtube:\s*/i,'').trim()):(/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(L.trim())?ytid(L.trim()):null);
+   if(yt){out.push({html:'<div class="vwrap" data-v="'+yt+'"><div class="vframe" style="background-image:url(https://i.ytimg.com/vi/'+yt+'/hqdefault.jpg)"></div></div>',len:380});i++;continue;}
+   var STOP=/^(#|##|---|>|:::|[-*]\s|\d+[.)]\s|\||!\[|```|youtube:|Q\s*[::]|A\s*[::]|발표자\s*[::]|연사\s*[::]|speaker\s*[::]|핵심\s*[::]|요점\s*[::]|결론\s*[::]|\d{1,2}:\d{2}(?::\d{2})?\s+\S|https?:\/\/(www\.)?(youtube\.com|youtu\.be))/i;
+   var p=[L];i++;while(i<lines.length&&lines[i].trim()&&!STOP.test(lines[i]))p.push(lines[i++]);
+   para(p.join('\n'));
+  }
+  return out;
+ }
+ var LIMIT=900; // 쪽 하나에 넣을 글자 수 (대략)
+ function parse(text){
+  var lines=text.replace(/\r/g,'').split('\n'), chapters=[], ch=null, sec=null;
+  function newSec(title){sec={title:title,parts:[]};ch.secs.push(sec);}
+  var buf=[];
+  function flush(){ if(!buf.length)return; if(!ch){ch={title:'',secs:[]};chapters.push(ch);} if(!sec)newSec(''); sec.parts.push(buf); buf=[]; }
+  for(var i=0;i<lines.length;i++){
+   var L=lines[i];
+   if(/^#\s+/.test(L)){flush();ch={title:L.replace(/^#\s+/,'').trim(),secs:[]};chapters.push(ch);sec=null;continue;}
+   if(/^##\s+/.test(L)){flush();if(!ch){ch={title:'',secs:[]};chapters.push(ch);}newSec(L.replace(/^##\s+/,'').trim());continue;}
+   if(/^---\s*$/.test(L)){flush();if(sec)sec.parts.push(null);continue;} // null = 강제 쪽 나눔 표시
+   buf.push(L);
+  }
+  flush();
+  return chapters;
+ }
+ function pageHtml(cls,inner,footL,footR){return '<section class="s'+(cls?' '+cls:'')+'">\n <div class="paper"><div class="pin">\n'+inner+'\n </div><div class="foot"><span>'+esc(footL)+'</span><span>'+esc(footR)+'</span></div></div>\n</section>\n';}
+ function build(){
+  var rawTitle=ti.value.trim()||'제목 없는 책', title=rawTitle.replace(/\s*\|\s*/g,' '), sub=su.value.trim(), author=au.value.trim();
+  var chapters=parse(md.value), pages=[], n=0;
+  pages.push(pageHtml('cover','  <span class="eyebrow">'+esc(author||'Web Book')+'</span>\n  <h1>'+inline(rawTitle).replace(/\s*\|\s*/g,'<br>')+'</h1>\n'+(sub?'  <p class="kick">'+inline(sub)+'</p>\n':'')+'  <div class="by">'+esc(author)+(author?' · ':'')+new Date().getFullYear()+'</div>',title,'표지'));
+  var tocIdx=pages.length; pages.push(''); // 차례 자리
+  var toc=[];
+  chapters.forEach(function(ch,ci){
+   var num=String(ci+1).padStart(2,'0'), foot=num+' '+ch.title;
+   if(ch.title){ toc.push({num:num,title:ch.title,page:pages.length+1});
+    pages.push(pageHtml('open alt','  <div class="chnum">'+num+'</div>\n  <span class="eyebrow">Chapter '+(ci+1)+'</span>\n  <h2>'+inline(ch.title)+'</h2>',foot,String(pages.length+1))); }
+   ch.secs.forEach(function(sec){
+    // parts: 줄 묶음 배열 (null 은 강제 나눔). 블록으로 바꾼 뒤 글자 수로 쪽 나눔
+    var groups=[[]];
+    sec.parts.forEach(function(p){ if(p===null){groups.push([]);} else { blocks(p).forEach(function(b){groups[groups.length-1].push(b);}); } });
+    var chunks=[];
+    groups.forEach(function(g){ var cur=[],len=0; g.forEach(function(b){ if(cur.length&&len+b.len>LIMIT){chunks.push(cur);cur=[];len=0;} cur.push(b);len+=b.len; }); if(cur.length||!chunks.length)chunks.push(cur); });
+    chunks.forEach(function(c,k){
+     var h=(sec.title?'  <h3>'+inline(sec.title)+(k?' <span style="color:var(--dim);font-weight:500;font-size:.7em">(계속)</span>':'')+'</h3>\n':'')+c.map(function(b){return '  '+b.html;}).join('\n');
+     pages.push(pageHtml('',h,foot.trim()||title,String(pages.length+1)));
+    });
+   });
+  });
+  pages.push(pageHtml('cover','  <span class="eyebrow">The End</span>\n  <h2>여기까지입니다</h2>\n  <p class="kick">읽어 주셔서 고맙습니다.</p>\n  <div class="by">© '+new Date().getFullYear()+' '+esc(author)+'</div>',title,'끝'));
+  pages[tocIdx]=pageHtml('','  <span class="eyebrow">Contents</span>\n  <h2 style="margin-bottom:18px">차례</h2>\n'+toc.map(function(t){return '  <div class="tocrow" data-go="'+t.num+'"><span class="tn">'+t.num+'</span><span class="tt">'+inline(t.title)+'</span><span class="tp">'+t.page+'쪽</span></div>';}).join('\n')+'\n  <p class="note" style="margin-top:22px"><b>읽는 법</b> ‹ › 단추, 키보드 ← →, 손가락으로 넘기기. 아래 드롭다운으로 바로 이동.</p>','차례','2');
+  return {deck:pages.join(''), title:title, sub:sub, author:author, n:pages.length};
+ }
+ function assemble(b, cipherJson){
+  var t=TPL;
+  var full=esc(b.title)+(b.sub?' — '+esc(b.sub):'');
+  t=t.replace(/<title>[^<]*<\/title>/,'<title>'+full+'</title>');
+  t=t.replace(/(<meta name="description" content=")[^"]*(")/,'$1'+esc(b.sub||b.title)+'$2');
+  var m=t.match(/(<div id="deck">)([\s\S]*?)(<\/div><!-- \/#deck -->)/);
+  if(cipherJson) t=t.replace(m[0],m[1]+m[3]+'\n<script id="cipher" type="application/json">'+cipherJson+'<\/script>');
+  else t=t.replace(m[0],m[1]+'\n'+b.deck+m[3]);
+  return t;
+ }
+ // ── 잠금 (template.html 의 decrypt 와 같은 규칙) ─────
+ function a2b(u8){var s='';u8.forEach(function(c){s+=String.fromCharCode(c);});return btoa(s);}
+ async function encrypt(pw,bytes){
+  var salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
+  var raw=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw.normalize('NFC')),'PBKDF2',false,['deriveKey']);
+  var key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:200000,hash:'SHA-256'},raw,{name:'AES-GCM',length:256},false,['encrypt']);
+  var ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},key,bytes));
+  return JSON.stringify({salt:a2b(salt),iv:a2b(iv),ct:a2b(ct)});
+ }
+ async function output(){
+  var b=build();
+  if(lk.checked){
+   var pw=lc.value.trim(); if(!pw){say('잠글 코드를 넣어 주세요.');lc.focus();return null;}
+   return {html:assemble(b,await encrypt(pw,new TextEncoder().encode(b.deck))),b:b,locked:true};
+  }
+  return {html:assemble(b),b:b,locked:false};
+ }
+ function fname(t){return (t.replace(/[\\/:*?"<>|]+/g,' ').trim()||'book')+'.html';}
+ function say(t){toast.textContent=t;toast.classList.add('on');clearTimeout(say.t);say.t=setTimeout(function(){toast.classList.remove('on');},2200);}
+
+ // ── 미리보기 ─────────────────────────────────────────
+ var tmr=null;
+ function preview(){
+  if(!TPL)return;
+  var b=build();
+  pv.srcdoc=assemble(b);
+  stat.textContent=b.n+'쪽 · '+md.value.length.toLocaleString()+'자'+(lk.checked?' · 잠금':'');
+  try{localStorage.setItem(KEY,JSON.stringify({ti:ti.value,au:au.value,su:su.value,md:md.value}));}catch(e){}
+ }
+ function schedule(){clearTimeout(tmr);tmr=setTimeout(preview,350);}
+ [ti,au,su,md].forEach(function(el){el.addEventListener('input',schedule);});
+ lk.onchange=function(){lc.disabled=!lk.checked;if(lk.checked)lc.focus();preview();};
+ $('dl').onclick=async function(){
+  var o=await output(); if(!o)return;
+  var blob=new Blob([o.html],{type:'text/html'}),u=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=u;a.download=fname(o.b.title);document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},4000);
+  say(o.locked?'잠긴 책을 내려받았어요. 코드는 따로 전해 주세요.':'책을 내려받았어요.');
+ };
+ $('pdfb').onclick=async function(){
+  var o=await output(); if(!o)return;
+  var w=window.open('about:blank'); if(!w){say('팝업이 막혔어요.');return;}
+  w.document.open();w.document.write(o.html);w.document.close();
+  say('새 창에서 인쇄 창이 뜨면 "PDF로 저장"을 고르세요.');
+  setTimeout(function(){try{w.focus();w.print();}catch(e){}},1200);
+ };
+ // ── 발행: 발행 코드 확인 후 서버에 올리고 주소를 받는다 ──
+ var pres=$('pres'), pubb=$('pubb'), pc=$('pc');
+ var pub=null; try{pub=JSON.parse(localStorage.getItem(KEYP)||'null');}catch(e){}
+ function showPub(){
+  if(!pub){pres.classList.remove('on');pubb.textContent='발행하기';return;}
+  pres.innerHTML='<b>발행됐어요.</b> 이 주소를 나눠 주세요.<div class="u">'+esc(pub.url)+'</div>'
+   +'<button id="cp" type="button" style="padding:6px 10px;font-size:12px">주소 복사</button> '
+   +'<a href="'+esc(pub.url)+'" target="_blank" style="margin-left:6px">열어 보기 ›</a> '
+   +'<a href="#" id="newpub" style="margin-left:10px;color:var(--muted);font-weight:500">새 주소로 발행</a>'
+   +'<div class="hint" style="margin-top:6px">원고를 고치고 다시 "발행하기"를 누르면 같은 주소가 새 내용으로 바뀝니다. 이 브라우저에서만 수정할 수 있어요.</div>';
+  pres.classList.add('on'); pubb.textContent='다시 발행 (같은 주소)';
+  $('cp').onclick=function(){(navigator.clipboard?navigator.clipboard.writeText(pub.url):Promise.reject()).then(function(){say('주소를 복사했어요');},function(){prompt('주소',pub.url);});};
+  $('newpub').onclick=function(e){e.preventDefault();if(confirm('새 주소로 발행할까요? 기존 주소는 그대로 남습니다.')){pub=null;try{localStorage.removeItem(KEYP);}catch(e2){}showPub();}};
+ }
+ showPub();
+ pubb.onclick=async function(){
+  var code=pc.value.trim(); if(!code){say('발행 코드를 넣어 주세요.');pc.focus();return;}
+  var o=await output(); if(!o)return;
+  pubb.disabled=true; var old=pubb.textContent; pubb.textContent='올리는 중…';
+  var body={code:code,title:o.b.title,html:o.html,locked:o.locked};
+  if(pub&&pub.slug&&pub.token){body.slug=pub.slug;body.token=pub.token;}
+  try{
+   var r=await fetch(PUBLISH_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+   var j=await r.json();
+   if(!r.ok||j.error){ say(j.error||'발행에 실패했어요.'); if(r.status===403&&pub&&/수정 권한/.test(j.error||'')){pub=null;try{localStorage.removeItem(KEYP);}catch(e){}showPub();} }
+   else { pub={url:j.url,slug:j.slug,token:j.token,title:o.b.title}; try{localStorage.setItem(KEYP,JSON.stringify(pub));}catch(e){} showPub(); say('발행됐어요!'); }
+  }catch(e){ say('연결이 안 됐어요. 잠시 후 다시 시도해 주세요.'); }
+  pubb.disabled=false; if(pubb.textContent==='올리는 중…')pubb.textContent=old;
+ };
+ $('open').onclick=async function(){
+  var o=await output(); if(!o)return;
+  var w=window.open('about:blank'); if(!w){say('팝업이 막혔어요.');return;}
+  w.document.open();w.document.write(o.html);w.document.close();
+ };
+ $('reset').onclick=function(){ if(md.value.trim()&&!confirm('지금 원고를 예시로 바꿀까요?'))return; ti.value='웹북 제작기 예시';au.value='노모어매뉴얼';su.value='마크다운을 붙여넣으면 책이 됩니다';md.value=SAMPLE;preview(); };
+ $('tabE').onclick=function(){document.body.className='tab-edit';$('tabE').className='pri';$('tabV').className='';};
+ $('tabV').onclick=function(){document.body.className='tab-view';$('tabV').className='pri';$('tabE').className='';};
+
+ // ── 시작: 템플릿 불러오기 ────────────────────────────
+ var saved=null; try{saved=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}
+ if(saved&&saved.md){ti.value=saved.ti||'';au.value=saved.au||'';su.value=saved.su||'';md.value=saved.md;}
+ else {ti.value='웹북 제작기 예시';au.value='노모어매뉴얼';su.value='마크다운을 붙여넣으면 책이 됩니다';md.value=SAMPLE;}
+ $('dl').disabled=true;$('open').disabled=true;
+ fetch('template.html').then(function(r){if(!r.ok)throw 0;return r.text();}).then(function(t){
+  TPL=t;$('dl').disabled=false;$('open').disabled=false;preview();
+ }).catch(function(){stat.textContent='template.html 을 못 불러왔어요. 이 파일은 template.html 과 같은 폴더에서, 웹 주소로 열어야 합니다.';});
+})();
+</script>
+</body>
+</html>

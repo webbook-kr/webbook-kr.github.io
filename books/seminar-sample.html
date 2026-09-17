@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>세미나 기록 웹북 예시 — 영상·요약·질의응답을 한자리에 (가상 행사 견본)</title>
+<meta name="description" content="영상·요약·질의응답을 한자리에 (가상 행사 견본)">
+<meta property="og:type" content="book">
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&display=swap');
+
+/* ── 색·글꼴 토큰 ─────────────────────────────────────── */
+:root{
+ --bg:#eceae5;      /* 화면 배경(책상) */
+ --paper:#fdfcfa;   /* 종이 */
+ --wash:#f5f2ec;    /* 챕터 표지용 종이 */
+ --ink:#15130f; --ink2:#33302a; --muted:#6b6560; --dim:#a39c93;
+ --line:#e6e1d9; --line2:#d6d0c6;
+ --accent:#c8811f;  /* 강조색. 채널 색으로 바꾸세요 */
+ --code:#16161f; --codeink:#e9e9f2;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);overflow:hidden;
+ font-family:'Noto Serif KR',Georgia,serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.eyebrow,.chnum,.foot,.note,.src,.tocrow,table,pre,code,#bar,.kick{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif}
+
+/* ── 진행 바 ─────────────────────────────────────────── */
+#prog{position:fixed;top:0;left:0;height:2px;background:var(--ink);z-index:70;width:0;transition:width .2s}
+
+/* ── 덱(페이지 묶음) ─────────────────────────────────── */
+#deck{position:relative;width:100vw;height:100vh}
+.s{position:absolute;inset:0;display:none;justify-content:center;align-items:center;padding:20px 16px 70px}
+.s.on{display:flex;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── 종이 한 장 (A4 비율 1:1.414) ───────────────────── */
+.paper{position:relative;background:var(--paper);
+ width:min(calc((100vh - 90px) * 0.707), 94vw);
+ height:min(calc(100vh - 90px), 1000px);
+ box-shadow:0 8px 34px rgba(0,0,0,.13);border:1px solid var(--line2);
+ display:flex;flex-direction:column;overflow:hidden}
+.s.alt .paper{background:var(--wash)}
+.pin{flex:1;overflow-y:auto;padding:clamp(28px,4.4vh,52px) clamp(24px,4vh,48px) 12px;
+ display:flex;flex-direction:column;justify-content:center}
+.s.cover .pin,.s.open .pin{text-align:center;align-items:center}
+.foot{flex:none;display:flex;justify-content:space-between;padding:10px clamp(24px,4vh,48px) 14px;
+ font-size:10.5px;color:var(--dim);letter-spacing:.4px;border-top:1px solid var(--line)}
+
+/* ── 글자 ────────────────────────────────────────────── */
+.eyebrow{display:block;font-size:10.5px;font-weight:800;letter-spacing:1.8px;color:var(--dim);text-transform:uppercase;margin-bottom:12px}
+h1{font-size:clamp(26px,4.6vh,40px);font-weight:900;letter-spacing:-1.8px;line-height:1.1;margin:0}
+h2{font-size:clamp(21px,3.5vh,31px);font-weight:900;letter-spacing:-1.2px;line-height:1.2;margin:0}
+h3{font-size:clamp(18px,2.9vh,25px);font-weight:900;letter-spacing:-.8px;line-height:1.25;margin:0 0 16px}
+.chnum{font-size:clamp(44px,9vh,84px);font-weight:900;letter-spacing:-4px;line-height:1;color:var(--line2);margin:0 0 6px}
+.kick{font-size:clamp(13px,1.9vh,15.5px);color:var(--muted);margin:14px 0 0;line-height:1.7}
+.by{margin-top:26px;font-size:12.5px;color:var(--muted);letter-spacing:.3px}
+.prose p{font-size:clamp(13.5px,1.94vh,16px);line-height:1.95;margin:0 0 15px;color:var(--ink2);word-break:keep-all}
+.prose p b{color:var(--ink);font-weight:700}
+.prose p:last-child{margin-bottom:0}
+ul.prose,ol.prose{margin:0 0 15px;padding-left:22px}
+.prose li{font-size:clamp(13.5px,1.94vh,16px);line-height:1.85;color:var(--ink2);margin:0 0 4px;word-break:keep-all}
+.prose a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent)}
+blockquote{margin:16px 0;padding:14px 18px;border-left:3px solid var(--accent);background:#fff;
+ font-size:clamp(14px,2.1vh,17px);line-height:1.8;color:var(--ink);font-weight:500}
+.note{margin:14px 0 0;padding:12px 14px;background:#fff;border:1px solid var(--line);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.note b{color:var(--ink)}
+.src{margin-top:auto;padding-top:12px;font-size:11px;color:var(--dim);line-height:1.6}
+pre{background:var(--code);color:var(--codeink);padding:12px 14px;overflow-x:auto;font-size:11.5px;line-height:1.6;margin:14px 0;border-radius:2px}
+code{font-family:ui-monospace,Menlo,Consolas,monospace}
+p code{background:#fff;border:1px solid var(--line);padding:1px 5px;font-size:.92em}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:14px 0}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;line-height:1.55}
+td:first-child,th:first-child{white-space:nowrap}
+th{font-weight:800;color:var(--muted);font-size:11px;letter-spacing:.6px;text-transform:uppercase}
+.tocrow{display:flex;gap:14px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.tocrow:hover .tt{color:var(--accent)}
+.tocrow .tn{flex:none;width:34px;font-size:12px;font-weight:800;color:var(--dim)}
+.tocrow .tt{flex:1;font-size:clamp(14px,2.1vh,17px);font-weight:700;letter-spacing:-.3px}
+.tocrow .tp{flex:none;font-size:11.5px;color:var(--dim)}
+figure{margin:14px 0}
+figure img{width:100%;display:block;border:1px solid var(--line)}
+figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
+
+/* ── 유튜브 (누르면 그때 불러옴) ─────────────────────── */
+.vwrap{position:relative;aspect-ratio:16/9;background:#000;margin:14px 0;overflow:hidden}
+.vwrap iframe,.vframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vframe{background:#111 center/cover no-repeat;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Pretendard',sans-serif;font-weight:800;letter-spacing:.3px}
+.vframe::after{content:'▶  영상 보기';background:rgba(0,0,0,.55);padding:10px 18px;border-radius:999px}
+
+/* ── 세미나·강연 정리용 ──────────────────────────────── */
+/* 발표자 정보칸 */
+.who{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;margin:0 0 14px;padding:0 0 12px;border-bottom:1px solid var(--line)}
+.who .nm{font-size:clamp(14px,2.1vh,16.5px);font-weight:800;letter-spacing:-.3px;color:var(--ink)}
+.who .af{font-size:12.5px;color:var(--muted)}
+.who .tm{font-size:11.5px;color:var(--dim);margin-left:auto;font-variant-numeric:tabular-nums}
+/* 핵심 한 줄 */
+.key{display:flex;gap:10px;align-items:flex-start;margin:14px 0;padding:13px 15px;background:#fff;border:1px solid var(--accent);border-left-width:3px}
+.key::before{content:'핵심';flex:none;font-size:10px;font-weight:900;letter-spacing:1px;color:var(--accent);padding-top:3px}
+.key span{font-size:clamp(13.5px,2vh,16px);line-height:1.75;font-weight:600;color:var(--ink);word-break:keep-all}
+/* 질의응답 */
+.qa{margin:14px 0;border:1px solid var(--line);background:#fff}
+.qa+.qa{margin-top:10px}
+.qa .q,.qa .a{display:flex;gap:11px;padding:12px 14px;font-size:clamp(13px,1.9vh,15.5px);line-height:1.8;word-break:keep-all}
+.qa .q{border-bottom:1px solid var(--line);font-weight:600;color:var(--ink)}
+.qa .a{color:var(--ink2);background:var(--wash)}
+.qa .mk{flex:none;width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+ font:800 10.5px 'Pretendard',sans-serif;margin-top:3px}
+.qa .q .mk{background:var(--ink);color:#fff}
+.qa .a .mk{background:var(--accent);color:#fff}
+.qa .by{display:block;font-size:11px;color:var(--dim);font-weight:500;margin-top:3px}
+/* 시간 링크 */
+.tj{display:inline-flex;align-items:center;gap:4px;font:700 11.5px ui-monospace,Menlo,Consolas,monospace;
+ color:var(--accent);background:#fff;border:1px solid var(--line2);border-radius:3px;padding:2px 7px;
+ cursor:pointer;vertical-align:baseline;font-variant-numeric:tabular-nums;text-decoration:none}
+.tj:hover{background:var(--wash);border-color:var(--accent)}
+.tj::before{content:'▶';font-size:8px}
+/* 시간 목차 */
+.marks{margin:14px 0;border-top:1px solid var(--line)}
+.marks .mrow{display:flex;gap:12px;align-items:baseline;padding:9px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.marks .mrow:hover{background:var(--wash)}
+.marks .mrow:hover .mt{color:var(--accent)}
+.marks .ms{flex:none;font:700 11.5px ui-monospace,Menlo,Consolas,monospace;color:var(--accent);font-variant-numeric:tabular-nums;min-width:46px}
+.marks .mt{flex:1;font-size:clamp(12.5px,1.85vh,14.5px);line-height:1.65;color:var(--ink2);word-break:keep-all}
+
+/* ── 하단 바 ─────────────────────────────────────────── */
+#bar{position:fixed;left:0;right:0;bottom:0;height:52px;display:flex;justify-content:center;align-items:center;gap:8px;
+ background:linear-gradient(to top,var(--bg) 60%,transparent);z-index:60}
+#bar button{width:40px;height:34px;border:1px solid var(--line2);background:var(--paper);font-size:20px;line-height:1;cursor:pointer;color:var(--ink);border-radius:2px}
+#bar button:hover{background:#fff}
+#jump{height:34px;max-width:52vw;border:1px solid var(--line2);background:var(--paper);color:var(--ink);font-size:12.5px;padding:0 8px;border-radius:2px}
+/* ── 오른쪽 위 메뉴 (PDF·링크) ─────────────────────── */
+#menu{position:fixed;top:12px;right:14px;z-index:60;font-family:'Pretendard',sans-serif}
+#mbtn{font:800 11px 'Pretendard',sans-serif;letter-spacing:.8px;color:var(--muted);cursor:pointer;
+ border:1px solid var(--line2);padding:6px 10px;background:var(--paper);border-radius:2px}
+#mbtn:hover{color:var(--ink)}
+#mlist{display:none;position:absolute;right:0;top:34px;min-width:190px;background:var(--paper);border:1px solid var(--line2);
+ box-shadow:0 6px 24px rgba(0,0,0,.12);border-radius:2px;padding:6px 0}
+#menu.on #mlist{display:block}
+#mlist a,#mlist button{display:block;width:100%;text-align:left;background:none;border:0;cursor:pointer;
+ padding:9px 14px;font:500 13px 'Pretendard',sans-serif;color:var(--ink);text-decoration:none}
+#mlist a:hover,#mlist button:hover{background:var(--wash)}
+#mlist small{display:block;font-size:10.5px;color:var(--dim);margin-top:2px}
+/* ── 잠금 화면 (잠긴 책에서만 보임) ─────────────────── */
+#gate{display:none;position:fixed;inset:0;z-index:90;background:var(--bg);align-items:center;justify-content:center;padding:16px}
+#gate.on{display:flex}
+.gbox{background:var(--paper);border:1px solid var(--line2);box-shadow:0 8px 34px rgba(0,0,0,.13);padding:36px 30px 30px;width:min(360px,100%);text-align:center;font-family:'Pretendard',sans-serif}
+.gbox .gi{font-size:28px;margin-bottom:10px}
+.gbox h3{margin:0 0 8px}
+.gbox p{margin:0 0 18px;font-size:13.5px;line-height:1.7;color:var(--muted)}
+.gcode{width:100%;height:42px;border:1px solid var(--line2);background:#fff;font:500 15px 'Pretendard',sans-serif;text-align:center;letter-spacing:2px;padding:0 10px;margin-bottom:10px;border-radius:2px}
+.gcode:focus{outline:none;border-color:var(--ink)}
+.ga{width:100%;height:42px;border:0;background:var(--ink);color:#fff;font:700 14px 'Pretendard',sans-serif;cursor:pointer;border-radius:2px}
+.ga:hover{background:#000}
+.gerr{min-height:18px;margin:10px 0 0;font-size:12px;color:#b3261e}
+#toast{position:fixed;left:50%;bottom:64px;transform:translateX(-50%);background:var(--ink);color:#fff;
+ font:500 12.5px 'Pretendard',sans-serif;padding:8px 14px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:80}
+#toast.on{opacity:1}
+
+/* ── 인쇄(PDF 저장) ──────────────────────────────────── */
+@page{size:A4;margin:0}
+@media print{
+ html,body{height:auto;overflow:visible;background:#fff}
+ #prog,#bar,#menu,#toast{display:none!important}
+ #deck{width:210mm;height:auto}
+ .s{position:static;display:flex!important;width:210mm;height:297mm;padding:0;animation:none;
+    break-after:page;page-break-after:always;overflow:hidden}
+ .s:last-child{break-after:auto;page-break-after:auto}
+ .s .paper{width:100%;height:100%;max-height:none;box-shadow:none;border:0}
+ .pin{overflow:hidden;padding:18mm 16mm 6mm}
+ .foot{padding:4mm 16mm 8mm}
+ .prose p{font-size:11.5pt;line-height:1.9}
+ h1{font-size:30pt}h2{font-size:22pt}h3{font-size:17pt}.chnum{font-size:60pt}
+ .vwrap{display:none}
+ .tj{color:var(--muted);border-color:var(--line)}
+ .tj::before{content:''}
+ .marks .mrow{cursor:default}
+ a{color:inherit;text-decoration:none}
+}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<div id="menu">
+ <button id="mbtn" type="button" aria-haspopup="true" aria-expanded="false">PDF ▾</button>
+ <div id="mlist" role="menu">
+  <a id="mpdf" href="#" download>PDF 내려받기<small>같은 이름의 .pdf 파일</small></a>
+  <button id="mprint" type="button">인쇄로 PDF 저장<small>Mac ⌘P · Windows Ctrl+P</small></button>
+  <button id="mlink" type="button">이 쪽 링크 복사<small>지금 보는 쪽 주소</small></button>
+ </div>
+</div>
+<div id="toast"></div>
+<div id="gate"><div class="gbox">
+ <div class="gi">🔒</div>
+ <h3 id="gt">코드가 필요합니다</h3>
+ <p id="gp">안내받은 코드를 넣어 주세요.</p>
+ <input id="gc" class="gcode" type="text" autocomplete="off" placeholder="코드">
+ <button id="gb" class="ga" type="button">열기</button>
+ <p class="gerr" id="ge"></p>
+</div></div>
+
+<!-- ════════════════════════════════════════════════════════
+     본문. 페이지 1장 = <section class="s"> 1개.
+     class 종류:  cover(표지)  open(챕터 표지, alt 배경)  일반(없음)
+     쪽 순서대로 위에서 아래로 쓰면 됩니다.
+     ════════════════════════════════════════════════════════ -->
+<div id="deck">
+<section class="s cover">
+ <div class="paper"><div class="pin">
+  <span class="eyebrow">노모어매뉴얼</span>
+  <h1>세미나 기록<br>웹북 예시</h1>
+  <p class="kick">영상·요약·질의응답을 한자리에 (가상 행사 견본)</p>
+  <div class="by">노모어매뉴얼 · 2026</div>
+ </div><div class="foot"><span>세미나 기록 웹북 예시</span><span>표지</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <span class="eyebrow">Contents</span>
+  <h2 style="margin-bottom:18px">차례</h2>
+  <div class="tocrow" data-go="01"><span class="tn">01</span><span class="tt">행사 한눈에</span><span class="tp">3쪽</span></div>
+  <div class="tocrow" data-go="02"><span class="tn">02</span><span class="tt">세션 1 · 엑셀 자동화</span><span class="tp">7쪽</span></div>
+  <div class="tocrow" data-go="03"><span class="tn">03</span><span class="tt">세션 2 · 보고서와 발표자료</span><span class="tp">12쪽</span></div>
+  <div class="tocrow" data-go="04"><span class="tn">04</span><span class="tt">세션 3 · 1인 사업 적용</span><span class="tp">16쪽</span></div>
+  <div class="tocrow" data-go="05"><span class="tn">05</span><span class="tt">질의응답</span><span class="tp">20쪽</span></div>
+  <div class="tocrow" data-go="06"><span class="tn">06</span><span class="tt">이런 기록 만드는 법</span><span class="tp">25쪽</span></div>
+  <p class="note" style="margin-top:22px"><b>읽는 법</b> ‹ › 단추, 키보드 ← →, 손가락으로 넘기기. 아래 드롭다운으로 바로 이동.</p>
+ </div><div class="foot"><span>차례</span><span>2</span></div></div>
+</section>
+<section class="s open alt">
+ <div class="paper"><div class="pin">
+  <div class="chnum">01</div>
+  <span class="eyebrow">Chapter 1</span>
+  <h2>행사 한눈에</h2>
+ </div><div class="foot"><span>01 행사 한눈에</span><span>3</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>이 책은 예시입니다</h3>
+  <p class="note">실제 행사가 아닙니다. 세미나 기록을 웹북으로 정리하면 어떻게 보이는지 확인하는 <b>견본</b>입니다. 발표자 이름, 숫자, 질의응답은 모두 지어낸 것이고 영상은 아무 영상이나 넣었습니다.</p>
+  <div class="prose"><p>여러분의 행사 영상과 요약으로 바꾸면 그대로 쓰실 수 있습니다. 만드는 방법은 이 책 마지막 장에 있습니다.</p></div>
+ </div><div class="foot"><span>01 행사 한눈에</span><span>4</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>무엇을 다뤘나</h3>
+  <div class="prose"><p>2026년 9월 12일 서울에서 열린 <b>AI 업무 자동화 콘퍼런스</b>(가상) 기록입니다. 현장에 못 오신 분들을 위해 발표 영상과 요약, 질의응답을 한자리에 모았다는 설정입니다.</p></div>
+  <div class="key"><span>도구를 늘리는 것보다, 이미 쓰는 도구에 AI를 붙이는 쪽이 성과가 빨랐습니다.</span></div>
+  <div class="prose"><p>세션 세 개와 마무리 질의응답으로 이루어져 있습니다. 각 쪽의 주황색 시간을 누르면 영상이 그 지점부터 재생됩니다.</p></div>
+ </div><div class="foot"><span>01 행사 한눈에</span><span>5</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>이 기록을 읽는 법</h3>
+  <p class="note">영상은 누를 때만 불러옵니다. 데이터가 아껴집니다.</p>
+  <ul class="prose"><li>시간 목차에서 보고 싶은 대목을 바로 고르세요</li><li>요약만 읽어도 흐름이 잡히도록 썼습니다</li><li>오른쪽 위 PDF로 저장해 두고 나중에 보셔도 됩니다</li></ul>
+ </div><div class="foot"><span>01 행사 한눈에</span><span>6</span></div></div>
+</section>
+<section class="s open alt">
+ <div class="paper"><div class="pin">
+  <div class="chnum">02</div>
+  <span class="eyebrow">Chapter 2</span>
+  <h2>세션 1 · 엑셀 자동화</h2>
+ </div><div class="foot"><span>02 세션 1 · 엑셀 자동화</span><span>7</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>발표 영상과 목차</h3>
+  <div class="who"><span class="nm">김서연</span><span class="af">제조기업 경영지원팀</span><span class="tm">10:00 - 10:40</span></div>
+  <div class="vwrap" data-v="dQw4w9WgXcQ"><div class="vframe" style="background-image:url(https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg)"></div></div>
+  <div class="marks"><div class="mrow" data-t="130"><span class="ms">02:10</span><span class="mt">왜 엑셀부터 시작했나</span></div><div class="mrow" data-t="525"><span class="ms">08:45</span><span class="mt">지점별 파일 열 개를 하나로</span></div><div class="mrow" data-t="1050"><span class="ms">17:30</span><span class="mt">합계는 반드시 수식으로 남길 것</span></div><div class="mrow" data-t="1680"><span class="ms">28:00</span><span class="mt">실패했던 첫 시도</span></div><div class="mrow" data-t="2120"><span class="ms">35:20</span><span class="mt">3개월 뒤 바뀐 것</span></div></div>
+ </div><div class="foot"><span>02 세션 1 · 엑셀 자동화</span><span>8</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>요약</h3>
+  <div class="key"><span>정리가 아니라 검산이 사람의 일이 됩니다.</span></div>
+  <div class="prose"><p>지점 열 곳에서 매달 오는 파일은 열 이름이 제각각이었습니다. <b>매출, 매출액, 판매금액</b>이 모두 같은 뜻이었죠. 사람이 맞추면 반나절이 걸렸습니다 <a class="tj" href="#" data-t="525">08:45</a>.</p></div>
+  <div class="prose"><p>AI에게 맡길 때 가장 중요했던 건 <b>뺀 행을 따로 남기게 한 것</b>이었습니다. 나중에 &quot;이 줄 왜 없어졌지?&quot;를 추적할 수 있기 때문입니다.</p></div>
+  <blockquote>합계를 값으로 받지 말고 수식으로 받으세요. 숫자를 고치면 합계가 따라 바뀝니다.</blockquote>
+ </div><div class="foot"><span>02 세션 1 · 엑셀 자동화</span><span>9</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>요약 <span style="color:var(--dim);font-weight:500;font-size:.7em">(계속)</span></h3>
+  <div class="prose"><p>첫 시도는 실패했습니다 <a class="tj" href="#" data-t="1680">28:00</a>. 한 번에 정리·분석·보고서까지 시켰더니 중간에 어긋났습니다. 세 번으로 나누고 나서야 쓸 만해졌습니다.</p></div>
+ </div><div class="foot"><span>02 세션 1 · 엑셀 자동화</span><span>10</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>숫자로 본 결과</h3>
+  <table><tr><th>항목</th><th>이전</th><th>이후</th></tr><tr><td>월말 정산</td><td>2일</td><td>3시간</td></tr><tr><td>손으로 옮기는 값</td><td>약 1,200개</td><td>0개</td></tr><tr><td>사람이 하는 일</td><td>입력</td><td>검산</td></tr></table>
+  <p class="note">발표자 제공 자료. 회사 사정에 따라 결과는 다를 수 있습니다.</p>
+ </div><div class="foot"><span>02 세션 1 · 엑셀 자동화</span><span>11</span></div></div>
+</section>
+<section class="s open alt">
+ <div class="paper"><div class="pin">
+  <div class="chnum">03</div>
+  <span class="eyebrow">Chapter 3</span>
+  <h2>세션 2 · 보고서와 발표자료</h2>
+ </div><div class="foot"><span>03 세션 2 · 보고서와 발표자료</span><span>12</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>발표 영상과 목차</h3>
+  <div class="who"><span class="nm">박준호</span><span class="af">스타트업 대표</span><span class="tm">11:00 - 11:40</span></div>
+  <div class="vwrap" data-v="dQw4w9WgXcQ"><div class="vframe" style="background-image:url(https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg)"></div></div>
+  <div class="marks"><div class="mrow" data-t="90"><span class="ms">01:30</span><span class="mt">24장을 8장으로 줄인 과정</span></div><div class="mrow" data-t="675"><span class="ms">11:15</span><span class="mt">템플릿 파일을 먼저 주는 이유</span></div><div class="mrow" data-t="1360"><span class="ms">22:40</span><span class="mt">회의록 세 개에서 초안 하나로</span></div><div class="mrow" data-t="1985"><span class="ms">33:05</span><span class="mt">자료끼리 말이 다를 때</span></div></div>
+ </div><div class="foot"><span>03 세션 2 · 보고서와 발표자료</span><span>13</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>요약</h3>
+  <div class="key"><span>PPT의 문제는 디자인이 아니라 순서입니다.</span></div>
+  <div class="prose"><p>24장짜리 발표자료를 임원용 8장으로 줄인 사례입니다. 방법은 단순했습니다. <b>이야기 순서를 말로 먼저 정해 준 것</b>입니다 <a class="tj" href="#" data-t="90">01:30</a>.</p></div>
+  <div class="prose"><p>결론 한 장, 핵심 숫자, 부족한 점, 다음 단계. 이 순서를 주고 &quot;겹치는 슬라이드는 합쳐 달라&quot;고 했더니 8장이 나왔습니다.</p></div>
+  <div class="prose"><p>회사 템플릿 파일을 함께 주는 것도 중요했습니다 <a class="tj" href="#" data-t="675">11:15</a>. 글꼴과 색이 그대로 유지돼 다시 손볼 일이 없었습니다.</p></div>
+ </div><div class="foot"><span>03 세션 2 · 보고서와 발표자료</span><span>14</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>가장 반응이 좋았던 대목</h3>
+  <div class="prose"><p>회의록, 이메일, 손으로 쓴 메모를 모두 넣고 보고서 초안을 만드는 방법입니다 <a class="tj" href="#" data-t="1360">22:40</a>.</p></div>
+  <blockquote>자료끼리 말이 다른 부분은 &quot;확인 필요&quot;로 표시해 달라고 하세요.</blockquote>
+  <div class="prose"><p>이 한 줄이 핵심이었습니다 <a class="tj" href="#" data-t="1985">33:05</a>. 사람이 놓치기 쉬운 <b>모순</b>을 대신 찾아 줍니다. 초안의 품질보다 이 기능 때문에 쓴다는 참가자가 많았습니다.</p></div>
+ </div><div class="foot"><span>03 세션 2 · 보고서와 발표자료</span><span>15</span></div></div>
+</section>
+<section class="s open alt">
+ <div class="paper"><div class="pin">
+  <div class="chnum">04</div>
+  <span class="eyebrow">Chapter 4</span>
+  <h2>세션 3 · 1인 사업 적용</h2>
+ </div><div class="foot"><span>04 세션 3 · 1인 사업 적용</span><span>16</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>발표 영상과 목차</h3>
+  <div class="who"><span class="nm">이민정</span><span class="af">온라인 교육 · 1인 기업</span><span class="tm">14:00 - 14:40</span></div>
+  <div class="vwrap" data-v="dQw4w9WgXcQ"><div class="vframe" style="background-image:url(https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg)"></div></div>
+  <div class="marks"><div class="mrow" data-t="180"><span class="ms">03:00</span><span class="mt">혼자 일할 때 무엇부터 넘기나</span></div><div class="mrow" data-t="860"><span class="ms">14:20</span><span class="mt">글 하나를 콘텐츠 다섯 개로</span></div><div class="mrow" data-t="1610"><span class="ms">26:50</span><span class="mt">넘기면 안 되는 일</span></div><div class="mrow" data-t="2230"><span class="ms">37:10</span><span class="mt">수익으로 이어진 지점</span></div></div>
+ </div><div class="foot"><span>04 세션 3 · 1인 사업 적용</span><span>17</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>요약</h3>
+  <div class="key"><span>넘길 일과 붙들 일을 나누는 것이 전부입니다.</span></div>
+  <div class="prose"><p>혼자 일하면 모든 일이 내 일입니다. 그래서 <b>순서</b>가 중요합니다. 모으기, 형식 맞추기, 초안 쓰기부터 넘기라는 조언이었습니다 <a class="tj" href="#" data-t="180">03:00</a>.</p></div>
+  <div class="prose"><p>뉴스레터 한 편으로 링크드인 글, 카드뉴스 문구, 짧은 글 묶음까지 만드는 흐름을 시연했습니다 <a class="tj" href="#" data-t="860">14:20</a>. 작업 시간이 절반으로 줄었다고 합니다.</p></div>
+ </div><div class="foot"><span>04 세션 3 · 1인 사업 적용</span><span>18</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>넘기지 말라고 한 것</h3>
+  <ul class="prose"><li>고객에게 직접 나가는 마지막 문장</li><li>가격과 환불 같은 약속</li><li>사람 이름이 들어간 사과문</li></ul>
+  <blockquote>90%까지는 맡기고, 마지막 10%는 직접 하세요. 그 10%가 신뢰입니다.</blockquote>
+  <div class="prose"><p>이 대목에서 박수가 나왔습니다 <a class="tj" href="#" data-t="1610">26:50</a>.</p></div>
+ </div><div class="foot"><span>04 세션 3 · 1인 사업 적용</span><span>19</span></div></div>
+</section>
+<section class="s open alt">
+ <div class="paper"><div class="pin">
+  <div class="chnum">05</div>
+  <span class="eyebrow">Chapter 5</span>
+  <h2>질의응답</h2>
+ </div><div class="foot"><span>05 질의응답</span><span>20</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>도구와 비용</h3>
+  <div class="qa"><div class="q"><span class="mk">Q</span><span>유료 결제가 부담스러운데, 무료로 시작할 방법이 있을까요?<span class="by">참가자 A</span></span></div><div class="a"><span class="mk">A</span><span>무료 요금제로 흐름을 먼저 익히시고, 실제 업무 파일을 다루는 단계에서 유료로 넘어가시길 권합니다. 한 달 써 보고 결정해도 늦지 않습니다.<span class="by">김서연</span></span></div></div>
+  <div class="qa"><div class="q"><span class="mk">Q</span><span>회사 보안 정책 때문에 파일을 올릴 수 없습니다.<span class="by">참가자 B</span></span></div><div class="a"><span class="mk">A</span><span>개인정보나 계약서는 아예 연결 폴더 밖에 두세요. 저희도 그렇게 합니다. 공개해도 되는 통계 자료부터 시작하시면 됩니다.<span class="by">박준호</span></span></div></div>
+ </div><div class="foot"><span>05 질의응답</span><span>21</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>도구와 비용 <span style="color:var(--dim);font-weight:500;font-size:.7em">(계속)</span></h3>
+  <div class="qa"><div class="q"><span class="mk">Q</span><span>결과를 어디까지 믿어야 하나요?</span></div><div class="a"><span class="mk">A</span><span>합계 한 줄만 손으로 검산해 보세요. 전부 볼 필요 없습니다. 한 줄이 맞으면 나머지도 맞을 확률이 높습니다.<span class="by">김서연</span></span></div></div>
+ </div><div class="foot"><span>05 질의응답</span><span>22</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>배우는 방법</h3>
+  <div class="qa"><div class="q"><span class="mk">Q</span><span>어디서부터 배우면 좋을까요?<span class="by">참가자 C</span></span></div><div class="a"><span class="mk">A</span><span>다운로드 폴더 정리부터 해 보세요. 망가질 것이 없고, 어떤 순서로 일하는지 눈에 익습니다. 그 다음에 진짜 업무 폴더를 여세요.<span class="by">이민정</span></span></div></div>
+  <div class="qa"><div class="q"><span class="mk">Q</span><span>50대인데 따라갈 수 있을까요?<span class="by">참가자 D</span></span></div><div class="a"><span class="mk">A</span><span>오늘 발표하신 분들 중에도 작년에 처음 시작한 분이 계십니다. 프로그래밍이 아니라 <b>일을 설명하는 능력</b>이 필요한 일입니다. 오래 일하신 분이 오히려 유리합니다.<span class="by">이민정</span></span></div></div>
+ </div><div class="foot"><span>05 질의응답</span><span>23</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>다음 모임</h3>
+  <p class="note">다음 콘퍼런스는 2026년 12월 예정입니다. 발표 자료와 전체 영상은 이 기록의 주소에서 계속 갱신됩니다.</p>
+  <div class="prose"><p>오늘 다루지 못한 질문은 모아서 다음 회차 첫 세션에서 답변할 예정입니다.</p></div>
+  <blockquote>오늘 배운 것 중 하나만 내일 해 보세요. 그게 가장 빠른 길입니다.</blockquote>
+ </div><div class="foot"><span>05 질의응답</span><span>24</span></div></div>
+</section>
+<section class="s open alt">
+ <div class="paper"><div class="pin">
+  <div class="chnum">06</div>
+  <span class="eyebrow">Chapter 6</span>
+  <h2>이런 기록 만드는 법</h2>
+ </div><div class="foot"><span>06 이런 기록 만드는 법</span><span>25</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>표기 다섯 가지</h3>
+  <div class="prose"><p>원고에 아래처럼 쓰면 이 책과 같은 모양이 됩니다.</p></div>
+  <table><tr><th>이렇게 쓰면</th><th>이렇게 됩니다</th></tr><tr><td>발표자: 이름 \</td><td>소속 \</td><td>시간</td><td>발표자 정보칸</td></tr><tr><td>핵심: 한 줄</td><td>결론 상자</td></tr><tr><td>Q: 질문 / A: 답변</td><td>문답 카드</td></tr><tr><td>12:30 내용</td><td>시간 목차</td></tr><tr><td>문장 속 <a class="tj" href="#" data-t="2240">37:20</a></td><td>글 안의 시간 링크</td></tr></table>
+  <p class="note">시간을 쓰려면 그 쪽이나 앞쪽에 youtube: 로 영상이 하나 있어야 합니다.</p>
+ </div><div class="foot"><span>06 이런 기록 만드는 법</span><span>26</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>실제로 만드는 순서</h3>
+  <ol class="prose"><li>유튜브에서 영상을 열고 <b>더보기 → 스크립트 표시</b>를 누릅니다</li><li>스크립트를 전부 복사합니다</li><li>클로드나 챗GPT에 붙여 넣고 아래처럼 시킵니다</li></ol>
+  <pre>이 강연 스크립트를 마크다운으로 정리해 줘.
+- ## 으로 주제별 쪽을 나눠 줘
+- 각 쪽 첫 줄에 &quot;핵심: 한 줄 결론&quot;
+- 시간 목차는 &quot;12:30 내용&quot; 형식으로 한 줄씩
+- 문장 안에서 시점을 가리킬 때는 (37:20) 처럼
+- 질의응답은 &quot;Q: 질문&quot; 다음 줄에 &quot;A: 답변&quot;
+- 원문을 그대로 옮기지 말고 요약할 것</pre>
+ </div><div class="foot"><span>06 이런 기록 만드는 법</span><span>27</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>실제로 만드는 순서 <span style="color:var(--dim);font-weight:500;font-size:.7em">(계속)</span></h3>
+  <ol class="prose"><li>나온 글을 제작기 원고칸에 붙여 넣습니다</li><li><b>발행하기</b>를 누르면 주소가 나옵니다</li></ol>
+  <blockquote>스크립트가 없는 영상이면 직접 요약해 넣으셔도 됩니다. 시간만 적어 두면 목차가 만들어집니다.</blockquote>
+ </div><div class="foot"><span>06 이런 기록 만드는 법</span><span>28</span></div></div>
+</section>
+<section class="s">
+ <div class="paper"><div class="pin">
+  <h3>주의할 것</h3>
+  <div class="prose"><p>남의 강연을 정리할 때는 <b>요약과 짧은 인용</b>까지만 쓰세요. 발표 내용을 통째로 옮기는 것은 저작권 문제가 될 수 있습니다.</p></div>
+  <p class="note">영상은 원본 유튜브 링크로 넣습니다. 영상 파일을 복사하지 않으니 조회수도 원저작자에게 갑니다.</p>
+  <div class="prose"><p>행사 주최 측이라면 발표자에게 미리 정리·공개 동의를 받아 두시면 깔끔합니다.</p></div>
+ </div><div class="foot"><span>06 이런 기록 만드는 법</span><span>29</span></div></div>
+</section>
+<section class="s cover">
+ <div class="paper"><div class="pin">
+  <span class="eyebrow">The End</span>
+  <h2>여기까지입니다</h2>
+  <p class="kick">읽어 주셔서 고맙습니다.</p>
+  <div class="by">© 2026 노모어매뉴얼</div>
+ </div><div class="foot"><span>세미나 기록 웹북 예시</span><span>끝</span></div></div>
+</section>
+</div><!-- /#deck -->
+
+<div id="bar">
+ <button id="prev" aria-label="이전 쪽">‹</button>
+ <select id="jump" aria-label="쪽 이동"></select>
+ <button id="next" aria-label="다음 쪽">›</button>
+</div>
+
+<script>
+(function(){
+ var deck=document.getElementById('deck'), prog=document.getElementById('prog'), jump=document.getElementById('jump');
+ var menu=document.getElementById('menu'), mbtn=document.getElementById('mbtn'), toast=document.getElementById('toast');
+ var gate=document.getElementById('gate'), cipher=document.getElementById('cipher');
+ // 발행된 책은 읽기 페이지(/ebook/b/)가 EBOOK_BASE 를 넣어 준다. 그 값으로 PDF 위치와 저장 키를 정한다.
+ var BASE=(window.EBOOK_BASE)||location.pathname.replace(/\.html?$/,'');
+ var KEY=BASE+'_page', KEYC=BASE+'_code';
+ var S=[], N=0, i=0, code='';
+
+ function say(t){toast.textContent=t;toast.classList.add('on');clearTimeout(say.t);say.t=setTimeout(function(){toast.classList.remove('on');},1800);}
+
+ // ── 암호 풀기 (잠긴 책) ─────────────────────────────
+ // 형식: {"salt","iv","ct"} base64. PBKDF2-SHA256 → AES-GCM-256. scripts/lock_ebook.mjs 와 같은 규칙.
+ function b2a(b){return Uint8Array.from(atob(b),function(c){return c.charCodeAt(0);});}
+ async function keyFrom(pw,salt){
+  var raw=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw.normalize('NFC')),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:200000,hash:'SHA-256'},raw,{name:'AES-GCM',length:256},false,['decrypt']);
+ }
+ async function decrypt(pw,box){
+  var k=await keyFrom(pw,b2a(box.salt));
+  return crypto.subtle.decrypt({name:'AES-GCM',iv:b2a(box.iv)},k,b2a(box.ct));
+ }
+ async function tryOpen(pw,quiet){
+  pw=(pw||'').trim(); if(!pw) return false;
+  var box; try{box=JSON.parse(cipher.textContent);}catch(e){return false;}
+  try{
+   var buf=await decrypt(pw,box);
+   deck.innerHTML=new TextDecoder().decode(buf);
+   code=pw; try{localStorage.setItem(KEYC,pw);}catch(e){}
+   gate.classList.remove('on'); start(); return true;
+  }catch(e){
+   if(!quiet) document.getElementById('ge').textContent='코드가 맞지 않아요. 다시 확인해 주세요.';
+   try{localStorage.removeItem(KEYC);}catch(e2){}
+   return false;
+  }
+ }
+
+ // ── 책 넘기기 ───────────────────────────────────────
+ function start(){
+  S=[].slice.call(document.querySelectorAll('#deck > .s')); N=S.length; if(!N) return;
+  jump.innerHTML='';
+  S.forEach(function(s,n){
+   var t=s.querySelector('h1,h2,h3'); var o=document.createElement('option');
+   var label=t?t.innerHTML.replace(/<br\s*\/?>/gi,' ').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim():'쪽';
+   o.value=n; o.textContent=(n+1)+'. '+label; jump.appendChild(o);
+  });
+  document.querySelectorAll('.tocrow').forEach(function(r){
+   r.onclick=function(){
+    var t=S.findIndex(function(s){var c=s.querySelector('.chnum');return c&&c.textContent.trim()===r.dataset.go;});
+    if(t>=0) go(t);
+   };
+  });
+  document.querySelectorAll('.vframe').forEach(function(b){
+   b.onclick=function(){ playVideo(b.closest('.vwrap')); };
+  });
+  // 시간을 누르면 그 쪽의 영상이 해당 지점부터 재생된다
+  document.querySelectorAll('.tj').forEach(function(el){
+   el.onclick=function(e){ e.preventDefault(); jumpTo(el); };
+  });
+  document.querySelectorAll('.marks .mrow').forEach(function(el){
+   el.onclick=function(){ jumpTo(el); };
+  });
+  var m=location.hash.match(/^#p(\d+)$/), saved=null;
+  try{saved=localStorage.getItem(KEY);}catch(e){}
+  i=0; S.forEach(function(s){s.classList.remove('on');});
+  go(m?(+m[1]-1):(saved!==null?+saved:0));
+ }
+ // 영상 틀기. sec 를 주면 그 시점부터.
+ function playVideo(wrap, sec){
+  if(!wrap) return;
+  var f=document.createElement('iframe');
+  f.src='https://www.youtube-nocookie.com/embed/'+wrap.dataset.v+'?autoplay=1&rel=0'+(sec?'&start='+sec:'');
+  f.setAttribute('allow','autoplay; encrypted-media; picture-in-picture; web-share');
+  f.allowFullscreen=true; f.title='강의 영상';
+  var old=wrap.querySelector('iframe, .vframe');
+  if(old) old.replaceWith(f); else wrap.appendChild(f);
+ }
+ // 같은 쪽의 영상을 찾고, 없으면 앞쪽에서 가장 가까운 영상 쪽으로 이동한다
+ function jumpTo(el){
+  var sec=+el.dataset.t||0, page=el.closest('.s');
+  var wrap=page&&page.querySelector('.vwrap');
+  if(!wrap){
+   var i0=S.indexOf(page);
+   for(var k=i0;k>=0&&!wrap;k--) wrap=S[k].querySelector('.vwrap');
+   if(wrap){ var t=S.indexOf(wrap.closest('.s')); if(t>=0) go(t); }
+  }
+  if(wrap) playVideo(wrap, sec);
+ }
+ function go(n){
+  if(!N) return;
+  n=Math.max(0,Math.min(N-1,n));
+  S[i].classList.remove('on'); i=n; S[i].classList.add('on');
+  var pin=S[i].querySelector('.pin'); if(pin) pin.scrollTop=0;
+  prog.style.width=((i+1)/N*100)+'%'; jump.value=i;
+  try{history.replaceState(null,'','#p'+(i+1));}catch(e){}
+  try{localStorage.setItem(KEY,i);}catch(e){}
+ }
+ document.getElementById('prev').onclick=function(){go(i-1)};
+ document.getElementById('next').onclick=function(){go(i+1)};
+ jump.onchange=function(){go(+jump.value)};
+ addEventListener('keydown',function(e){
+  if(e.target.tagName==='SELECT'||e.target.tagName==='INPUT') return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();go(i+1);}
+  if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(i-1);}
+  if(e.key==='Home')go(0); if(e.key==='End')go(N-1);
+ });
+ var x0=null;
+ addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+ addEventListener('touchend',function(e){
+  if(x0===null)return; var dx=e.changedTouches[0].clientX-x0; x0=null;
+  if(Math.abs(dx)>55) go(i+(dx<0?1:-1));
+ },{passive:true});
+ addEventListener('hashchange',function(){var m=location.hash.match(/^#p(\d+)$/); if(m) go(+m[1]-1);});
+
+ // ── 메뉴: PDF 내려받기 / 인쇄 / 링크 복사 ────────────
+ function closeMenu(){menu.classList.remove('on');mbtn.setAttribute('aria-expanded','false');}
+ mbtn.onclick=function(e){e.stopPropagation();menu.classList.toggle('on');mbtn.setAttribute('aria-expanded',menu.classList.contains('on'));};
+ addEventListener('click',function(e){if(!menu.contains(e.target))closeMenu();});
+ addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu();});
+ var base=BASE, mpdf=document.getElementById('mpdf');
+ var pdfName=(document.title.split(' — ')[0]||'ebook')+'.pdf';
+ // 잠긴 책은 같은 이름의 .pdf.enc 를 받아 코드로 풀어서 내려준다
+ var pdfHref=cipher?base+'.pdf.enc':base+'.pdf';
+ mpdf.href=pdfHref; mpdf.download=pdfName;
+ function saveBlob(blob){var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=pdfName;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},4000);}
+ mpdf.onclick=function(e){
+  closeMenu(); e.preventDefault();
+  if(!cipher && location.protocol==='file:'){ location.href=pdfHref; return; }
+  var t=mpdf.firstChild; t.textContent='받는 중…';
+  fetch(pdfHref).then(function(r){
+   if(!r.ok) throw 0;
+   if(!cipher) return r.blob().then(saveBlob);
+   return r.json().then(function(box){return decrypt(code,box);}).then(function(buf){saveBlob(new Blob([buf],{type:'application/pdf'}));});
+  }).catch(function(){ say('아직 PDF 파일이 없어요. 인쇄로 저장을 눌러 주세요.'); })
+  .then(function(){ t.textContent='PDF 내려받기'; });
+ };
+ document.getElementById('mprint').onclick=function(){closeMenu();window.print();};
+ document.getElementById('mlink').onclick=function(){
+  closeMenu(); var u=location.origin+location.pathname+location.search+'#p'+(i+1);
+  (navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){say('링크를 복사했어요');},function(){prompt('링크',u);});
+ };
+
+ // ── 시작 ────────────────────────────────────────────
+ if(cipher){
+  gate.classList.add('on');
+  var inp=document.getElementById('gc'), btn=document.getElementById('gb');
+  btn.onclick=function(){tryOpen(inp.value,false);};
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')btn.click();});
+  var saved=''; try{saved=localStorage.getItem(KEYC)||'';}catch(e){}
+  if(saved) tryOpen(saved,true);          // 한 번 넣었으면 다시 묻지 않는다
+  setTimeout(function(){try{inp.focus();}catch(e){}},100);
+ } else {
+  start();
+ }
+})();
+</script>
+</body>
+</html>
