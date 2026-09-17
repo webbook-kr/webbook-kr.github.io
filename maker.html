@@ -407,14 +407,14 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   var w=window.open('about:blank'); if(!w){say('팝업이 막혔어요.');return;}
   w.document.open();w.document.write(o.html);w.document.close();
  };
- $('reset').onclick=function(){ if(md.value.trim()&&!confirm('지금 원고를 예시로 바꿀까요?'))return; ti.value='웹북 제작기 예시';au.value='노모어매뉴얼';su.value='마크다운을 붙여넣으면 책이 됩니다';md.value=SAMPLE;preview(); };
+ $('reset').onclick=function(){ if(md.value.trim()&&!confirm('지금 원고를 예시로 바꿀까요?'))return; ti.value='웹북 제작기 예시';au.value='작가';su.value='마크다운을 붙여넣으면 책이 됩니다';md.value=SAMPLE;preview(); };
  $('tabE').onclick=function(){document.body.className='tab-edit';$('tabE').className='pri';$('tabV').className='';};
  $('tabV').onclick=function(){document.body.className='tab-view';$('tabV').className='pri';$('tabE').className='';};
 
  // ── 시작: 템플릿 불러오기 ────────────────────────────
  var saved=null; try{saved=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}
  if(saved&&saved.md){ti.value=saved.ti||'';au.value=saved.au||'';su.value=saved.su||'';md.value=saved.md;}
- else {ti.value='웹북 제작기 예시';au.value='노모어매뉴얼';su.value='마크다운을 붙여넣으면 책이 됩니다';md.value=SAMPLE;}
+ else {ti.value='웹북 제작기 예시';au.value='작가';su.value='마크다운을 붙여넣으면 책이 됩니다';md.value=SAMPLE;}
  $('dl').disabled=true;$('open').disabled=true;
  fetch('template.html').then(function(r){if(!r.ok)throw 0;return r.text();}).then(function(t){
   TPL=t;$('dl').disabled=false;$('open').disabled=false;preview();
