@@ -280,7 +280,8 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   var lines=text.replace(/\r/g,'').split('\n'), chapters=[], ch=null, sec=null;
   function newSec(title){sec={title:title,parts:[]};ch.secs.push(sec);}
   var buf=[];
-  function flush(){ if(!buf.length)return; if(!ch){ch={title:'',secs:[]};chapters.push(ch);} if(!sec)newSec(''); sec.parts.push(buf); buf=[]; }
+  // 빈 줄만 모인 묶음은 버린다. (# 제목 다음에 빈 줄을 두고 ## 을 써도 빈 쪽이 생기지 않게)
+  function flush(){ if(!buf.length)return; if(!buf.some(function(s){return s.trim();})){buf=[];return;} if(!ch){ch={title:'',secs:[]};chapters.push(ch);} if(!sec)newSec(''); sec.parts.push(buf); buf=[]; }
   for(var i=0;i<lines.length;i++){
    var L=lines[i];
    if(/^#\s+/.test(L)){flush();ch={title:L.replace(/^#\s+/,'').trim(),secs:[]};chapters.push(ch);sec=null;continue;}

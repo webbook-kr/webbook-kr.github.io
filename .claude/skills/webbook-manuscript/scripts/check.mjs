@@ -99,6 +99,7 @@ let ch = null, sec = null, buf = [], forced = false;
 const pushSec = (title, line) => { sec = { title, line, groups: [[]] }; ch.secs.push(sec); };
 function flush() {
   if (!buf.length) return;
+  if (!buf.some((x) => x.trim())) { buf = []; return; } // maker.html 과 같은 규칙
   if (!ch) { ch = { title: '', line: 0, secs: [] }; chapters.push(ch); }
   if (!sec) pushSec('', 0);
   if (forced) { sec.groups.push([]); forced = false; }
@@ -116,17 +117,9 @@ flush();
 // ── 쪽 수 세기 ─────────────────────────────────────────────────────
 let bodyPages = 0;
 const over = [];
-const blanks = [];
 for (const c of chapters) {
   if (c.title) bodyPages++; // 장 표지
   for (const sc of c.secs) {
-    // 제목도 내용도 없는 칸은 제작기에서 빈 쪽 한 장이 된다.
-    // # 바로 뒤에 빈 줄을 넣고 ## 를 쓰면 여기에 걸린다.
-    if (!sc.title && !sc.groups.some((g) => g.some((s) => s.trim()))) {
-      blanks.push({ chapter: c.title || '(제목 없는 장)', line: c.line });
-      bodyPages++;
-      continue;
-    }
     let made = 0, total = 0;
     for (const g of sc.groups) {
       const lens = blockLens(g);
@@ -173,13 +166,6 @@ for (const c of chapters) {
 }
 console.log('');
 
-if (blanks.length) {
-  console.log('▲ 빈 쪽이 생기는 곳');
-  for (const b of blanks) console.log(`   ${b.line}줄  # ${b.chapter} 바로 뒤`);
-  console.log('   # 장 제목 다음 줄에 빈 줄 없이 ## 쪽 제목을 붙여 쓰면 없어진다.');
-  console.log('');
-}
-
 if (over.length) {
   console.log('▲ 900자를 넘겨서 "(계속)" 쪽이 생기는 곳');
   for (const o of over) console.log(`   ${o.line}줄  ## ${o.title}  약 ${o.size}자 → ${o.made}쪽으로 쪼개짐`);
@@ -199,4 +185,3 @@ if (problems.length) {
 
 console.log('✓ 제작기가 못 읽는 표기는 없다.');
 if (!over.length) console.log('✓ 900자를 넘는 쪽도 없다.');
-if (!blanks.length) console.log('✓ 빈 쪽도 없다.');
