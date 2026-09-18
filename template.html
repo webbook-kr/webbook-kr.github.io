@@ -158,6 +158,31 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
  font:500 12.5px 'Pretendard',sans-serif;padding:8px 14px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:80}
 #toast.on{opacity:1}
 
+/* ── 화면이 낮을 때 (휴대폰 가로 여백·줄 간격 줄이기) ───────
+   종이 한 장의 높이가 화면에 매여 있어서, 화면이 낮으면 글이 넘쳐 잘린다.
+   인쇄에는 적용되지 않도록 screen 으로 한정한다. */
+@media screen and (max-height:700px){
+ .pin{padding:16px 18px 8px}
+ .prose p,.prose li{line-height:1.6;margin-bottom:9px}
+ h3{font-size:clamp(16px,2.6vh,22px);margin-bottom:10px}
+ table{font-size:12.5px}
+ .note{margin-top:10px;padding:9px 11px}
+ .key,.qa,.who{margin-top:10px}
+ .tocrow{padding:7px 0}
+}
+
+/* 더 낮은 화면(앱 안에서 열 때 등)은 한 단계 더 줄인다 */
+@media screen and (max-height:560px){
+ .pin{padding:12px 14px 6px}
+ .prose p,.prose li{line-height:1.5;margin-bottom:7px}
+ h3{font-size:15.5px;margin-bottom:8px}
+ table{font-size:11.5px}
+ table th,table td{padding:6px 8px}
+ .note{margin-top:8px;padding:8px 10px;font-size:11.5px}
+ .tocrow{padding:4px 0}
+ h2{font-size:19px}
+}
+
 /* ── 인쇄(PDF 저장) ──────────────────────────────────── */
 @page{size:A4;margin:0}
 @media print{
