@@ -53,6 +53,10 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
 .pub .res .u{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;background:#fff;border:1px solid var(--line);padding:6px 8px;margin:6px 0;user-select:all}
 .share{font-size:12.5px;color:var(--ink2);line-height:1.8;background:#fff;border:1px solid var(--line2);padding:10px 12px;border-radius:2px}
 .share b{color:var(--ink)}
+.load{background:#fff;border:1px solid var(--line2);border-radius:2px;padding:12px}
+.load button{width:100%;padding:13px 14px;font-size:14px}
+.load .hint{margin-top:8px}
+#bookinfo summary{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
 .tabs{display:none}
 @media (max-width:860px){
  main{grid-template-columns:1fr;grid-template-rows:auto 1fr;height:auto;min-height:calc(100% - 49px)}
@@ -73,15 +77,23 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
 <main>
  <section id="edit">
   <div class="tabs"><button id="tabE" class="pri" type="button">원고</button><button id="tabV" type="button">미리보기</button></div>
-  <div class="row">
-   <div><label for="ti">책 제목</label><input id="ti" type="text" placeholder="예: 엑셀 자동화 첫걸음 (표지 줄바꿈은 | )"></div>
-   <div><label for="au">글쓴이</label><input id="au" type="text" placeholder="이름 · 채널명"></div>
+  <div class="load">
+   <button id="loadb" class="pri" type="button">원고 파일 불러오기</button>
+   <input id="loadf" type="file" hidden>
+   <p class="hint">받으신 <b>.md 파일</b>을 고르면 제목·글쓴이·부제까지 한 번에 채워집니다. 붙여넣지 않아도 됩니다.</p>
   </div>
-  <div><label for="su">부제 (한 줄)</label><input id="su" type="text" placeholder="표지에 작게 들어가는 한 줄"></div>
   <div style="display:flex;flex-direction:column;flex:1;min-height:340px">
    <label for="md">원고 (마크다운)</label>
    <textarea id="md" spellcheck="false"></textarea>
   </div>
+  <details id="bookinfo">
+   <summary>책 정보 <span id="bisum" class="hint" style="text-transform:none;letter-spacing:0"></span></summary>
+   <div class="row">
+    <div><label for="ti">책 제목</label><input id="ti" type="text" placeholder="예: 엑셀 자동화 첫걸음 (표지 줄바꿈은 | )"></div>
+    <div><label for="au">글쓴이</label><input id="au" type="text" placeholder="이름 · 채널명"></div>
+   </div>
+   <div><label for="su">부제 (한 줄)</label><input id="su" type="text" placeholder="표지에 작게 들어가는 한 줄"></div>
+  </details>
   <details>
    <summary>쓰는 법</summary>
    <table>
@@ -128,8 +140,10 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    <div class="res" id="pres"></div>
   </div>
   <div class="share">
-   <b>주소 없이 나누려면</b><br>
-   내려받은 파일을 카톡·메일로 보내면 받는 사람이 열기만 하면 됩니다. 종이로 뽑거나 PDF가 편하면 "PDF로 저장"을 누르세요.<br>
+   <b>카톡으로 나눌 때</b><br>
+   카카오톡은 HTML 파일을 열어 주지 못합니다. 파일을 그대로 보내면 받는 사람 화면에 아무것도 안 뜹니다.
+   <b>발행해서 나온 주소</b>를 붙여 주세요. 누르면 바로 열립니다.<br>
+   메일이나 PC로 보낼 때는 파일도 괜찮습니다. 종이로 뽑으려면 "PDF로 저장"을 누르세요.<br>
    원고는 이 브라우저에 자동 저장됩니다.
   </div>
  </section>
@@ -408,7 +422,41 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   var w=window.open('about:blank'); if(!w){say('팝업이 막혔어요.');return;}
   w.document.open();w.document.write(o.html);w.document.close();
  };
- $('reset').onclick=function(){ if(md.value.trim()&&!confirm('지금 원고를 예시로 바꿀까요?'))return; ti.value='웹북 제작기 예시';au.value='작가';su.value='마크다운을 붙여넣으면 책이 됩니다';md.value=SAMPLE;preview(); };
+ // ── 원고 파일 불러오기 ──────────────────────────────
+ // 맨 위에 "책 제목:", "글쓴이:", "부제:" 가 있으면 그 칸까지 채운다.
+ function applyText(raw){
+  var t=raw.replace(/\r/g,'');
+  var m=t.match(/^((?:(?:책 제목|글쓴이|부제)\s*:.*\n)+)\s*\n/);
+  if(m){
+   m[1].trim().split('\n').forEach(function(line){
+    var i=line.indexOf(':'); if(i<0)return;
+    var k=line.slice(0,i).trim(), v=line.slice(i+1).trim();
+    if(k==='책 제목')ti.value=v; else if(k==='글쓴이')au.value=v; else if(k==='부제')su.value=v;
+   });
+   t=t.slice(m[0].length);
+  }
+  md.value=t; preview(); bisum();
+  say(m?'원고와 책 정보를 불러왔어요.':'원고를 불러왔어요. 책 정보는 직접 넣어 주세요.');
+  if(!m) $('bookinfo').open=true;
+ }
+ $('loadb').onclick=function(){ $('loadf').click(); };
+ $('loadf').onchange=function(e){
+  var f=e.target.files&&e.target.files[0]; if(!f)return;
+  if(f.size>8000000){say('파일이 너무 큽니다 (8MB 초과).');return;}
+  var r=new FileReader();
+  r.onload=function(){ applyText(String(r.result||'')); };
+  r.onerror=function(){ say('파일을 읽지 못했어요.'); };
+  r.readAsText(f,'utf-8');
+  e.target.value='';
+ };
+ // 접힌 "책 정보" 옆에 지금 값을 짧게 보여 준다
+ function bisum(){
+  var t=ti.value.trim();
+  $('bisum').textContent = t ? '· '+t+(au.value.trim()?' / '+au.value.trim():'') : '· 아직 비어 있음';
+ }
+ [ti,au,su].forEach(function(el){ el.addEventListener('input',bisum); });
+
+ $('reset').onclick=function(){ if(md.value.trim()&&!confirm('지금 원고를 예시로 바꿀까요?'))return; ti.value='웹북 제작기 예시';au.value='작가';su.value='마크다운을 붙여넣으면 책이 됩니다';md.value=SAMPLE;preview();bisum(); };
  $('tabE').onclick=function(){document.body.className='tab-edit';$('tabE').className='pri';$('tabV').className='';};
  $('tabV').onclick=function(){document.body.className='tab-view';$('tabV').className='pri';$('tabE').className='';};
 
@@ -416,6 +464,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  var saved=null; try{saved=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}
  if(saved&&saved.md){ti.value=saved.ti||'';au.value=saved.au||'';su.value=saved.su||'';md.value=saved.md;}
  else {ti.value='웹북 제작기 예시';au.value='작가';su.value='마크다운을 붙여넣으면 책이 됩니다';md.value=SAMPLE;}
+ bisum();
  $('dl').disabled=true;$('open').disabled=true;
  fetch('template.html').then(function(r){if(!r.ok)throw 0;return r.text();}).then(function(t){
   TPL=t;$('dl').disabled=false;$('open').disabled=false;preview();
