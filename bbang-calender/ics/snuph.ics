@@ -1,0 +1,63 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//빵캘//보건의료 일정 달력//KO
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:빵캘 · 서울대 보건대학원
+X-WR-TIMEZONE:Asia/Seoul
+X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
+ 나·학술대회 일정. https://epibrief.github.io/bbang-calender/
+BEGIN:VTIMEZONE
+TZID:Asia/Seoul
+X-LIC-LOCATION:Asia/Seoul
+BEGIN:STANDARD
+TZOFFSETFROM:+0900
+TZOFFSETTO:+0900
+TZNAME:KST
+DTSTART:19700101T000000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:25ceb2ec225ac7b2@bbangcal.epibrief.github.io
+DTSTAMP:20260919T065726Z
+DTSTART;TZID=Asia/Seoul:20260826T140000
+DTEND;TZID=Asia/Seoul:20260826T160000
+SUMMARY:[서울대 보건대학원] 졸업생-재학생 간담회 안
+ 내 (8/26 수\, 오후 2–4시)
+LOCATION:서울대학교 보건대학원 221동 110호
+DESCRIPTION:주최: 서울대 보건대학원\n원문: https://health.s
+ nu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&pa
+ geid=2&uid=5722\n빵캘: https://epibrief.github.io/bbang-calender/
+URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
+ %B4/?mod=document&pageid=2&uid=5722
+END:VEVENT
+BEGIN:VEVENT
+UID:270e86def34b1060@bbangcal.epibrief.github.io
+DTSTAMP:20260919T065726Z
+DTSTART;VALUE=DATE:20260916
+DTEND;VALUE=DATE:20260917
+SUMMARY:[서울대 보건대학원] 효과 검증에서 실제 시행
+ 으로: 공중보건 맥락에서의 임신 중 Balanced Energy and Pro
+ tein 보충제 사업의 교훈
+LOCATION:보건대학원 221동 113호
+DESCRIPTION:주최: 서울대 보건대학원\n원문: https://health.s
+ nu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&ui
+ d=5783\n빵캘: https://epibrief.github.io/bbang-calender/
+URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
+ %B4/?mod=document&uid=5783
+END:VEVENT
+BEGIN:VEVENT
+UID:77927bb0829c4f6a@bbangcal.epibrief.github.io
+DTSTAMP:20260919T065726Z
+DTSTART;VALUE=DATE:20260930
+DTEND;VALUE=DATE:20261001
+SUMMARY:[서울대 보건대학원] 개방 공간 데이터과학과 
+ 건강영향 지역차-개인차 연구의 연계와 그 과제
+LOCATION:보건대학원 221동 113호
+DESCRIPTION:주최: 서울대 보건대학원\n원문: https://health.s
+ nu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&ui
+ d=5808\n빵캘: https://epibrief.github.io/bbang-calender/
+URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
+ %B4/?mod=document&uid=5808
+END:VEVENT
+END:VCALENDAR

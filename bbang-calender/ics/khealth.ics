@@ -18,26 +18,8 @@ DTSTART:19700101T000000
 END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:d9897786e2a820f5@bbangcal.epibrief.github.io
-DTSTAMP:20260919T064635Z
-DTSTART;VALUE=DATE:20260904
-DTEND;VALUE=DATE:20260908
-SUMMARY:[보건복지부·한국건강증진개발원·질병관리청]
-  2026년 제27회 한국장애와건강포럼 개최 안내
-DESCRIPTION:주최: 보건복지부·한국건강증진개발원·질
- 병관리청\n원문: https://www.prevmed.or.kr/board_community_notice0
- 1/view.php?tn=board_community_notice01&list_count_s=&G_state=&pm=5.1&pa
- rt_part_s=&subject_s=&content_s=&name_s=&writedate_s=&keyfield_s=&searc
- h_word_s=&uid=917&gid=893&cpage=1&spage=1\n빵캘: https://epibrief.git
- hub.io/bbang-calender/
-URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
- d_community_notice01&list_count_s=&G_state=&pm=5.1&part_part_s=&subject
- _s=&content_s=&name_s=&writedate_s=&keyfield_s=&search_word_s=&uid=917&
- gid=893&cpage=1&spage=1
-END:VEVENT
-BEGIN:VEVENT
 UID:3a0d4dbe2e132bc0@bbangcal.epibrief.github.io
-DTSTAMP:20260919T064635Z
+DTSTAMP:20260919T065726Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260908
 SUMMARY:[보건복지부·한국건강증진개발원] 제13차 미래 
@@ -55,7 +37,7 @@ URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
 END:VEVENT
 BEGIN:VEVENT
 UID:9b57a4beacb03ae1@bbangcal.epibrief.github.io
-DTSTAMP:20260919T064635Z
+DTSTAMP:20260919T065726Z
 DTSTART;TZID=Asia/Seoul:20261030T100000
 DTEND;TZID=Asia/Seoul:20261030T183000
 SUMMARY:[한국보건교육건강증진학회·한국건강증진개발

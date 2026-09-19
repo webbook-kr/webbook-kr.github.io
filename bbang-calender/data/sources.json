@@ -203,6 +203,33 @@
    "verified": true
   },
   {
+   "id": "koddi",
+   "name": "한국장애인개발원",
+   "short": "장애인개발원",
+   "category": "gov",
+   "home": "https://www.koddi.or.kr/",
+   "board": "https://www.koddi.or.kr/bbs/board.do?bbsId=BBSMSTR_000000000021",
+   "verified": false
+  },
+  {
+   "id": "snuph",
+   "name": "서울대 보건대학원",
+   "short": "서울대보건",
+   "category": "research",
+   "home": "https://health.snu.ac.kr/",
+   "board": "https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/",
+   "verified": true
+  },
+  {
+   "id": "cochrane",
+   "name": "한국코크란",
+   "short": "코크란",
+   "category": "research",
+   "home": "https://korea.cochrane.org/",
+   "board": "https://korea.cochrane.org/",
+   "verified": false
+  },
+  {
    "id": "etc",
    "name": "그 밖의 기관",
    "short": "기타",
@@ -408,6 +435,24 @@
    "adapter": "generic",
    "url": "https://www.kosqua.net/",
    "org": "kosqua",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-koddi",
+   "name": "한국장애인개발원 공지",
+   "adapter": "generic",
+   "url": "https://www.koddi.or.kr/bbs/board.do?bbsId=BBSMSTR_000000000021",
+   "org": "koddi",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-cochrane",
+   "name": "한국코크란 공지",
+   "adapter": "generic",
+   "url": "https://korea.cochrane.org/",
+   "org": "cochrane",
    "enabled": true,
    "note": "국내 인터넷에서 돌려야 열립니다"
   }

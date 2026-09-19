@@ -261,5 +261,9 @@ export const ORG_ALIASES = {
   '대한공공의학회': 'kspm', '공공의학회': 'kspm',
   '한국보건교육건강증진학회': 'kshep',
   '대한보건협회': 'kpha',
-  '한국의료질향상학회': 'kosqua'
+  '한국의료질향상학회': 'kosqua',
+  '한국장애인개발원': 'koddi', '장애인개발원': 'koddi',
+  '서울대학교 보건대학원': 'snuph', '서울대 보건대학원': 'snuph', '보건대학원': 'snuph',
+  '수요세미나': 'snuph', '보건정책관리학전공': 'snuph',
+  '한국코크란': 'cochrane', '코크란': 'cochrane'
 };

@@ -395,7 +395,12 @@ const style = (id) => {
 
 /** 한 행사에 주최 기관이 여럿일 수 있습니다. */
 const hostsOf = (e) => (e.orgs && e.orgs.length ? e.orgs : [e.org]).filter((id) => ORGS[id]);
-const hostNames = (e) => hostsOf(e).map((id) => ORGS[id].name).join('·') || '기타';
+const hostNames = (e) => {
+  // 우리가 아는 기관이면 그 이름을, 모르면 공고에 적힌 이름이라도 보여 줍니다.
+  const known = hostsOf(e).filter((id) => id !== 'etc').map((id) => ORGS[id].name);
+  if (known.length) return known.join('·');
+  return e.orgLabel || '그 밖의 기관';
+};
 
 const visible = () => EVENTS.filter((e) => {
   if (hostsOf(e).every((id) => hidden.has(id))) return false;

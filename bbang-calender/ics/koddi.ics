@@ -1,0 +1,35 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//빵캘//보건의료 일정 달력//KO
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:빵캘 · 한국장애인개발원
+X-WR-TIMEZONE:Asia/Seoul
+X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
+ 나·학술대회 일정. https://epibrief.github.io/bbang-calender/
+BEGIN:VTIMEZONE
+TZID:Asia/Seoul
+X-LIC-LOCATION:Asia/Seoul
+BEGIN:STANDARD
+TZOFFSETFROM:+0900
+TZOFFSETTO:+0900
+TZNAME:KST
+DTSTART:19700101T000000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:53f2ef954dea2f84@bbangcal.epibrief.github.io
+DTSTAMP:20260919T065726Z
+DTSTART;TZID=Asia/Seoul:20261001T103000
+DTEND;TZID=Asia/Seoul:20261001T170000
+SUMMARY:[한국장애인개발원] 제6회 장애인삶 패널조사 
+ 학술대회
+LOCATION:대한상공회의소 중회의실A (서울특별시 중구 
+ 세종대로 39)
+DESCRIPTION:주최: 한국장애인개발원\n원문: https://health.sn
+ u.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid
+ =5816\n빵캘: https://epibrief.github.io/bbang-calender/
+URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
+ %B4/?mod=document&uid=5816
+END:VEVENT
+END:VCALENDAR

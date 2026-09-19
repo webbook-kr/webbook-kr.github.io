@@ -203,8 +203,11 @@ async function main() {
         const hostHay = [c.orgText || '', c.title, hostLines].join('\n');
         let orgIds = matchOrgs(hostHay, orgs, ORG_ALIASES);
         if (!orgIds.length) {
-          const one = matchOrg([c.orgText || '', c.title].join(' '), orgs, ORG_ALIASES);
-          orgIds = one ? [one] : (feed.org ? [feed.org] : []);
+          // 주최 줄이 없으면 본문 첫머리에서 가장 먼저 나온 기관 '하나만' 봅니다.
+          // 여럿을 받으면 게시판 메뉴나 발표자 소속까지 주최로 붙습니다.
+          const first = matchOrgs([c.orgText || '', c.title].join(' '), orgs, ORG_ALIASES)[0]
+            || matchOrgs((c.body || '').slice(0, 400), orgs, ORG_ALIASES)[0];
+          orgIds = first ? [first] : (feed.org ? [feed.org] : []);
         }
         const orgId = orgIds[0] || 'etc';
         // 여러 분야가 섞인 수집원은 보건의료 행사만 받습니다.
