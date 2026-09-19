@@ -5,11 +5,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { clean, decode, looksLikeEvent, isHealthTopic, extractDate, extractPlace, matchOrg, dropRegistrationLines, ORG_ALIASES } from './parse.mjs';
+import { clean, decode, looksLikeEvent, isHealthTopic, extractDate, extractPlace, matchOrg, matchOrgs, dropRegistrationLines, ORG_ALIASES } from './parse.mjs';
 
 const ROOT = path.resolve(new URL('../../', import.meta.url).pathname);
 const DATA = path.join(ROOT, 'bbang-calender', 'data');
-const UA = 'Mozilla/5.0 (compatible; BbangCal/1.0; +https://webbook-kr.github.io/bbang-calender/)';
+const UA = 'Mozilla/5.0 (compatible; BbangCal/1.0; +https://epibrief.github.io/bbang-calender/)';
 const args = process.argv.slice(2);
 const ONLY = args.includes('--only') ? args[args.indexOf('--only') + 1] : null;
 const DRY = args.includes('--dry');
@@ -158,6 +158,9 @@ async function main() {
   let previous = { events: [] };
   try { previous = JSON.parse(await fs.readFile(path.join(DATA, 'events.json'), 'utf8')); } catch { /* 처음 실행 */ }
 
+  let overrides = [];
+  try { overrides = JSON.parse(await fs.readFile(path.join(DATA, 'overrides.json'), 'utf8')); } catch { /* 없어도 됩니다 */ }
+
   let manual = [];
   try { manual = JSON.parse(await fs.readFile(path.join(DATA, 'manual.json'), 'utf8')); } catch { /* 없어도 됩니다 */ }
 
@@ -190,7 +193,20 @@ async function main() {
                    endTime: fromHead.endTime || fromBody.endTime };
           when.allDay = !when.startTime;
         }
-        const orgId = matchOrg([c.orgText || '', c.title, (c.body || '').slice(0, 300)].join(' '), orgs, ORG_ALIASES) || feed.org || 'etc';
+        // 주최 기관은 '주최 :' 라고 적힌 줄과 제목에서만 찾습니다.
+        // 게시판 메뉴나 발표자 소속까지 읽으면 엉뚱한 기관이 주최로 붙습니다.
+        const hostLines = (c.body || '')
+          .split('\n')
+          .filter((l) => /(주\s*최|주\s*관|공동\s*주최|공동\s*주관|공동\s*개최)/.test(l))
+          .slice(0, 4)
+          .join('\n');
+        const hostHay = [c.orgText || '', c.title, hostLines].join('\n');
+        let orgIds = matchOrgs(hostHay, orgs, ORG_ALIASES);
+        if (!orgIds.length) {
+          const one = matchOrg([c.orgText || '', c.title].join(' '), orgs, ORG_ALIASES);
+          orgIds = one ? [one] : (feed.org ? [feed.org] : []);
+        }
+        const orgId = orgIds[0] || 'etc';
         // 여러 분야가 섞인 수집원은 보건의료 행사만 받습니다.
         if (feed.healthOnly && orgId === 'etc' && !isHealthTopic(c.title + ' ' + (c.orgText || ''))) continue;
         const bracket = c.title.match(/[\[【]\s*([^\]】]{2,40})\s*[\]】]/)?.[1] || null;
@@ -208,8 +224,9 @@ async function main() {
         }
         title = title.trim().slice(0, 140) || c.title.slice(0, 140);
         collected.push({
-          id: uid(orgId + '|' + title + '|' + when.start),
+          id: uid(title + '|' + when.start),
           org: orgId,
+          orgs: orgIds.length > 1 ? orgIds : undefined,
           orgLabel: c.orgText || (orgId === 'etc' ? bracket : null),
           title,
           start: when.start,
@@ -238,12 +255,28 @@ async function main() {
   }));
 
   // 이전 결과 + 이번 결과 + 손으로 넣은 것을 합칩니다. 수집이 실패해도 예전 일정은 남습니다.
+  // 같은 제목·같은 날짜면 같은 행사입니다. 주최 기관을 다시 읽어도 둘로 갈라지지 않습니다.
+  const keyOf = (e) => uid(e.title + '|' + e.start);
   const byId = new Map();
-  for (const e of previous.events || []) byId.set(e.id, e);
+  for (const e of previous.events || []) {
+    const k = keyOf(e);
+    byId.set(k, { ...e, id: k });
+  }
   for (const e of collected) byId.set(e.id, { ...byId.get(e.id), ...e });
   for (const e of manual) {
-    const id = e.id || uid((e.org || 'etc') + '|' + e.title + '|' + e.start);
+    const id = e.id || uid(e.title + '|' + e.start);
     byId.set(id, { org: 'etc', allDay: true, source: 'manual', ...e, id, manual: true });
+  }
+
+  // 손으로 바로잡을 것이 있으면 여기서 덮어씁니다. 포스터에만 적힌 공동 주최 같은 것입니다.
+  for (const rule of overrides) {
+    if (!rule || !rule.match) continue;
+    for (const e of byId.values()) {
+      if (!e.title || !e.title.includes(rule.match)) continue;
+      const { match, ...patch } = rule;
+      Object.assign(e, patch);
+      if (patch.orgs && patch.orgs.length) e.org = patch.orgs[0];
+    }
   }
 
   // 지난 행사는 60일까지만 남깁니다.

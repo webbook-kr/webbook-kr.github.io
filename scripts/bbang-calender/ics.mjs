@@ -6,7 +6,7 @@ import path from 'node:path';
 const ROOT = path.resolve(new URL('../../', import.meta.url).pathname);
 const DATA = path.join(ROOT, 'bbang-calender', 'data');
 const OUT = path.join(ROOT, 'bbang-calender', 'ics');
-const SITE = 'https://webbook-kr.github.io/bbang-calender/';
+const SITE = 'https://epibrief.github.io/bbang-calender/';
 
 const pad = (n) => String(n).padStart(2, '0');
 const compact = (isoDate) => isoDate.replace(/-/g, '');
@@ -39,7 +39,7 @@ function addDays(isoDate, n) {
 function vevent(e, orgName) {
   const lines = [];
   lines.push('BEGIN:VEVENT');
-  lines.push(`UID:${e.id}@bbangcal.webbook-kr.github.io`);
+  lines.push(`UID:${e.id}@bbangcal.epibrief.github.io`);
   lines.push(`DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '')}`);
   const multiDay = e.end && e.end !== e.start;
   // 이틀 넘게 이어지는 행사는 날짜 칸으로 그려야 달력에서 제대로 보입니다.
@@ -86,7 +86,8 @@ async function main() {
   const conf = JSON.parse(await fs.readFile(path.join(DATA, 'sources.json'), 'utf8'));
   const db = JSON.parse(await fs.readFile(path.join(DATA, 'events.json'), 'utf8'));
   const orgById = Object.fromEntries(conf.orgs.map((o) => [o.id, o]));
-  const orgName = (e) => (orgById[e.org]?.name) || '기타';
+  const hosts = (e) => (e.orgs && e.orgs.length ? e.orgs : [e.org]);
+  const orgName = (e) => hosts(e).map((id) => orgById[id]?.name).filter(Boolean).join('·') || '기타';
 
   await fs.mkdir(OUT, { recursive: true });
   const written = [];
@@ -95,7 +96,7 @@ async function main() {
   written.push('all.ics');
 
   for (const o of conf.orgs) {
-    const list = db.events.filter((e) => e.org === o.id);
+    const list = db.events.filter((e) => (e.orgs && e.orgs.length ? e.orgs : [e.org]).includes(o.id));
     if (!list.length) continue;
     await fs.writeFile(path.join(OUT, `${o.id}.ics`), calendar(`빵캘 · ${o.name}`, list, orgName));
     written.push(`${o.id}.ics`);
@@ -103,7 +104,7 @@ async function main() {
 
   for (const c of conf.categories) {
     const ids = new Set(conf.orgs.filter((o) => o.category === c.id).map((o) => o.id));
-    const list = db.events.filter((e) => ids.has(e.org));
+    const list = db.events.filter((e) => (e.orgs && e.orgs.length ? e.orgs : [e.org]).some((id) => ids.has(id)));
     if (!list.length) continue;
     await fs.writeFile(path.join(OUT, `cat-${c.id}.ics`), calendar(`빵캘 · ${c.name}`, list, orgName));
     written.push(`cat-${c.id}.ics`);

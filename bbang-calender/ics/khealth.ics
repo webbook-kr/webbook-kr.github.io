@@ -3,7 +3,7 @@ VERSION:2.0
 PRODID:-//빵캘//보건의료 일정 달력//KO
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-X-WR-CALNAME:빵캘 · 보건복지부
+X-WR-CALNAME:빵캘 · 한국건강증진개발원
 X-WR-TIMEZONE:Asia/Seoul
 X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
  나·학술대회 일정. https://epibrief.github.io/bbang-calender/
@@ -54,31 +54,17 @@ URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
  gid=892&cpage=1&spage=1
 END:VEVENT
 BEGIN:VEVENT
-UID:040331ec9f9f6eca@bbangcal.epibrief.github.io
+UID:9b57a4beacb03ae1@bbangcal.epibrief.github.io
 DTSTAMP:20260919T064635Z
-DTSTART;TZID=Asia/Seoul:20260911T140000
-DTEND;TZID=Asia/Seoul:20260911T163000
-SUMMARY:[한국보건사회연구원·보건복지부] 상병수당 제
- 도화 방안 마련을 위한 토론회
-LOCATION:프레지던트호텔 슈벨트홀
-DESCRIPTION:주최: 한국보건사회연구원·보건복지부\n원
- 문: https://www.kihasa.re.kr/news/event/view?seq=76736\n빵캘: https:
- //epibrief.github.io/bbang-calender/
-URL:https://www.kihasa.re.kr/news/event/view?seq=76736
-END:VEVENT
-BEGIN:VEVENT
-UID:7edfdde6847968e6@bbangcal.epibrief.github.io
-DTSTAMP:20260919T064635Z
-DTSTART;TZID=Asia/Seoul:20261029T133000
-DTEND;TZID=Asia/Seoul:20261029T163000
-SUMMARY:[보건복지부] 2026년도 장애인 건강보건통계 컨
- 퍼런스 개최 및 사전등록 안내
-LOCATION:국립재활원 나래관 3층 중강당(서울시 강북구 
- 소재)
-DESCRIPTION:주최: 보건복지부\n원문: https://health.snu.ac.kr/%
- EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid=5807\n
- 빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&uid=5807
+DTSTART;TZID=Asia/Seoul:20261030T100000
+DTEND;TZID=Asia/Seoul:20261030T183000
+SUMMARY:[한국보건교육건강증진학회·한국건강증진개발
+ 원] 2026년 추계학술대회 일정 안내 및 발표·토론 참여
+  요청 (10/30 금)
+LOCATION:한국방송통신대학교 열린관 대강당 및 414호
+DESCRIPTION:주최: 한국보건교육건강증진학회·한국건강
+ 증진개발원\n원문: https://khep.or.kr/board/notice/article/284380
+ \n빵캘: https://epibrief.github.io/bbang-calender/
+URL:https://khep.or.kr/board/notice/article/284380
 END:VEVENT
 END:VCALENDAR

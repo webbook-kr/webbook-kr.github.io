@@ -6,7 +6,7 @@ METHOD:PUBLISH
 X-WR-CALNAME:빵캘 · 학회·협회
 X-WR-TIMEZONE:Asia/Seoul
 X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
- 나·학술대회 일정. https://webbook-kr.github.io/bbang-calender/
+ 나·학술대회 일정. https://epibrief.github.io/bbang-calender/
 BEGIN:VTIMEZONE
 TZID:Asia/Seoul
 X-LIC-LOCATION:Asia/Seoul
@@ -18,8 +18,8 @@ DTSTART:19700101T000000
 END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:f92f1cd5eed064e2@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T060004Z
+UID:b7e181f2438d5f3f@bbangcal.epibrief.github.io
+DTSTAMP:20260919T064635Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260908
 SUMMARY:[대한예방의학회] 2026 대한약리학회 제78차 추계
@@ -28,15 +28,15 @@ DESCRIPTION:주최: 대한예방의학회\n원문: https://www.prevmed.
  or.kr/board_community_notice01/view.php?tn=board_community_notice01&lis
  t_count_s=&G_state=&pm=5.1&part_part_s=&subject_s=&content_s=&name_s=&w
  ritedate_s=&keyfield_s=&search_word_s=&uid=921&gid=896&cpage=1&spage=1\
- n빵캘: https://webbook-kr.github.io/bbang-calender/
+ n빵캘: https://epibrief.github.io/bbang-calender/
 URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
  d_community_notice01&list_count_s=&G_state=&pm=5.1&part_part_s=&subject
  _s=&content_s=&name_s=&writedate_s=&keyfield_s=&search_word_s=&uid=921&
  gid=896&cpage=1&spage=1
 END:VEVENT
 BEGIN:VEVENT
-UID:4da8b49543234e8e@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T060004Z
+UID:2c03466e0c1da48b@bbangcal.epibrief.github.io
+DTSTAMP:20260919T064635Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260908
 SUMMARY:[대한예방의학회] 2026년 추계학술대회 사전접수
@@ -45,90 +45,91 @@ DESCRIPTION:주최: 대한예방의학회\n원문: https://www.prevmed.
  or.kr/board_community_notice01/view.php?tn=board_community_notice01&lis
  t_count_s=&G_state=&pm=5.1&part_part_s=&subject_s=&content_s=&name_s=&w
  ritedate_s=&keyfield_s=&search_word_s=&uid=920&gid=895&cpage=1&spage=1\
- n빵캘: https://webbook-kr.github.io/bbang-calender/
+ n빵캘: https://epibrief.github.io/bbang-calender/
 URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
  d_community_notice01&list_count_s=&G_state=&pm=5.1&part_part_s=&subject
  _s=&content_s=&name_s=&writedate_s=&keyfield_s=&search_word_s=&uid=920&
  gid=895&cpage=1&spage=1
 END:VEVENT
 BEGIN:VEVENT
-UID:41512a0be88afa16@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T060004Z
+UID:5846096ea0875583@bbangcal.epibrief.github.io
+DTSTAMP:20260919T064635Z
 DTSTART;VALUE=DATE:20260914
 DTEND;VALUE=DATE:20260917
 SUMMARY:[한국보건행정학회] 2026 한국사회약학회 후기 
  연수교육 개최 안내
 DESCRIPTION:주최: 한국보건행정학회\n원문: https://www.kshpa
- .org/bbs/notice2/1541\n빵캘: https://webbook-kr.github.io/bbang-calen
- der/
+ .org/bbs/notice2/1541\n빵캘: https://epibrief.github.io/bbang-calende
+ r/
 URL:https://www.kshpa.org/bbs/notice2/1541
 END:VEVENT
 BEGIN:VEVENT
-UID:13706adb8c626720@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T060004Z
+UID:7959f356b5bb6342@bbangcal.epibrief.github.io
+DTSTAMP:20260919T064635Z
 DTSTART;VALUE=DATE:20260917
 DTEND;VALUE=DATE:20260919
 SUMMARY:[한국역학회] 2026 추계학술대회
 DESCRIPTION:주최: 한국역학회\n원문: https://health.snu.ac.kr/%
  EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid=5753\n
- 빵캘: https://webbook-kr.github.io/bbang-calender/
+ 빵캘: https://epibrief.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5753
 END:VEVENT
 BEGIN:VEVENT
-UID:7d09fcc26aa802a9@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T060004Z
+UID:e9558e2c65552cf4@bbangcal.epibrief.github.io
+DTSTAMP:20260919T064635Z
 DTSTART;TZID=Asia/Seoul:20260923T160000
 DTEND;TZID=Asia/Seoul:20260923T173000
 SUMMARY:[한국역학회] 9월 세미나
 DESCRIPTION:주최: 한국역학회\n원문: https://www.ksepi.org/web/
  lay1/bbs/S1T298C325/A/9/view.do?article_seq=2999&cpage=&rows=&condition
- =&keyword=\n빵캘: https://webbook-kr.github.io/bbang-calender/
+ =&keyword=\n빵캘: https://epibrief.github.io/bbang-calender/
 URL:https://www.ksepi.org/web/lay1/bbs/S1T298C325/A/9/view.do?article_s
  eq=2999&cpage=&rows=&condition=&keyword=
 END:VEVENT
 BEGIN:VEVENT
-UID:1b809f1dd497092d@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T060004Z
+UID:9b57a4beacb03ae1@bbangcal.epibrief.github.io
+DTSTAMP:20260919T064635Z
 DTSTART;TZID=Asia/Seoul:20261030T100000
 DTEND;TZID=Asia/Seoul:20261030T183000
-SUMMARY:[한국보건교육건강증진학회] 2026년 추계학술대
- 회 일정 안내 및 발표·토론 참여 요청 (10/30 금)
+SUMMARY:[한국보건교육건강증진학회·한국건강증진개발
+ 원] 2026년 추계학술대회 일정 안내 및 발표·토론 참여
+  요청 (10/30 금)
 LOCATION:한국방송통신대학교 열린관 대강당 및 414호
-DESCRIPTION:주최: 한국보건교육건강증진학회\n원문: https
- ://khep.or.kr/board/notice/article/284380\n빵캘: https://webbook-kr.g
- ithub.io/bbang-calender/
+DESCRIPTION:주최: 한국보건교육건강증진학회·한국건강
+ 증진개발원\n원문: https://khep.or.kr/board/notice/article/284380
+ \n빵캘: https://epibrief.github.io/bbang-calender/
 URL:https://khep.or.kr/board/notice/article/284380
 END:VEVENT
 BEGIN:VEVENT
-UID:b36e3e7ec0bccbaa@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T060004Z
+UID:0825bbb90a895924@bbangcal.epibrief.github.io
+DTSTAMP:20260919T064635Z
 DTSTART;TZID=Asia/Seoul:20261105T120000
 DTEND;TZID=Asia/Seoul:20261105T140000
 SUMMARY:[한국보건행정학회] 2026 후기학술대회 북페어 
  참여자 모집
 LOCATION:후기학술대회장 로비
 DESCRIPTION:주최: 한국보건행정학회\n원문: https://www.kshpa
- .org/bbs/notice/1535\n빵캘: https://webbook-kr.github.io/bbang-calend
- er/
+ .org/bbs/notice/1535\n빵캘: https://epibrief.github.io/bbang-calender
+ /
 URL:https://www.kshpa.org/bbs/notice/1535
 END:VEVENT
 BEGIN:VEVENT
-UID:168baded7fdae589@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T060004Z
+UID:e719a95bba4d99ff@bbangcal.epibrief.github.io
+DTSTAMP:20260919T064635Z
 DTSTART;VALUE=DATE:20261105
 DTEND;VALUE=DATE:20261106
 SUMMARY:[한국보건행정학회] 2026년 한국보건행정학회 후
  기 학술대회
 LOCATION:속초 델피노
 DESCRIPTION:주최: 한국보건행정학회\n원문: https://www.kshpa
- .org/calendar/list/14\n빵캘: https://webbook-kr.github.io/bbang-calen
- der/
+ .org/calendar/list/14\n빵캘: https://epibrief.github.io/bbang-calende
+ r/
 URL:https://www.kshpa.org/calendar/list/14
 END:VEVENT
 BEGIN:VEVENT
-UID:13546f77977b6498@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T060004Z
+UID:b744d68864203471@bbangcal.epibrief.github.io
+DTSTAMP:20260919T064635Z
 DTSTART;VALUE=DATE:20261216
 DTEND;VALUE=DATE:20261217
 SUMMARY:[대한예방의학회] 기획 세미나「자살예방의 정
@@ -138,7 +139,7 @@ DESCRIPTION:주최: 대한예방의학회\n원문: https://www.prevmed.
  or.kr/board_community_notice01/view.php?tn=board_community_notice01&lis
  t_count_s=&G_state=&pm=5.1&part_part_s=&subject_s=&content_s=&name_s=&w
  ritedate_s=&keyfield_s=&search_word_s=&uid=919&gid=894&cpage=1&spage=1\
- n빵캘: https://webbook-kr.github.io/bbang-calender/
+ n빵캘: https://epibrief.github.io/bbang-calender/
 URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
  d_community_notice01&list_count_s=&G_state=&pm=5.1&part_part_s=&subject
  _s=&content_s=&name_s=&writedate_s=&keyfield_s=&search_word_s=&uid=919&

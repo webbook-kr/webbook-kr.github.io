@@ -6,7 +6,7 @@ METHOD:PUBLISH
 X-WR-CALNAME:빵캘 · 한국보건행정학회
 X-WR-TIMEZONE:Asia/Seoul
 X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
- 나·학술대회 일정. https://webbook-kr.github.io/bbang-calender/
+ 나·학술대회 일정. https://epibrief.github.io/bbang-calender/
 BEGIN:VTIMEZONE
 TZID:Asia/Seoul
 X-LIC-LOCATION:Asia/Seoul
@@ -18,41 +18,41 @@ DTSTART:19700101T000000
 END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:41512a0be88afa16@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T060004Z
+UID:5846096ea0875583@bbangcal.epibrief.github.io
+DTSTAMP:20260919T064635Z
 DTSTART;VALUE=DATE:20260914
 DTEND;VALUE=DATE:20260917
 SUMMARY:[한국보건행정학회] 2026 한국사회약학회 후기 
  연수교육 개최 안내
 DESCRIPTION:주최: 한국보건행정학회\n원문: https://www.kshpa
- .org/bbs/notice2/1541\n빵캘: https://webbook-kr.github.io/bbang-calen
- der/
+ .org/bbs/notice2/1541\n빵캘: https://epibrief.github.io/bbang-calende
+ r/
 URL:https://www.kshpa.org/bbs/notice2/1541
 END:VEVENT
 BEGIN:VEVENT
-UID:b36e3e7ec0bccbaa@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T060004Z
+UID:0825bbb90a895924@bbangcal.epibrief.github.io
+DTSTAMP:20260919T064635Z
 DTSTART;TZID=Asia/Seoul:20261105T120000
 DTEND;TZID=Asia/Seoul:20261105T140000
 SUMMARY:[한국보건행정학회] 2026 후기학술대회 북페어 
  참여자 모집
 LOCATION:후기학술대회장 로비
 DESCRIPTION:주최: 한국보건행정학회\n원문: https://www.kshpa
- .org/bbs/notice/1535\n빵캘: https://webbook-kr.github.io/bbang-calend
- er/
+ .org/bbs/notice/1535\n빵캘: https://epibrief.github.io/bbang-calender
+ /
 URL:https://www.kshpa.org/bbs/notice/1535
 END:VEVENT
 BEGIN:VEVENT
-UID:168baded7fdae589@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T060004Z
+UID:e719a95bba4d99ff@bbangcal.epibrief.github.io
+DTSTAMP:20260919T064635Z
 DTSTART;VALUE=DATE:20261105
 DTEND;VALUE=DATE:20261106
 SUMMARY:[한국보건행정학회] 2026년 한국보건행정학회 후
  기 학술대회
 LOCATION:속초 델피노
 DESCRIPTION:주최: 한국보건행정학회\n원문: https://www.kshpa
- .org/calendar/list/14\n빵캘: https://webbook-kr.github.io/bbang-calen
- der/
+ .org/calendar/list/14\n빵캘: https://epibrief.github.io/bbang-calende
+ r/
 URL:https://www.kshpa.org/calendar/list/14
 END:VEVENT
 END:VCALENDAR

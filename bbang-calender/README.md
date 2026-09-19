@@ -3,10 +3,10 @@
 보건복지부, 질병관리청, 국민건강보험공단, 건강보험심사평가원, 학회까지.
 흩어져 있던 공청회·세미나·학술대회 일정을 한 달력에 모으고, 개인 구글 캘린더에 그대로 담을 수 있게 만든 페이지입니다.
 
-- 달력 화면: <https://webbook-kr.github.io/bbang-calender/>
-- 전체 구독 주소: `https://webbook-kr.github.io/bbang-calender/ics/all.ics`
-- 기관별 구독 주소: `https://webbook-kr.github.io/bbang-calender/ics/<기관 아이디>.ics` (예: `kdca.ics`)
-- 갈래별 구독 주소: `https://webbook-kr.github.io/bbang-calender/ics/cat-gov.ics` 같은 꼴
+- 달력 화면: <https://epibrief.github.io/bbang-calender/>
+- 전체 구독 주소: `https://epibrief.github.io/bbang-calender/ics/all.ics`
+- 기관별 구독 주소: `https://epibrief.github.io/bbang-calender/ics/<기관 아이디>.ics` (예: `kdca.ics`)
+- 갈래별 구독 주소: `https://epibrief.github.io/bbang-calender/ics/cat-gov.ics` 같은 꼴
 
 ## 파일이 하는 일
 
@@ -29,7 +29,7 @@
 **맥 / 리눅스 (터미널)**
 
 ```bash
-cd ~/webbook-kr.github.io
+cd ~/epibrief.github.io
 node scripts/bbang-calender/collect.mjs          # 전체 수집
 node scripts/bbang-calender/collect.mjs --only snu-health   # 한 곳만
 node scripts/bbang-calender/collect.mjs --dry    # 파일에 쓰지 않고 결과만 보기
@@ -40,7 +40,7 @@ python3 -m http.server 8777           # 미리 보기 → http://127.0.0.1:8777/
 **윈도우 (PowerShell)**
 
 ```powershell
-cd $HOME\webbook-kr.github.io
+cd $HOME\epibrief.github.io
 node scripts\bbang-calender\collect.mjs
 node scripts\bbang-calender\collect.mjs --only snu-health
 node scripts\bbang-calender\collect.mjs --dry

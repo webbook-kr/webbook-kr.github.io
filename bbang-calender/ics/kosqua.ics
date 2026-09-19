@@ -1,0 +1,33 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//빵캘//보건의료 일정 달력//KO
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:빵캘 · 한국의료질향상학회
+X-WR-TIMEZONE:Asia/Seoul
+X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
+ 나·학술대회 일정. https://epibrief.github.io/bbang-calender/
+BEGIN:VTIMEZONE
+TZID:Asia/Seoul
+X-LIC-LOCATION:Asia/Seoul
+BEGIN:STANDARD
+TZOFFSETFROM:+0900
+TZOFFSETTO:+0900
+TZNAME:KST
+DTSTART:19700101T000000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:9e42cd5253a2cee1@bbangcal.epibrief.github.io
+DTSTAMP:20260919T064519Z
+DTSTART;TZID=Asia/Seoul:20260902T090000
+DTEND;TZID=Asia/Seoul:20260902T170000
+SUMMARY:[한국의료질향상학회] <안내> 2026 가을학술대회 
+ 초록_적정성평가 관련 안내
+DESCRIPTION:주최: 한국의료질향상학회\n원문: https://www.ko
+ squa.net/index.php?page=view&idx=4312&hCode=BOARD&bo_idx=1\n빵캘: htt
+ ps://epibrief.github.io/bbang-calender/
+URL:https://www.kosqua.net/index.php?page=view&idx=4312&hCode=BOARD&bo_
+ idx=1
+END:VEVENT
+END:VCALENDAR
