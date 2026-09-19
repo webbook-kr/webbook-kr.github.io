@@ -56,6 +56,8 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
 .load{background:#fff;border:1px solid var(--line2);border-radius:2px;padding:12px}
 .load button{width:100%;padding:13px 14px;font-size:14px}
 .load .hint{margin-top:8px}
+.theme{display:flex;align-items:center;padding:10px 12px;background:#fff;border:1px solid var(--line2);border-radius:2px}
+.theme select{flex:1;border:1px solid var(--line2);background:#fff;font:500 13px 'Pretendard',sans-serif;padding:7px 8px;border-radius:2px;color:var(--ink)}
 #bookinfo summary{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
 .tabs{display:none}
 @media (max-width:860px){
@@ -125,6 +127,17 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    <p class="hint" style="margin-top:8px">시간을 쓰려면 그 쪽(또는 앞쪽)에 <code>youtube:</code> 로 영상이 하나 있어야 합니다.</p>
    <p class="hint" style="margin-top:8px">긴 쪽은 자동으로 나뉩니다. 클로드·챗GPT에 "마크다운으로 써 줘" 하고 그대로 붙여넣으면 됩니다.</p>
   </details>
+  <div class="theme">
+   <label for="th" style="margin:0 8px 0 0;text-transform:none;font-size:13px;color:var(--ink);letter-spacing:0;font-weight:700">책 모양</label>
+   <select id="th">
+    <option value="hanji">한지 — 따뜻한 종이색 (기본)</option>
+    <option value="meok">먹 — 검정 하나로 차분하게</option>
+    <option value="jjok">쪽빛 — 남색. 강의·업무 자료에</option>
+    <option value="soop">숲 — 초록. 건강·자연 주제에</option>
+    <option value="note">노트 — 고딕 본문. 요약·실무용</option>
+    <option value="bam">밤 — 어두운 바탕. 자기 전에 읽기 좋게</option>
+   </select>
+  </div>
   <div class="lock">
    <input id="lk" type="checkbox"><label for="lk" style="margin:0;text-transform:none;font-size:13px;color:var(--ink);letter-spacing:0">코드로 잠그기</label>
    <input id="lc" type="text" placeholder="읽는 사람에게 알려 줄 코드" disabled>
@@ -199,6 +212,41 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   '## 다음 단계',
   '내려받은 HTML을 어디든 올리면 주소가 생깁니다. 코드로 잠그면 코드를 아는 분만 읽을 수 있습니다.'
  ].join('\n');
+
+ // ── 책 모양(테마) ────────────────────────────────────
+ // 책 틀의 :root 색 변수만 갈아 끼운다. 글꼴은 이미 받아 둔 두 가지 안에서 고른다.
+ var THEMES={
+  hanji:{sans:false,v:{bg:'#eceae5',paper:'#fdfcfa',wash:'#f5f2ec',box:'#ffffff',
+   ink:'#15130f',ink2:'#33302a',muted:'#6b6560',dim:'#a39c93',line:'#e6e1d9',line2:'#d6d0c6',
+   accent:'#c8811f',code:'#16161f',codeink:'#e9e9f2'}},
+  meok:{sans:false,v:{bg:'#e9e7e4',paper:'#fefefe',wash:'#f4f3f1',box:'#ffffff',
+   ink:'#121212',ink2:'#2e2e2e',muted:'#656565',dim:'#a0a0a0',line:'#e5e3e0',line2:'#d2d0cc',
+   accent:'#3a3a3a',code:'#16161f',codeink:'#e9e9f2'}},
+  jjok:{sans:false,v:{bg:'#e3e8ee',paper:'#fbfcfd',wash:'#f0f4f8',box:'#ffffff',
+   ink:'#14202b',ink2:'#2f3d4a',muted:'#5f6e7c',dim:'#95a3b0',line:'#e0e6ec',line2:'#ccd6e0',
+   accent:'#2f5d87',code:'#16161f',codeink:'#e9e9f2'}},
+  soop:{sans:false,v:{bg:'#e4e9e2',paper:'#fbfcfa',wash:'#f1f5ef',box:'#ffffff',
+   ink:'#16201a',ink2:'#2f3d34',muted:'#5f6e5d',dim:'#96a694',line:'#e2e8df',line2:'#cfd9cb',
+   accent:'#4a6b3d',code:'#16161f',codeink:'#e9e9f2'}},
+  note:{sans:true,v:{bg:'#ebe8e0',paper:'#fffdf8',wash:'#f7f4ec',box:'#ffffff',
+   ink:'#1a1814',ink2:'#35312a',muted:'#6b6560',dim:'#a39c93',line:'#eae5da',line2:'#d8d1c4',
+   accent:'#c8811f',code:'#16161f',codeink:'#e9e9f2'}},
+  bam:{sans:false,v:{bg:'#121110',paper:'#1d1c1a',wash:'#232220',box:'#262523',
+   ink:'#f2efe9',ink2:'#ded9d1',muted:'#a49e94',dim:'#8a847a',line:'#322f2b',line2:'#403c36',
+   accent:'#d8a44a',code:'#0e0e12',codeink:'#e9e9f2'}}
+ };
+ var SANS="'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif";
+ function applyTheme(t, name){
+  var th=THEMES[name]||THEMES.hanji, v=th.v;
+  var root=':root{\n'
+   +' --bg:'+v.bg+'; --paper:'+v.paper+'; --wash:'+v.wash+'; --box:'+v.box+';\n'
+   +' --ink:'+v.ink+'; --ink2:'+v.ink2+'; --muted:'+v.muted+'; --dim:'+v.dim+';\n'
+   +' --line:'+v.line+'; --line2:'+v.line2+'; --accent:'+v.accent+';\n'
+   +' --code:'+v.code+'; --codeink:'+v.codeink+';\n}';
+  t=t.replace(/:root\{[\s\S]*?\n\}/, root);
+  if(th.sans) t=t.replace("font-family:'Noto Serif KR',Georgia,serif", 'font-family:'+SANS);
+  return t;
+ }
 
  // ── 마크다운 → 쪽 ────────────────────────────────────
  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -392,7 +440,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   return {deck:pages.join(''), title:title, sub:sub, author:author, n:total};
  }
  function assemble(b, cipherJson){
-  var t=TPL;
+  var t=applyTheme(TPL, $('th').value);
   var full=esc(b.title)+(b.sub?' — '+esc(b.sub):'');
   t=t.replace(/<title>[^<]*<\/title>/,'<title>'+full+'</title>');
   t=t.replace(/(<meta name="description" content=")[^"]*(")/,'$1'+esc(b.sub||b.title)+'$2');
@@ -515,6 +563,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  [ti,au,su].forEach(function(el){ el.addEventListener('input',bisum); });
 
  $('reset').onclick=function(){ if(md.value.trim()&&!confirm('지금 원고를 예시로 바꿀까요?'))return; ti.value='웹북 제작기 예시';au.value='작가';su.value='마크다운을 붙여넣으면 책이 됩니다';md.value=SAMPLE;preview();bisum(); };
+ $('th').onchange=function(){ preview(); say('책 모양을 바꿨어요.'); };
  $('tabE').onclick=function(){document.body.className='tab-edit';$('tabE').className='pri';$('tabV').className='';};
  $('tabV').onclick=function(){document.body.className='tab-view';$('tabV').className='pri';$('tabE').className='';};
 
