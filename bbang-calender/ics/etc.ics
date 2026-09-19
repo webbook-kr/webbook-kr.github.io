@@ -3,10 +3,10 @@ VERSION:2.0
 PRODID:-//빵캘//보건의료 일정 달력//KO
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-X-WR-CALNAME:빵캘 · 연구·평가기관
+X-WR-CALNAME:빵캘 · 그 밖의 기관
 X-WR-TIMEZONE:Asia/Seoul
 X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
- 나·학술대회 일정. https://webbook-kr.github.io/cal/
+ 나·학술대회 일정. https://webbook-kr.github.io/bbang-calender/
 BEGIN:VTIMEZONE
 TZID:Asia/Seoul
 X-LIC-LOCATION:Asia/Seoul
@@ -19,20 +19,20 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:e2b2c2fbf7e54ad8@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;TZID=Asia/Seoul:20260805T090000
 DTEND;TZID=Asia/Seoul:20260805T103000
 SUMMARY:[그 밖의 기관] '건강불평등을 과정으로 보기' 
  세미나
 DESCRIPTION:주최: 그 밖의 기관\n원문: https://health.snu.ac.kr
  /%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&pageid=2&u
- id=5653\n빵캘: https://webbook-kr.github.io/cal/
+ id=5653\n빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&pageid=2&uid=5653
 END:VEVENT
 BEGIN:VEVENT
 UID:08147d693f210f47@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;TZID=Asia/Seoul:20260826T140000
 DTEND;TZID=Asia/Seoul:20260826T160000
 SUMMARY:[그 밖의 기관] 졸업생-재학생 간담회 안내 (8/26 
@@ -40,13 +40,13 @@ SUMMARY:[그 밖의 기관] 졸업생-재학생 간담회 안내 (8/26
 LOCATION:서울대학교 보건대학원 221동 110호
 DESCRIPTION:주최: 보건정책관리학전공\n원문: https://health
  .snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&
- pageid=2&uid=5722\n빵캘: https://webbook-kr.github.io/cal/
+ pageid=2&uid=5722\n빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&pageid=2&uid=5722
 END:VEVENT
 BEGIN:VEVENT
 UID:1c1734342f0cd9ef@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;VALUE=DATE:20260827
 DTEND;VALUE=DATE:20260828
 SUMMARY:[그 밖의 기관] 다양한 감염병 모델 기반 통합분
@@ -54,51 +54,25 @@ SUMMARY:[그 밖의 기관] 다양한 감염병 모델 기반 통합분
 LOCATION:천안 소노벨
 DESCRIPTION:주최: 그 밖의 기관\n원문: https://health.snu.ac.kr
  /%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&pageid=2&u
- id=5707\n빵캘: https://webbook-kr.github.io/cal/
+ id=5707\n빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&pageid=2&uid=5707
 END:VEVENT
 BEGIN:VEVENT
-UID:80cfe26e012d3c48@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
-DTSTART;VALUE=DATE:20260828
-DTEND;VALUE=DATE:20260829
-SUMMARY:[국가생명윤리정책원] 제76회 콜로키움 개최 안내
-LOCATION:온라인(zoom)
-DESCRIPTION:주최: 국가생명윤리정책원\n원문: https://health
- .snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&
- pageid=2&uid=5727\n빵캘: https://webbook-kr.github.io/cal/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&pageid=2&uid=5727
-END:VEVENT
-BEGIN:VEVENT
-UID:6b488f1c93b0d840@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
-DTSTART;VALUE=DATE:20260909
-DTEND;VALUE=DATE:20260910
-SUMMARY:[국가생명윤리정책원] 제1회 유네스코 첨단과학
- 기술 윤리 포럼
-DESCRIPTION:주최: 국가생명윤리정책원\n원문: https://health
- .snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&
- uid=5777\n빵캘: https://webbook-kr.github.io/cal/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&uid=5777
-END:VEVENT
-BEGIN:VEVENT
 UID:00abfeb5af51f67f@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;VALUE=DATE:20260915
 DTEND;VALUE=DATE:20260916
 SUMMARY:[그 밖의 기관] 서울시 중장년 정책포럼 2026
 DESCRIPTION:주최: 그 밖의 기관\n원문: https://health.snu.ac.kr
  /%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&pageid=2&u
- id=5728\n빵캘: https://webbook-kr.github.io/cal/
+ id=5728\n빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&pageid=2&uid=5728
 END:VEVENT
 BEGIN:VEVENT
 UID:260151e9b8b2ab2d@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;VALUE=DATE:20260916
 DTEND;VALUE=DATE:20260917
 SUMMARY:[그 밖의 기관] 효과 검증에서 실제 시행으로: 
@@ -107,39 +81,26 @@ SUMMARY:[그 밖의 기관] 효과 검증에서 실제 시행으로:
 LOCATION:보건대학원 221동 113호
 DESCRIPTION:주최: 수요세미나\n원문: https://health.snu.ac.kr/%
  EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid=5783\n
- 빵캘: https://webbook-kr.github.io/cal/
+ 빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5783
 END:VEVENT
 BEGIN:VEVENT
 UID:3fbe6de7f4e44862@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;TZID=Asia/Seoul:20260918T090000
 DTEND;TZID=Asia/Seoul:20260918T173000
 SUMMARY:[그 밖의 기관] 고려대학교 한국코크란 워크숍 
  홍보
 DESCRIPTION:주최: 그 밖의 기관\n원문: https://health.snu.ac.kr
  /%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&pageid=2&u
- id=5715\n빵캘: https://webbook-kr.github.io/cal/
+ id=5715\n빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&pageid=2&uid=5715
 END:VEVENT
 BEGIN:VEVENT
-UID:0638367633c24267@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
-DTSTART;VALUE=DATE:20260921
-DTEND;VALUE=DATE:20260922
-SUMMARY:[한국보건사회연구원] 2026년 제1차 감염병 위기 
- 사회대응 포럼
-LOCATION:코트야드 메리어트 서울 명동
-DESCRIPTION:주최: 한국보건사회연구원\n원문: https://www.ki
- hasa.re.kr/news/event/view?seq=76820\n빵캘: https://webbook-kr.github
- .io/cal/
-URL:https://www.kihasa.re.kr/news/event/view?seq=76820
-END:VEVENT
-BEGIN:VEVENT
 UID:ed890f396422b452@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;VALUE=DATE:20260930
 DTEND;VALUE=DATE:20261001
 SUMMARY:[그 밖의 기관] 개방 공간 데이터과학과 건강영
@@ -147,13 +108,13 @@ SUMMARY:[그 밖의 기관] 개방 공간 데이터과학과 건강영
 LOCATION:보건대학원 221동 113호
 DESCRIPTION:주최: 수요세미나\n원문: https://health.snu.ac.kr/%
  EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid=5808\n
- 빵캘: https://webbook-kr.github.io/cal/
+ 빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5808
 END:VEVENT
 BEGIN:VEVENT
 UID:8fab4ff328187ecf@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;TZID=Asia/Seoul:20261001T103000
 DTEND;TZID=Asia/Seoul:20261001T170000
 SUMMARY:[그 밖의 기관] 제6회 장애인삶 패널조사 학술대
@@ -162,13 +123,13 @@ LOCATION:대한상공회의소 중회의실A (서울특별시 중구
  세종대로 39)
 DESCRIPTION:주최: 한국장애인개발원\n원문: https://health.sn
  u.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid
- =5816\n빵캘: https://webbook-kr.github.io/cal/
+ =5816\n빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5816
 END:VEVENT
 BEGIN:VEVENT
 UID:6d9335d9c6966017@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;TZID=Asia/Seoul:20261029T133000
 DTEND;TZID=Asia/Seoul:20261029T163000
 SUMMARY:[그 밖의 기관] 2026년도 장애인 건강보건통계 컨
@@ -177,20 +138,20 @@ LOCATION:국립재활원 나래관 3층 중강당(서울시 강북구
  소재)
 DESCRIPTION:주최: 그 밖의 기관\n원문: https://health.snu.ac.kr
  /%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid=5807\n
- 빵캘: https://webbook-kr.github.io/cal/
+ 빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5807
 END:VEVENT
 BEGIN:VEVENT
 UID:ccae6ddb5f4819a7@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;VALUE=DATE:20261030
 DTEND;VALUE=DATE:20261031
 SUMMARY:[그 밖의 기관] 치료 체계적문헌고찰 워크숍
 LOCATION:실시간 온라인 강의(zoom)
 DESCRIPTION:주최: 한국코크란\n원문: https://health.snu.ac.kr/%
  EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid=5802\n
- 빵캘: https://webbook-kr.github.io/cal/
+ 빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5802
 END:VEVENT

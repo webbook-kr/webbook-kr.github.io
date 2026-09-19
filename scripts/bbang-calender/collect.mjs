@@ -1,15 +1,15 @@
-// 빵캘 수집기 — 보건의료 기관들의 행사 공고를 모아 cal/data/events.json 으로 만듭니다.
-//   node scripts/cal/collect.mjs            (전부)
-//   node scripts/cal/collect.mjs --only snu-health
-//   node scripts/cal/collect.mjs --dry      (파일에 쓰지 않고 결과만 봅니다)
+// 빵캘 수집기 — 보건의료 기관들의 행사 공고를 모아 bbang-calender/data/events.json 으로 만듭니다.
+//   node scripts/bbang-calender/collect.mjs            (전부)
+//   node scripts/bbang-calender/collect.mjs --only snu-health
+//   node scripts/bbang-calender/collect.mjs --dry      (파일에 쓰지 않고 결과만 봅니다)
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { clean, decode, looksLikeEvent, isHealthTopic, extractDate, extractPlace, matchOrg, dropRegistrationLines, ORG_ALIASES } from './parse.mjs';
 
 const ROOT = path.resolve(new URL('../../', import.meta.url).pathname);
-const DATA = path.join(ROOT, 'cal', 'data');
-const UA = 'Mozilla/5.0 (compatible; BbangCal/1.0; +https://webbook-kr.github.io/cal/)';
+const DATA = path.join(ROOT, 'bbang-calender', 'data');
+const UA = 'Mozilla/5.0 (compatible; BbangCal/1.0; +https://webbook-kr.github.io/bbang-calender/)';
 const args = process.argv.slice(2);
 const ONLY = args.includes('--only') ? args[args.indexOf('--only') + 1] : null;
 const DRY = args.includes('--dry');
@@ -262,7 +262,7 @@ async function main() {
 
   if (DRY) { console.log(JSON.stringify(out, null, 2).slice(0, 3000)); return; }
   await fs.writeFile(path.join(DATA, 'events.json'), JSON.stringify(out, null, 1) + '\n');
-  console.log(`\n저장: cal/data/events.json (행사 ${events.length}건, 앞으로 열릴 행사 ${out.counts.upcoming}건)`);
+  console.log(`\n저장: bbang-calender/data/events.json (행사 ${events.length}건, 앞으로 열릴 행사 ${out.counts.upcoming}건)`);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

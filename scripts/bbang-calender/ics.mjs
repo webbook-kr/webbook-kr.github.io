@@ -1,12 +1,12 @@
 // 빵캘 — events.json 을 구글 캘린더가 읽을 수 있는 .ics 파일로 굽습니다.
-//   node scripts/cal/ics.mjs
+//   node scripts/bbang-calender/ics.mjs
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const ROOT = path.resolve(new URL('../../', import.meta.url).pathname);
-const DATA = path.join(ROOT, 'cal', 'data');
-const OUT = path.join(ROOT, 'cal', 'ics');
-const SITE = 'https://webbook-kr.github.io/cal/';
+const DATA = path.join(ROOT, 'bbang-calender', 'data');
+const OUT = path.join(ROOT, 'bbang-calender', 'ics');
+const SITE = 'https://webbook-kr.github.io/bbang-calender/';
 
 const pad = (n) => String(n).padStart(2, '0');
 const compact = (isoDate) => isoDate.replace(/-/g, '');

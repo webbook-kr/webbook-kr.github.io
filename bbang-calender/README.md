@@ -3,23 +3,23 @@
 보건복지부, 질병관리청, 국민건강보험공단, 건강보험심사평가원, 학회까지.
 흩어져 있던 공청회·세미나·학술대회 일정을 한 달력에 모으고, 개인 구글 캘린더에 그대로 담을 수 있게 만든 페이지입니다.
 
-- 달력 화면: <https://webbook-kr.github.io/cal/>
-- 전체 구독 주소: `https://webbook-kr.github.io/cal/ics/all.ics`
-- 기관별 구독 주소: `https://webbook-kr.github.io/cal/ics/<기관 아이디>.ics` (예: `kdca.ics`)
-- 갈래별 구독 주소: `https://webbook-kr.github.io/cal/ics/cat-gov.ics` 같은 꼴
+- 달력 화면: <https://webbook-kr.github.io/bbang-calender/>
+- 전체 구독 주소: `https://webbook-kr.github.io/bbang-calender/ics/all.ics`
+- 기관별 구독 주소: `https://webbook-kr.github.io/bbang-calender/ics/<기관 아이디>.ics` (예: `kdca.ics`)
+- 갈래별 구독 주소: `https://webbook-kr.github.io/bbang-calender/ics/cat-gov.ics` 같은 꼴
 
 ## 파일이 하는 일
 
 | 파일 | 하는 일 |
 |---|---|
-| `cal/index.html` | 달력 화면 한 장. 다른 파일에 기대지 않습니다 |
-| `cal/data/sources.json` | 기관 20곳과 수집원 목록 |
-| `cal/data/events.json` | 모아 놓은 일정 (수집기가 만듭니다) |
-| `cal/data/manual.json` | 손으로 넣는 일정. 수집기가 늘 함께 합칩니다 |
-| `cal/ics/*.ics` | 구글 캘린더가 읽는 구독 파일 |
-| `scripts/cal/collect.mjs` | 각 기관 공고를 읽어 일정을 뽑습니다 |
-| `scripts/cal/parse.mjs` | 한국어 공고문에서 날짜·장소·기관을 알아냅니다 |
-| `scripts/cal/ics.mjs` | `events.json` 을 `.ics` 로 굽습니다 |
+| `bbang-calender/index.html` | 달력 화면 한 장. 다른 파일에 기대지 않습니다 |
+| `bbang-calender/data/sources.json` | 기관 20곳과 수집원 목록 |
+| `bbang-calender/data/events.json` | 모아 놓은 일정 (수집기가 만듭니다) |
+| `bbang-calender/data/manual.json` | 손으로 넣는 일정. 수집기가 늘 함께 합칩니다 |
+| `bbang-calender/ics/*.ics` | 구글 캘린더가 읽는 구독 파일 |
+| `scripts/bbang-calender/collect.mjs` | 각 기관 공고를 읽어 일정을 뽑습니다 |
+| `scripts/bbang-calender/parse.mjs` | 한국어 공고문에서 날짜·장소·기관을 알아냅니다 |
+| `scripts/bbang-calender/ics.mjs` | `events.json` 을 `.ics` 로 굽습니다 |
 | `.github/workflows/calendar.yml` | 하루 두 번 저절로 돌립니다 |
 
 ## 손으로 돌려 보기
@@ -30,22 +30,22 @@
 
 ```bash
 cd ~/webbook-kr.github.io
-node scripts/cal/collect.mjs          # 전체 수집
-node scripts/cal/collect.mjs --only snu-health   # 한 곳만
-node scripts/cal/collect.mjs --dry    # 파일에 쓰지 않고 결과만 보기
-node scripts/cal/ics.mjs              # 구독 파일 굽기
-python3 -m http.server 8777           # 미리 보기 → http://127.0.0.1:8777/cal/
+node scripts/bbang-calender/collect.mjs          # 전체 수집
+node scripts/bbang-calender/collect.mjs --only snu-health   # 한 곳만
+node scripts/bbang-calender/collect.mjs --dry    # 파일에 쓰지 않고 결과만 보기
+node scripts/bbang-calender/ics.mjs              # 구독 파일 굽기
+python3 -m http.server 8777           # 미리 보기 → http://127.0.0.1:8777/bbang-calender/
 ```
 
 **윈도우 (PowerShell)**
 
 ```powershell
 cd $HOME\webbook-kr.github.io
-node scripts\cal\collect.mjs
-node scripts\cal\collect.mjs --only snu-health
-node scripts\cal\collect.mjs --dry
-node scripts\cal\ics.mjs
-py -m http.server 8777                # 미리 보기 → http://127.0.0.1:8777/cal/
+node scripts\bbang-calender\collect.mjs
+node scripts\bbang-calender\collect.mjs --only snu-health
+node scripts\bbang-calender\collect.mjs --dry
+node scripts\bbang-calender\ics.mjs
+py -m http.server 8777                # 미리 보기 → http://127.0.0.1:8777/bbang-calender/
 ```
 
 미리 보기를 멈출 때는 두 곳 모두 `Ctrl + C` 입니다. (맥에서도 `⌘`가 아니라 `Ctrl` 입니다)
@@ -88,7 +88,7 @@ py -m http.server 8777                # 미리 보기 → http://127.0.0.1:8777/
 
 ## 게시판 주소 고치기
 
-`cal/data/sources.json` 의 기관마다 `board` 가 읽을 게시판 주소입니다.
+`bbang-calender/data/sources.json` 의 기관마다 `board` 가 읽을 게시판 주소입니다.
 `verified` 는 실제로 목록을 읽어 봤는지 적어 둔 표시입니다. 지금은 16곳이 `true`, 4곳이 `false` 입니다.
 
 주소를 바꾸실 때는 `orgs` 의 `board` 와, `feeds` 에서 같은 기관(`org`)을 가리키는 항목의 `url` 을
@@ -97,12 +97,12 @@ py -m http.server 8777                # 미리 보기 → http://127.0.0.1:8777/
 한 곳만 시험해 보실 때는 이렇게 하시면 빠릅니다.
 
 ```bash
-node scripts/cal/collect.mjs --only org-hira
+node scripts/bbang-calender/collect.mjs --only org-hira
 ```
 
 ## 손으로 일정 넣기
 
-`cal/data/manual.json` 에 적으면 수집기가 늘 함께 합칩니다. 수집기가 지우지 않습니다.
+`bbang-calender/data/manual.json` 에 적으면 수집기가 늘 함께 합칩니다. 수집기가 지우지 않습니다.
 
 ```json
 [

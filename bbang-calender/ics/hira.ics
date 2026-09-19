@@ -6,7 +6,7 @@ METHOD:PUBLISH
 X-WR-CALNAME:빵캘 · 건강보험심사평가원
 X-WR-TIMEZONE:Asia/Seoul
 X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
- 나·학술대회 일정. https://webbook-kr.github.io/cal/
+ 나·학술대회 일정. https://webbook-kr.github.io/bbang-calender/
 BEGIN:VTIMEZONE
 TZID:Asia/Seoul
 X-LIC-LOCATION:Asia/Seoul
@@ -19,7 +19,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:21cc604a068d667f@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;TZID=Asia/Seoul:20260901T090000
 DTEND;TZID=Asia/Seoul:20260901T180000
 SUMMARY:[건강보험심사평가원] 검체검사 위·수탁 제도 
@@ -27,20 +27,21 @@ SUMMARY:[건강보험심사평가원] 검체검사 위·수탁 제도
  질의응답 추가 게시
 DESCRIPTION:주최: 건강보험심사평가원\n원문: https://www.hi
  ra.or.kr/bbsDummy.do?pgmid=HIRAA020002000100&brdScnBltNo=4&brdBltNo=122
- 54&pageIndex=1&pageIndex2=1\n빵캘: https://webbook-kr.github.io/cal/
+ 54&pageIndex=1&pageIndex2=1\n빵캘: https://webbook-kr.github.io/bbang
+ -calender/
 URL:https://www.hira.or.kr/bbsDummy.do?pgmid=HIRAA020002000100&brdScnBl
  tNo=4&brdBltNo=12254&pageIndex=1&pageIndex2=1
 END:VEVENT
 BEGIN:VEVENT
 UID:9d75bb1b007d5d2b@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;TZID=Asia/Seoul:20260902T090000
 DTEND;TZID=Asia/Seoul:20260902T170000
 SUMMARY:[건강보험심사평가원] <안내> 2026 가을학술대회 
  초록_적정성평가 관련 안내
 DESCRIPTION:주최: 건강보험심사평가원\n원문: https://www.ko
  squa.net/index.php?page=view&idx=4312&hCode=BOARD&bo_idx=1\n빵캘: htt
- ps://webbook-kr.github.io/cal/
+ ps://webbook-kr.github.io/bbang-calender/
 URL:https://www.kosqua.net/index.php?page=view&idx=4312&hCode=BOARD&bo_
  idx=1
 END:VEVENT

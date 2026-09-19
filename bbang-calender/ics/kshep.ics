@@ -6,7 +6,7 @@ METHOD:PUBLISH
 X-WR-CALNAME:빵캘 · 한국보건교육건강증진학회
 X-WR-TIMEZONE:Asia/Seoul
 X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
- 나·학술대회 일정. https://webbook-kr.github.io/cal/
+ 나·학술대회 일정. https://webbook-kr.github.io/bbang-calender/
 BEGIN:VTIMEZONE
 TZID:Asia/Seoul
 X-LIC-LOCATION:Asia/Seoul
@@ -19,7 +19,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:1b809f1dd497092d@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;TZID=Asia/Seoul:20261030T100000
 DTEND;TZID=Asia/Seoul:20261030T183000
 SUMMARY:[한국보건교육건강증진학회] 2026년 추계학술대
@@ -27,7 +27,7 @@ SUMMARY:[한국보건교육건강증진학회] 2026년 추계학술대
 LOCATION:한국방송통신대학교 열린관 대강당 및 414호
 DESCRIPTION:주최: 한국보건교육건강증진학회\n원문: https
  ://khep.or.kr/board/notice/article/284380\n빵캘: https://webbook-kr.g
- ithub.io/cal/
+ ithub.io/bbang-calender/
 URL:https://khep.or.kr/board/notice/article/284380
 END:VEVENT
 END:VCALENDAR

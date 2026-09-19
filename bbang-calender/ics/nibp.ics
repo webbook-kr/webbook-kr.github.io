@@ -6,7 +6,7 @@ METHOD:PUBLISH
 X-WR-CALNAME:빵캘 · 국가생명윤리정책원
 X-WR-TIMEZONE:Asia/Seoul
 X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
- 나·학술대회 일정. https://webbook-kr.github.io/cal/
+ 나·학술대회 일정. https://webbook-kr.github.io/bbang-calender/
 BEGIN:VTIMEZONE
 TZID:Asia/Seoul
 X-LIC-LOCATION:Asia/Seoul
@@ -19,27 +19,27 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:80cfe26e012d3c48@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;VALUE=DATE:20260828
 DTEND;VALUE=DATE:20260829
 SUMMARY:[국가생명윤리정책원] 제76회 콜로키움 개최 안내
 LOCATION:온라인(zoom)
 DESCRIPTION:주최: 국가생명윤리정책원\n원문: https://health
  .snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&
- pageid=2&uid=5727\n빵캘: https://webbook-kr.github.io/cal/
+ pageid=2&uid=5727\n빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&pageid=2&uid=5727
 END:VEVENT
 BEGIN:VEVENT
 UID:6b488f1c93b0d840@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;VALUE=DATE:20260909
 DTEND;VALUE=DATE:20260910
 SUMMARY:[국가생명윤리정책원] 제1회 유네스코 첨단과학
  기술 윤리 포럼
 DESCRIPTION:주최: 국가생명윤리정책원\n원문: https://health
  .snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&
- uid=5777\n빵캘: https://webbook-kr.github.io/cal/
+ uid=5777\n빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5777
 END:VEVENT

@@ -6,7 +6,7 @@ METHOD:PUBLISH
 X-WR-CALNAME:빵캘 · 한국역학회
 X-WR-TIMEZONE:Asia/Seoul
 X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
- 나·학술대회 일정. https://webbook-kr.github.io/cal/
+ 나·학술대회 일정. https://webbook-kr.github.io/bbang-calender/
 BEGIN:VTIMEZONE
 TZID:Asia/Seoul
 X-LIC-LOCATION:Asia/Seoul
@@ -19,25 +19,25 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:13706adb8c626720@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;VALUE=DATE:20260917
 DTEND;VALUE=DATE:20260919
 SUMMARY:[한국역학회] 2026 추계학술대회
 DESCRIPTION:주최: 한국역학회\n원문: https://health.snu.ac.kr/%
  EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid=5753\n
- 빵캘: https://webbook-kr.github.io/cal/
+ 빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5753
 END:VEVENT
 BEGIN:VEVENT
 UID:7d09fcc26aa802a9@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;TZID=Asia/Seoul:20260923T160000
 DTEND;TZID=Asia/Seoul:20260923T173000
 SUMMARY:[한국역학회] 9월 세미나
 DESCRIPTION:주최: 한국역학회\n원문: https://www.ksepi.org/web/
  lay1/bbs/S1T298C325/A/9/view.do?article_seq=2999&cpage=&rows=&condition
- =&keyword=\n빵캘: https://webbook-kr.github.io/cal/
+ =&keyword=\n빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://www.ksepi.org/web/lay1/bbs/S1T298C325/A/9/view.do?article_s
  eq=2999&cpage=&rows=&condition=&keyword=
 END:VEVENT

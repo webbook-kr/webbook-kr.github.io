@@ -6,7 +6,7 @@ METHOD:PUBLISH
 X-WR-CALNAME:빵캘 · 대한예방의학회
 X-WR-TIMEZONE:Asia/Seoul
 X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
- 나·학술대회 일정. https://webbook-kr.github.io/cal/
+ 나·학술대회 일정. https://webbook-kr.github.io/bbang-calender/
 BEGIN:VTIMEZONE
 TZID:Asia/Seoul
 X-LIC-LOCATION:Asia/Seoul
@@ -19,7 +19,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:f92f1cd5eed064e2@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260908
 SUMMARY:[대한예방의학회] 2026 대한약리학회 제78차 추계
@@ -28,7 +28,7 @@ DESCRIPTION:주최: 대한예방의학회\n원문: https://www.prevmed.
  or.kr/board_community_notice01/view.php?tn=board_community_notice01&lis
  t_count_s=&G_state=&pm=5.1&part_part_s=&subject_s=&content_s=&name_s=&w
  ritedate_s=&keyfield_s=&search_word_s=&uid=921&gid=896&cpage=1&spage=1\
- n빵캘: https://webbook-kr.github.io/cal/
+ n빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
  d_community_notice01&list_count_s=&G_state=&pm=5.1&part_part_s=&subject
  _s=&content_s=&name_s=&writedate_s=&keyfield_s=&search_word_s=&uid=921&
@@ -36,7 +36,7 @@ URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
 END:VEVENT
 BEGIN:VEVENT
 UID:4da8b49543234e8e@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260908
 SUMMARY:[대한예방의학회] 2026년 추계학술대회 사전접수
@@ -45,7 +45,7 @@ DESCRIPTION:주최: 대한예방의학회\n원문: https://www.prevmed.
  or.kr/board_community_notice01/view.php?tn=board_community_notice01&lis
  t_count_s=&G_state=&pm=5.1&part_part_s=&subject_s=&content_s=&name_s=&w
  ritedate_s=&keyfield_s=&search_word_s=&uid=920&gid=895&cpage=1&spage=1\
- n빵캘: https://webbook-kr.github.io/cal/
+ n빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
  d_community_notice01&list_count_s=&G_state=&pm=5.1&part_part_s=&subject
  _s=&content_s=&name_s=&writedate_s=&keyfield_s=&search_word_s=&uid=920&
@@ -53,7 +53,7 @@ URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
 END:VEVENT
 BEGIN:VEVENT
 UID:13546f77977b6498@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;VALUE=DATE:20261216
 DTEND;VALUE=DATE:20261217
 SUMMARY:[대한예방의학회] 기획 세미나「자살예방의 정
@@ -63,7 +63,7 @@ DESCRIPTION:주최: 대한예방의학회\n원문: https://www.prevmed.
  or.kr/board_community_notice01/view.php?tn=board_community_notice01&lis
  t_count_s=&G_state=&pm=5.1&part_part_s=&subject_s=&content_s=&name_s=&w
  ritedate_s=&keyfield_s=&search_word_s=&uid=919&gid=894&cpage=1&spage=1\
- n빵캘: https://webbook-kr.github.io/cal/
+ n빵캘: https://webbook-kr.github.io/bbang-calender/
 URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
  d_community_notice01&list_count_s=&G_state=&pm=5.1&part_part_s=&subject
  _s=&content_s=&name_s=&writedate_s=&keyfield_s=&search_word_s=&uid=919&

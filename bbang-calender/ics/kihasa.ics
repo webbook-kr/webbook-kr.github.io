@@ -6,7 +6,7 @@ METHOD:PUBLISH
 X-WR-CALNAME:빵캘 · 한국보건사회연구원
 X-WR-TIMEZONE:Asia/Seoul
 X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
- 나·학술대회 일정. https://webbook-kr.github.io/cal/
+ 나·학술대회 일정. https://webbook-kr.github.io/bbang-calender/
 BEGIN:VTIMEZONE
 TZID:Asia/Seoul
 X-LIC-LOCATION:Asia/Seoul
@@ -19,7 +19,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:0638367633c24267@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T025251Z
+DTSTAMP:20260919T060004Z
 DTSTART;VALUE=DATE:20260921
 DTEND;VALUE=DATE:20260922
 SUMMARY:[한국보건사회연구원] 2026년 제1차 감염병 위기 
@@ -27,7 +27,7 @@ SUMMARY:[한국보건사회연구원] 2026년 제1차 감염병 위기
 LOCATION:코트야드 메리어트 서울 명동
 DESCRIPTION:주최: 한국보건사회연구원\n원문: https://www.ki
  hasa.re.kr/news/event/view?seq=76820\n빵캘: https://webbook-kr.github
- .io/cal/
+ .io/bbang-calender/
 URL:https://www.kihasa.re.kr/news/event/view?seq=76820
 END:VEVENT
 END:VCALENDAR
