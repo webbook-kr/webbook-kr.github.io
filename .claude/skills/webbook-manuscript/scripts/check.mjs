@@ -110,9 +110,11 @@ function flush() {
   sec.groups[sec.groups.length - 1].push(...buf);
   buf = [];
 }
-let skipTo = -1;
+let skipTo = -1, fence = false;
 lines.forEach((s, n) => {
   if (n <= skipTo) return;                       // 장 표지로 빨려 들어간 그림 줄
+  if (/^```/.test(s)) { fence = !fence; buf.push(s); return; } // ``` 안의 # 은 예시 글자
+  if (fence) { buf.push(s); return; }
   if (/^#\s+/.test(s)) {
     flush();
     ch = { title: s.replace(/^#\s+/, '').split('|')[0].trim(), line: n + 1, secs: [] };
@@ -154,8 +156,11 @@ const totalPages = bodyPages + 3; // 표지 + 차례 + 마지막 쪽
 
 // ── 못 알아듣는 표기 찾기 ───────────────────────────────────────────
 const problems = [];
+let pf = false;
 lines.forEach((s, n) => {
   const at = n + 1;
+  if (/^```/.test(s)) { pf = !pf; return; }
+  if (pf) return;                                // 코드 덩어리 안은 그대로 나가므로 검사하지 않는다
   if (/^#{3,}\s+/.test(s)) problems.push([at, '### 이하 제목은 제작기가 못 읽는다. ## 로 올리거나 **굵게** 로 바꿀 것', s]);
   if (/(^|[^*])\*[^*\s][^*]*\*([^*]|$)/.test(s)) problems.push([at, '*한 별표* 이탤릭은 지원 안 된다. **두 별표** 로 바꿀 것', s]);
   if (/^\s+[-*]\s+/.test(s)) problems.push([at, '겹친 목록은 한 단계만 된다. 들여쓰기를 없앨 것', s]);

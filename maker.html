@@ -385,8 +385,12 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   var buf=[];
   // 빈 줄만 모인 묶음은 버린다. (# 제목 다음에 빈 줄을 두고 ## 을 써도 빈 쪽이 생기지 않게)
   function flush(){ if(!buf.length)return; if(!buf.some(function(s){return s.trim();})){buf=[];return;} if(!ch){ch={title:'',secs:[]};chapters.push(ch);} if(!sec)newSec(''); sec.parts.push(buf); buf=[]; }
+  var fence=false;
   for(var i=0;i<lines.length;i++){
    var L=lines[i];
+   // ``` 안에 있는 # 은 제목이 아니라 예시 글자다
+   if(/^```/.test(L)){fence=!fence;buf.push(L);continue;}
+   if(fence){buf.push(L);continue;}
    if(/^#\s+/.test(L)){
     flush();
     var ht=L.replace(/^#\s+/,'').trim(), hp=ht.split('|');           // "# 제목 | 부제"
@@ -405,12 +409,31 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   flush();
   return chapters;
  }
+ // 차례를 몇 쪽으로 나눌지 정한다. 좁은 휴대폰(350x580)에서 잰 값 기준으로
+ // 한 쪽에 들어가는 양을 10 으로 보고, 부제 있는 줄은 1.6, 없는 줄은 1 로 센다.
+ // "읽는 법" 상자는 마지막 차례 쪽에만 들어가고 2 만큼 자리를 쓴다.
+ function tocSplit(items){
+  var CAP=10, NOTE=2, w=function(t){return t.sub?1.6:1;};
+  var sum=function(a){return a.reduce(function(x,t){return x+w(t);},0);};
+  // 몇 쪽이 필요한지 먼저 정하고, 그 수만큼 고르게 나눈다. 마지막 쪽에 한 줄만
+  // 덩그러니 남는 것을 막으려는 것이다.
+  for(var k=Math.max(1,Math.ceil((sum(items)+NOTE)/CAP));k<=items.length+1;k++){
+   var per=Math.ceil(items.length/k), out=[], i;
+   for(i=0;i<items.length;i+=per) out.push(items.slice(i,i+per));
+   if(!out.length) out=[[]];
+   var ok=out.every(function(g,gi){return sum(g)+(gi===out.length-1?NOTE:0)<=CAP;});
+   if(ok) return out;
+  }
+  return [items];
+ }
  function pageHtml(cls,inner,footL,footR){return '<section class="s'+(cls?' '+cls:'')+'">\n <div class="paper"><div class="pin">\n'+inner+'\n </div><div class="foot"><span>'+esc(footL)+'</span><span class="pno">'+esc(footR)+'</span></div></div>\n</section>\n';}
  function build(){
   var rawTitle=ti.value.trim()||'제목 없는 책', title=rawTitle.replace(/\s*\|\s*/g,' '), sub=su.value.trim(), author=au.value.trim();
   var chapters=parse(md.value), pages=[], n=0;
   pages.push(pageHtml('cover','  <span class="eyebrow">'+esc(author||'Web Book')+'</span>\n  <h1>'+inline(rawTitle).replace(/\s*\|\s*/g,'<br>')+'</h1>\n'+(sub?'  <p class="kick">'+inline(sub)+'</p>\n':'')+'  <div class="by">'+esc(author)+(author?' · ':'')+new Date().getFullYear()+'</div>',title,'표지'));
-  var tocIdx=pages.length; pages.push(''); // 차례 자리
+  var tocIdx=pages.length;
+  var tocPages=tocSplit(chapters.filter(function(c){return c.title;}));
+  tocPages.forEach(function(){pages.push('');});   // 차례 자리 (장이 많으면 여러 쪽)
   var toc=[];
   chapters.forEach(function(ch,ci){
    var num=String(ci+1).padStart(2,'0'), foot=num+' '+ch.title;
@@ -432,8 +455,17 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    });
   });
   pages.push(pageHtml('cover','  <span class="eyebrow">The End</span>\n  <h2>여기까지입니다</h2>\n  <p class="kick">읽어 주셔서 고맙습니다.</p>\n  <div class="by">© '+new Date().getFullYear()+' '+esc(author)+'</div>',title,'끝'));
-  pages[tocIdx]=pageHtml('','  <span class="eyebrow">Contents</span>\n  <h2 style="margin-bottom:18px">차례</h2>\n'+toc.map(function(t){return '  <div class="tocrow" data-go="'+t.num+'"><span class="tn">'+t.num+'</span><span class="tt">'+inline(t.title)
-   +(t.sub?'<span class="ts">'+inline(t.sub)+'</span>':'')+'</span><span class="tp">'+t.page+'쪽</span></div>';}).join('\n')+'\n  <p class="note" style="margin-top:22px"><b>읽는 법</b> ‹ › 단추, 키보드 ← →, 손가락으로 넘기기. 아래 드롭다운으로 바로 이동.</p>','차례','2');
+  var tcut=0;
+  tocPages.forEach(function(grp,gi){
+   var rows=toc.slice(tcut,tcut+grp.length); tcut+=grp.length;
+   var last=gi===tocPages.length-1, many=tocPages.length>1;
+   pages[tocIdx+gi]=pageHtml('','  <span class="eyebrow">Contents</span>\n  <h2 style="margin-bottom:18px">차례'
+    +(many?' <span style="color:var(--dim);font-weight:500;font-size:.62em">'+(gi+1)+' / '+tocPages.length+'</span>':'')+'</h2>\n'
+    +rows.map(function(t){return '  <div class="tocrow" data-go="'+t.num+'"><span class="tn">'+t.num+'</span><span class="tt">'+inline(t.title)
+    +(t.sub?'<span class="ts">'+inline(t.sub)+'</span>':'')+'</span><span class="tp">'+t.page+'쪽</span></div>';}).join('\n')
+    +(last?'\n  <p class="note" style="margin-top:22px"><b>읽는 법</b> ‹ › 단추, 키보드 ← →, 손가락으로 넘기기. 아래 드롭다운으로 바로 이동.</p>':''),
+    '차례',String(tocIdx+gi+1));
+  });
   // 바닥글 쪽수를 "7 / 68" 로. 표지·끝처럼 숫자가 아닌 것은 그대로 둔다.
   var total=pages.length;
   pages=pages.map(function(pg){return pg.replace(/<span class="pno">(\d+)<\/span>/,function(m,d){return '<span class="pno">'+d+' / '+total+'</span>';});});
