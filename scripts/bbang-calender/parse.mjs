@@ -25,13 +25,16 @@ export function dropRegistrationLines(text) {
 // 여러 분야가 섞인 수집원에서는 보건의료 행사만 골라야 합니다.
 const HEALTH_WORDS = [
   '보건', '의료', '건강', '질병', '감염', '방역', '백신', '역학', '간호', '의약', '약제', '약물',
-  '환자', '병원', '의원', '치료', '진료', '돌봄', '요양', '정신건강', '자살예방', '장애', '고령',
-  '노인', '복지', '흡연', '금연', '음주', '영양', '식품안전', '임상', '수가', '급여', '의과학',
-  '헬스', '메디', '보건의료', '공중보건', '재활', '검진', '암', '치매'
+  '환자', '병원', '치료', '진료', '돌봄', '요양', '정신건강', '자살예방', '장애', '고령',
+  '노인', '복지', '흡연', '금연', '영양', '식품안전', '임상', '급여', '의과학',
+  '헬스', '메디', '공중보건', '재활', '검진', '치매', '암환자', '암검진', '암센터', '국가암'
 ];
+// 짧은 낱말은 다른 말 속에 묻혀 들어갑니다. '복음주의' 의 '음주' 같은 경우입니다.
+const HEALTH_RE = [/(?<![복초])음주/, /(?<![실착])수가/];
 export function isHealthTopic(text) {
   const t = String(text || '');
-  return HEALTH_WORDS.some((w) => t.includes(w));
+  if (HEALTH_WORDS.some((w) => t.includes(w))) return true;
+  return HEALTH_RE.some((re) => re.test(t));
 }
 
 export function looksLikeEvent(title) {

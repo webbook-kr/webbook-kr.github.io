@@ -145,7 +145,7 @@
    "short": "역학회",
    "category": "society",
    "home": "https://www.ksepi.org/",
-   "board": "https://www.ksepi.org/",
+   "board": "https://ksepi.org/web/lay1/bbs/S1T298C326/A/10/list.do",
    "verified": true
   },
   {
@@ -379,7 +379,7 @@
    "id": "org-ksepi",
    "name": "한국역학회 공지",
    "adapter": "generic",
-   "url": "https://www.ksepi.org/",
+   "url": "https://ksepi.org/web/lay1/bbs/S1T298C326/A/10/list.do",
    "org": "ksepi",
    "enabled": true,
    "note": "국내 인터넷에서 돌려야 열립니다"
@@ -455,6 +455,14 @@
    "org": "cochrane",
    "enabled": true,
    "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-kdca-ilje",
+   "name": "질병관리청 일정",
+   "adapter": "generic",
+   "url": "https://www.kdca.go.kr/kdca/2898/subview.do",
+   "org": "kdca",
+   "enabled": true
   }
  ]
 }

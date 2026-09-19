@@ -19,7 +19,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:7959f356b5bb6342@bbangcal.epibrief.github.io
-DTSTAMP:20260919T065726Z
+DTSTAMP:20260919T111630Z
 DTSTART;VALUE=DATE:20260917
 DTEND;VALUE=DATE:20260919
 SUMMARY:[한국역학회] 2026 추계학술대회
@@ -30,8 +30,21 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5753
 END:VEVENT
 BEGIN:VEVENT
+UID:bc573858125cf556@bbangcal.epibrief.github.io
+DTSTAMP:20260919T111630Z
+DTSTART;VALUE=DATE:20260917
+DTEND;VALUE=DATE:20260919
+SUMMARY:[한국역학회] 2026 추계학술대회 사전등록 / 초록
+  접수 (구연 및 포스터 발표) 안내
+DESCRIPTION:주최: 한국역학회\n원문: https://ksepi.org/web/lay1
+ /bbs/S1T298C326/A/10/view.do?article_seq=2977&cpage=1&rows=10&condition
+ =&keyword=\n빵캘: https://epibrief.github.io/bbang-calender/
+URL:https://ksepi.org/web/lay1/bbs/S1T298C326/A/10/view.do?article_seq=
+ 2977&cpage=1&rows=10&condition=&keyword=
+END:VEVENT
+BEGIN:VEVENT
 UID:e9558e2c65552cf4@bbangcal.epibrief.github.io
-DTSTAMP:20260919T065726Z
+DTSTAMP:20260919T111630Z
 DTSTART;TZID=Asia/Seoul:20260923T160000
 DTEND;TZID=Asia/Seoul:20260923T173000
 SUMMARY:[한국역학회] 9월 세미나

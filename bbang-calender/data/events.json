@@ -1,8 +1,8 @@
 {
  "name": "빵캘",
- "updatedAt": "2026-09-19T06:56:56.687Z",
+ "updatedAt": "2026-09-19T11:15:14.737Z",
  "counts": {
-  "total": 34,
+  "total": 35,
   "upcoming": 10
  },
  "sources": [
@@ -12,7 +12,7 @@
    "ok": true,
    "found": 52,
    "events": 0,
-   "ms": 6792
+   "ms": 6421
   },
   {
    "id": "org-mohw",
@@ -20,7 +20,7 @@
    "ok": true,
    "found": 19,
    "events": 4,
-   "ms": 16608
+   "ms": 17617
   },
   {
    "id": "org-khealth",
@@ -28,7 +28,7 @@
    "ok": true,
    "found": 11,
    "events": 0,
-   "ms": 4417
+   "ms": 4652
   },
   {
    "id": "nkis",
@@ -36,7 +36,7 @@
    "ok": true,
    "found": 20,
    "events": 0,
-   "ms": 25006
+   "ms": 25808
   },
   {
    "id": "org-ncc",
@@ -44,7 +44,7 @@
    "ok": true,
    "found": 4,
    "events": 3,
-   "ms": 6713
+   "ms": 8343
   },
   {
    "id": "org-nhis",
@@ -52,7 +52,7 @@
    "ok": true,
    "found": 24,
    "events": 0,
-   "ms": 4484
+   "ms": 4842
   },
   {
    "id": "org-mfds",
@@ -60,30 +60,7 @@
    "ok": true,
    "found": 16,
    "events": 8,
-   "ms": 25459
-  },
-  {
-   "id": "org-hira",
-   "name": "건강보험심사평가원 공지",
-   "ok": true,
-   "found": 12,
-   "events": 1,
-   "ms": 5645
-  },
-  {
-   "id": "org-neca",
-   "name": "한국보건의료연구원 공지",
-   "ok": false,
-   "error": "HTTP 503",
-   "ms": 7667
-  },
-  {
-   "id": "org-nmc",
-   "name": "국립중앙의료원 공지",
-   "ok": true,
-   "found": 11,
-   "events": 0,
-   "ms": 1677
+   "ms": 25393
   },
   {
    "id": "org-kihasa",
@@ -91,22 +68,37 @@
    "ok": true,
    "found": 3,
    "events": 2,
-   "ms": 7771
+   "ms": 4930
+  },
+  {
+   "id": "org-hira",
+   "name": "건강보험심사평가원 공지",
+   "ok": true,
+   "found": 12,
+   "events": 1,
+   "ms": 6548
+  },
+  {
+   "id": "org-neca",
+   "name": "한국보건의료연구원 공지",
+   "ok": false,
+   "error": "HTTP 503",
+   "ms": 7681
   },
   {
    "id": "org-khidi",
    "name": "한국보건산업진흥원 공지",
    "ok": false,
    "error": "HTTP 503",
-   "ms": 9105
+   "ms": 8637
   },
   {
-   "id": "org-ksepi",
-   "name": "한국역학회 공지",
+   "id": "org-nmc",
+   "name": "국립중앙의료원 공지",
    "ok": true,
-   "found": 6,
-   "events": 1,
-   "ms": 3695
+   "found": 11,
+   "events": 0,
+   "ms": 8742
   },
   {
    "id": "org-nibp",
@@ -114,7 +106,15 @@
    "ok": true,
    "found": 16,
    "events": 4,
-   "ms": 8897
+   "ms": 9436
+  },
+  {
+   "id": "org-ksepi",
+   "name": "한국역학회 공지",
+   "ok": true,
+   "found": 10,
+   "events": 5,
+   "ms": 5866
   },
   {
    "id": "org-kams",
@@ -122,7 +122,7 @@
    "ok": true,
    "found": 2,
    "events": 0,
-   "ms": 1596
+   "ms": 2055
   },
   {
    "id": "org-prevmed",
@@ -130,15 +130,7 @@
    "ok": true,
    "found": 15,
    "events": 7,
-   "ms": 12246
-  },
-  {
-   "id": "org-kshep",
-   "name": "한국보건교육건강증진학회 공지",
-   "ok": true,
-   "found": 1,
-   "events": 1,
-   "ms": 4035
+   "ms": 14527
   },
   {
    "id": "org-kshpa",
@@ -146,7 +138,15 @@
    "ok": true,
    "found": 9,
    "events": 6,
-   "ms": 13005
+   "ms": 12808
+  },
+  {
+   "id": "org-kshep",
+   "name": "한국보건교육건강증진학회 공지",
+   "ok": true,
+   "found": 1,
+   "events": 1,
+   "ms": 4770
   },
   {
    "id": "org-kosqua",
@@ -154,14 +154,14 @@
    "ok": true,
    "found": 7,
    "events": 1,
-   "ms": 1820
+   "ms": 2145
   },
   {
    "id": "org-kpha",
    "name": "대한보건협회 공지",
    "ok": false,
    "error": "HTTP 503",
-   "ms": 7832
+   "ms": 7868
   },
   {
    "id": "org-cochrane",
@@ -169,14 +169,7 @@
    "ok": true,
    "found": 16,
    "events": 0,
-   "ms": 659
-  },
-  {
-   "id": "org-koddi",
-   "name": "한국장애인개발원 공지",
-   "ok": false,
-   "error": "HTTP 404",
-   "ms": 5822
+   "ms": 752
   },
   {
    "id": "snu-health",
@@ -184,14 +177,29 @@
    "ok": true,
    "found": 30,
    "events": 20,
-   "ms": 72715
+   "ms": 71476
+  },
+  {
+   "id": "org-koddi",
+   "name": "한국장애인개발원 공지",
+   "ok": false,
+   "error": "HTTP 404",
+   "ms": 6226
+  },
+  {
+   "id": "org-kdca-ilje",
+   "name": "질병관리청 일정",
+   "ok": true,
+   "found": 32,
+   "events": 0,
+   "ms": 6392
   },
   {
    "id": "org-kspm",
    "name": "대한공공의학회 공지",
    "ok": false,
    "error": "HTTP 503",
-   "ms": 35616
+   "ms": 35346
   }
  ],
  "events": [
@@ -543,6 +551,21 @@
    "place": null,
    "url": "https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid=5753",
    "source": "snu-health",
+   "collectedAt": "2026-09-19"
+  },
+  {
+   "id": "bc573858125cf556",
+   "org": "ksepi",
+   "orgLabel": null,
+   "title": "2026 추계학술대회 사전등록 / 초록 접수 (구연 및 포스터 발표) 안내",
+   "start": "2026-09-17",
+   "end": "2026-09-18",
+   "startTime": "09:00",
+   "endTime": "15:50",
+   "allDay": false,
+   "place": null,
+   "url": "https://ksepi.org/web/lay1/bbs/S1T298C326/A/10/view.do?article_seq=2977&cpage=1&rows=10&condition=&keyword=",
+   "source": "org-ksepi",
    "collectedAt": "2026-09-19"
   },
   {
