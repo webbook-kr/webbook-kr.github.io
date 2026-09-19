@@ -91,7 +91,7 @@
    "short": "NECA",
    "category": "research",
    "home": "https://www.neca.re.kr/",
-   "board": "https://www.neca.re.kr/lay1/bbs/S1T11C41/H/25/list.do",
+   "board": "https://www.neca.re.kr/lay1/bbs/S1T12C49/A/12/list.do",
    "verified": false
   },
   {
@@ -109,7 +109,7 @@
    "short": "진흥원",
    "category": "research",
    "home": "https://www.khidi.or.kr/",
-   "board": "https://www.khidi.or.kr/board?menuId=MENU01906",
+   "board": "https://www.khidi.or.kr/kps",
    "verified": false
   },
   {
@@ -173,7 +173,8 @@
    "category": "society",
    "home": "https://www.kspm.kr/",
    "board": "https://www.kspm.kr/",
-   "verified": false
+   "verified": false,
+   "note": "누리집이 응답하지 않아 수집을 꺼 두었습니다. 주소를 확인하면 다시 켜세요."
   },
   {
    "id": "kshep",
@@ -191,7 +192,8 @@
    "category": "society",
    "home": "https://www.kpha.or.kr/",
    "board": "https://www.kpha.or.kr/",
-   "verified": false
+   "verified": false,
+   "note": "누리집이 응답하지 않아 수집을 꺼 두었습니다. 주소를 확인하면 다시 켜세요."
   },
   {
    "id": "kosqua",
@@ -325,10 +327,10 @@
    "id": "org-neca",
    "name": "한국보건의료연구원 공지",
    "adapter": "generic",
-   "url": "https://www.neca.re.kr/lay1/bbs/S1T11C41/H/25/list.do",
+   "url": "https://www.neca.re.kr/lay1/bbs/S1T12C49/A/12/list.do",
    "org": "neca",
    "enabled": true,
-   "note": "국내 인터넷에서 돌려야 열립니다"
+   "note": "깃허브 서버에서 400/404 가 나던 주소를 바로잡았습니다"
   },
   {
    "id": "org-kihasa",
@@ -343,10 +345,10 @@
    "id": "org-khidi",
    "name": "한국보건산업진흥원 공지",
    "adapter": "generic",
-   "url": "https://www.khidi.or.kr/board?menuId=MENU01906",
+   "url": "https://www.khidi.or.kr/kps",
    "org": "khidi",
    "enabled": true,
-   "note": "국내 인터넷에서 돌려야 열립니다"
+   "note": "깃허브 서버에서 400/404 가 나던 주소를 바로잡았습니다"
   },
   {
    "id": "org-nmc",
@@ -408,8 +410,8 @@
    "adapter": "generic",
    "url": "https://www.kspm.kr/",
    "org": "kspm",
-   "enabled": true,
-   "note": "국내 인터넷에서 돌려야 열립니다"
+   "enabled": false,
+   "note": "누리집이 응답하지 않습니다. 주소를 확인하면 enabled 를 true 로 바꾸세요"
   },
   {
    "id": "org-kshep",
@@ -426,8 +428,8 @@
    "adapter": "generic",
    "url": "https://www.kpha.or.kr/",
    "org": "kpha",
-   "enabled": true,
-   "note": "국내 인터넷에서 돌려야 열립니다"
+   "enabled": false,
+   "note": "누리집이 응답하지 않습니다. 주소를 확인하면 enabled 를 true 로 바꾸세요"
   },
   {
    "id": "org-kosqua",
