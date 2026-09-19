@@ -67,7 +67,9 @@ header.top{padding:22px 0 14px;display:flex;flex-wrap:wrap;gap:12px;align-items:
 .seg button{border:0;background:transparent;padding:7px 13px;font-size:13px;font-weight:600}
 .seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent)}
 
-.layout{display:grid;grid-template-columns:232px 1fr;gap:16px;margin-top:14px;align-items:start}
+.layout{display:grid;grid-template-columns:232px minmax(0,1fr);gap:16px;margin-top:14px;align-items:start}
+.layout > main{min-width:0}
+#map-view,#list-view,#cal-view{min-width:0}
 @media (max-width:860px){.layout{grid-template-columns:1fr}.side{order:2}}
 
 .side{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:var(--shadow)}
@@ -177,7 +179,14 @@ header.top{padding:22px 0 14px;display:flex;flex-wrap:wrap;gap:12px;align-items:
 .mapbar .where-in input{border:0;background:transparent;outline:none;width:100%;font:inherit;color:inherit}
 .mapbar .msg{font-size:12.5px;color:var(--dim);width:100%}
 .mapbar .msg b{color:var(--ink)}
-#map{height:min(66vh,560px);border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--shadow);z-index:1}
+#map{height:min(62vh,560px);border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--shadow);z-index:1}
+@media (max-width:640px){
+  .mapbar{gap:7px}
+  .mapbar .where-in{order:3;flex:1 0 100%;min-width:0}
+  .mapbar #btn-here{flex:1 1 auto}
+  .mapbar #btn-addr,.mapbar #btn-wide{flex:0 0 auto;padding:8px 12px}
+  #map{height:52vh}
+}
 #map.dim{filter:brightness(.86) contrast(1.04)}
 .leaflet-container{background:var(--bg);font:inherit}
 .pin{border-radius:50%;border:2.5px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
@@ -322,6 +331,7 @@ footer a{color:var(--accent)}
           <input id="addr" type="search" placeholder="주소나 동네 이름 (예: 서울 중구 세종대로)" aria-label="내 위치를 주소로 찾기">
         </div>
         <button class="btn" id="btn-addr">찾기</button>
+        <button class="btn ghost" id="btn-wide">전국 보기</button>
         <div class="msg" id="map-msg"></div>
       </div>
       <div id="map"></div>
@@ -599,6 +609,20 @@ function renderList() {
 let map = null, layer = null, meMarker = null, me = null;
 // 도심 이동을 어림잡는 값입니다. 직선 거리 기준이라 실제보다 짧게 나옵니다.
 const SPEED_KMH = 22, OVERHEAD_MIN = 20;
+// 이 거리 안쪽을 '갈 만한 거리' 로 봅니다.
+const NEAR_KM = 35;
+let mapMoved = false;
+
+/** 행사가 가장 많이 몰린 덩어리를 찾습니다. 서울 행사 열 건과 속초 한 건을 같이 비추지 않기 위해서입니다. */
+function denseBounds(list) {
+  let best = null;
+  for (const c of list) {
+    const near = list.filter((e) => km(c, e) <= NEAR_KM);
+    if (!best || near.length > best.length) best = near;
+  }
+  const use = best && best.length ? best : list;
+  return L.latLngBounds(use.map((e) => [e.lat, e.lng]));
+}
 
 const mapped = () => visible().filter((e) => typeof e.lat === 'number' && typeof e.lng === 'number');
 
@@ -670,6 +694,8 @@ function renderMap() {
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18, attribution: '지도 © OpenStreetMap 기여자'
     }).addTo(map);
+    // 손으로 지도를 움직인 뒤에는 멋대로 돌아가지 않게 합니다.
+    map.on('dragend zoomend', () => { mapMoved = true; });
     map.on('popupopen', (ev) => {
       const b = ev.popup.getElement().querySelector('[data-ev]');
       if (b) b.onclick = () => { const e = EVENTS.find((x) => x.id === b.dataset.ev); if (e) openEvent(e); };
@@ -680,15 +706,25 @@ function renderMap() {
     meMarker = L.marker([me.lat, me.lng], { icon: L.divIcon({ className: '', html: '<div class="pin me"></div>', iconSize: [16, 16], iconAnchor: [8, 8] }) })
       .addTo(map).bindPopup('내 위치');
   }
+  map.invalidateSize();
   if (layer) layer.remove();
   layer = L.layerGroup(list.map((e) => L.marker([e.lat, e.lng], { icon: dot(e), title: e.title }).bindPopup(popupHtml(e)))).addTo(map);
 
-  if (list.length) {
-    const b = L.latLngBounds(list.map((e) => [e.lat, e.lng]));
-    if (me) b.extend([me.lat, me.lng]);
-    map.fitBounds(b.pad(0.18), { maxZoom: me ? 13 : 11 });
+  if (list.length && !mapMoved) {
+    if (me) {
+      // 내 위치를 넣었으면 갈 만한 거리만 비춥니다. 속초 행사 하나 때문에 전국이 보이면 쓸모가 없습니다.
+      const near = list.filter((e) => km(me, e) <= NEAR_KM);
+      const b = L.latLngBounds([[me.lat, me.lng], ...near.map((e) => [e.lat, e.lng])]);
+      const tight = compact() ? 12 : 13;
+      if (near.length) map.fitBounds(b.pad(0.3), { maxZoom: tight });
+      else map.setView([me.lat, me.lng], tight - 1);
+    } else {
+      // 위치를 모를 때는 행사가 가장 많이 몰린 곳을 비춥니다.
+      const b = denseBounds(list);
+      map.fitBounds(b.pad(0.2), { maxZoom: compact() ? 11 : 12 });
+    }
   }
-  setTimeout(() => map.invalidateSize(), 60);
+  setTimeout(() => map.invalidateSize(), 120);
 
   const off = visible().filter((e) => e.online).length;
   const noGeo = visible().length - list.length - off;
@@ -721,6 +757,7 @@ function renderNear(list) {
 
 function setMe(lat, lng, label) {
   me = { lat, lng };
+  mapMoved = false;
   try { localStorage.setItem('bbangcal-me', JSON.stringify({ lat, lng, label })); } catch {}
   if (meMarker) meMarker.remove();
   meMarker = L.marker([lat, lng], { icon: L.divIcon({ className: '', html: '<div class="pin me"></div>', iconSize: [16, 16], iconAnchor: [8, 8] }) })
@@ -976,6 +1013,12 @@ async function boot() {
   $('#view-map').onclick = () => { view = 'map'; setView(); };
   $('#btn-here').onclick = askHere;
   $('#btn-addr').onclick = findAddr;
+  $('#btn-wide').onclick = () => {
+    const list = mapped();
+    if (!list.length) return;
+    mapMoved = true;
+    map.fitBounds(L.latLngBounds(list.map((e) => [e.lat, e.lng])).pad(0.15));
+  };
   $('#addr').onkeydown = (ev) => { if (ev.key === 'Enter') findAddr(); };
   try {
     const saved = JSON.parse(localStorage.getItem('bbangcal-me') || 'null');

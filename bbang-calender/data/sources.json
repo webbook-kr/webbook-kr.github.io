@@ -174,7 +174,7 @@
    "home": "https://www.kspm.kr/",
    "board": "https://www.kspm.kr/",
    "verified": false,
-   "note": "누리집이 응답하지 않아 수집을 꺼 두었습니다. 주소를 확인하면 다시 켜세요."
+   "note": "kspm.kr 은 학회 사이트가 아닙니다. 고정 주소를 찾으면 다시 켜세요."
   },
   {
    "id": "kshep",
@@ -190,10 +190,9 @@
    "name": "대한보건협회",
    "short": "보건협회",
    "category": "society",
-   "home": "https://www.kpha.or.kr/",
-   "board": "https://www.kpha.or.kr/",
-   "verified": false,
-   "note": "누리집이 응답하지 않아 수집을 꺼 두었습니다. 주소를 확인하면 다시 켜세요."
+   "home": "http://www.kpha.or.kr/",
+   "board": "http://www.kpha.or.kr/",
+   "verified": false
   },
   {
    "id": "kosqua",
@@ -426,10 +425,10 @@
    "id": "org-kpha",
    "name": "대한보건협회 공지",
    "adapter": "generic",
-   "url": "https://www.kpha.or.kr/",
+   "url": "http://www.kpha.or.kr/",
    "org": "kpha",
-   "enabled": false,
-   "note": "누리집이 응답하지 않습니다. 주소를 확인하면 enabled 를 true 로 바꾸세요"
+   "enabled": true,
+   "note": "https 는 응답하지 않습니다. http 로 읽습니다"
   },
   {
    "id": "org-kosqua",
