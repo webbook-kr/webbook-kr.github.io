@@ -77,14 +77,69 @@ header.top{padding:22px 0 14px;display:flex;flex-wrap:wrap;gap:12px;align-items:
 .cat{margin-bottom:12px}
 .cat > .cat-head{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;color:var(--dim);margin-bottom:5px}
 .cat-head button{border:0;background:transparent;font-size:11px;color:var(--accent);padding:0}
-.org{display:flex;align-items:center;gap:8px;padding:4px 6px;border-radius:8px;cursor:pointer;font-size:13px}
+.org{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:8px;font-size:13px}
 .org:hover{background:var(--bg)}
-.org input{appearance:none;width:14px;height:14px;border-radius:4px;border:1.5px solid var(--dot);background:transparent;flex:none;cursor:pointer;position:relative}
-.org input:checked{background:var(--dot);border-color:var(--dot)}
-.org input:checked::after{content:"";position:absolute;left:4px;top:1px;width:3px;height:7px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg)}
 .org .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .org .c{font-size:11px;color:var(--dim);font-variant-numeric:tabular-nums}
 
+/* 기관 켜고 끄기 토글 */
+.sw{appearance:none;width:34px;height:20px;border-radius:999px;background:color-mix(in srgb,var(--dim) 30%,transparent);
+  position:relative;flex:none;cursor:pointer;transition:background .18s;border:0}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .18s}
+.sw:checked{background:var(--dot,var(--accent))}
+.sw:checked::after{transform:translateX(14px)}
+.sw:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sw.sm{width:28px;height:16px}
+.sw.sm::after{width:12px;height:12px}
+.sw.sm:checked::after{transform:translateX(12px)}
+.all-row{--dot:var(--accent);display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 6px;margin-bottom:8px;
+  border-bottom:1px solid var(--line);font-size:13px;font-weight:700}
+
+/* 이번 주 행사 배너 — 행사 포스터를 닮게 */
+.banner{position:relative;margin:2px 0 14px;border-radius:18px;overflow:hidden;border:1px solid var(--line);
+  background:var(--panel);box-shadow:var(--shadow)}
+.banner .slide{display:grid;grid-template-columns:132px 1fr;min-height:132px;text-align:left;width:100%;
+  border:0;background:transparent;padding:0;cursor:pointer}
+.banner .poster{
+  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:#fff;
+  background:
+    radial-gradient(120% 90% at 20% 0%, color-mix(in srgb,var(--dot) 65%,#fff) 0%, transparent 60%),
+    linear-gradient(155deg, var(--dot) 0%, color-mix(in srgb,var(--dot) 72%,#000) 100%);
+}
+.banner .poster::after{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(135deg,rgba(255,255,255,.07) 0 8px,transparent 8px 16px)}
+.banner .poster{padding-top:12px}
+.banner .poster .wd{font-size:12px;font-weight:700;letter-spacing:.22em;opacity:.9;z-index:1}
+.banner .poster .dd{font-size:46px;font-weight:800;line-height:1;letter-spacing:-.03em;z-index:1;font-variant-numeric:tabular-nums}
+.banner .poster .mm{font-size:12px;font-weight:700;opacity:.92;z-index:1}
+.banner .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:5px;justify-content:center;min-width:0}
+.banner .kicker{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:11.5px;color:var(--dim)}
+.banner .kicker .chip{background:var(--soft);color:var(--strong);border-radius:999px;padding:2px 9px;font-weight:700}
+.banner .kicker .when{font-weight:700;color:var(--accent)}
+.banner h2{margin:1px 0 0;font-size:19px;line-height:1.4;letter-spacing:-.015em;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.banner .where{font-size:12.5px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.banner .fade{animation:bfade .45s ease}
+@keyframes bfade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.banner .rot{position:absolute;right:12px;bottom:10px;display:flex;align-items:center;gap:8px}
+.banner .dots{display:flex;gap:5px}
+.banner .dots i{width:6px;height:6px;border-radius:50%;background:color-mix(in srgb,var(--dim) 45%,transparent);display:block;cursor:pointer}
+.banner .dots i.on{background:var(--accent);width:16px;border-radius:3px}
+.banner .arrow{width:26px;height:26px;border-radius:8px;border:1px solid var(--line);background:var(--panel);
+  display:grid;place-items:center;font-size:13px;color:var(--dim)}
+.banner .arrow:hover{border-color:var(--accent);color:var(--accent)}
+.banner .label{position:absolute;left:0;top:0;z-index:2;background:var(--accent);color:#fff;font-size:10.5px;font-weight:700;
+  padding:3px 10px;border-bottom-right-radius:10px;letter-spacing:.02em}
+@media (max-width:640px){
+  .banner .slide{grid-template-columns:86px 1fr;min-height:104px}
+  .banner .poster{padding-top:20px}
+  .banner .poster .dd{font-size:32px}
+  .banner h2{font-size:15.5px}
+  .banner .body{padding:13px 13px 26px}
+  .banner .rot{right:10px;bottom:7px}
+}
+@media (prefers-reduced-motion:reduce){.banner .fade{animation:none}}
 .grid{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
 .dow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-bottom:1px solid var(--line)}
 .dow div{padding:9px 6px;text-align:center;font-size:12px;font-weight:700;color:var(--dim)}
@@ -171,6 +226,16 @@ footer a{color:var(--accent)}
     <button class="btn ghost icon" id="btn-theme" title="밝기 바꾸기" aria-label="밝기 바꾸기">◐</button>
   </div>
 </header>
+
+<section class="banner" id="banner" hidden aria-label="가까운 행사">
+  <span class="label" id="banner-label">이번 주</span>
+  <button class="slide" id="banner-slide"></button>
+  <div class="rot" id="banner-rot" hidden>
+    <button class="arrow" id="banner-prev" aria-label="앞 행사">‹</button>
+    <div class="dots" id="banner-dots"></div>
+    <button class="arrow" id="banner-next" aria-label="다음 행사">›</button>
+  </div>
+</section>
 
 <div class="bar">
   <div class="nav">
@@ -291,30 +356,73 @@ function renderFilters() {
   box.innerHTML = '';
   const counts = {};
   for (const e of EVENTS) counts[e.org] = (counts[e.org] || 0) + 1;
+
+  const allOn = CONF.orgs.every((o) => !hidden.has(o.id));
+  const allRow = document.createElement('div');
+  allRow.className = 'all-row';
+  allRow.innerHTML = `<span>전체 기관</span>`;
+  const allSw = toggle(allOn, () => {
+    if (allOn) hidden = new Set(CONF.orgs.map((o) => o.id));
+    else hidden.clear();
+    saveHidden(); draw();
+  });
+  allRow.appendChild(allSw);
+  box.appendChild(allRow);
+
   for (const cat of CONF.categories) {
     const orgs = CONF.orgs.filter((o) => o.category === cat.id);
     if (!orgs.length) continue;
     const wrap = document.createElement('div');
     wrap.className = 'cat';
+
     const head = document.createElement('div');
     head.className = 'cat-head';
     head.innerHTML = `<span>${cat.name}</span>`;
     const only = document.createElement('button');
     only.textContent = '이곳만';
-    only.onclick = () => { hidden = new Set(CONF.orgs.filter((o) => o.category !== cat.id).map((o) => o.id)); draw(); };
+    only.onclick = () => {
+      hidden = new Set(CONF.orgs.filter((o) => o.category !== cat.id).map((o) => o.id));
+      saveHidden(); draw();
+    };
     head.appendChild(only);
+    const catOn = orgs.some((o) => !hidden.has(o.id));
+    const catSw = toggle(catOn, () => {
+      for (const o of orgs) catOn ? hidden.add(o.id) : hidden.delete(o.id);
+      saveHidden(); draw();
+    }, 'sm');
+    catSw.style.cssText = style(orgs[0].id);
+    head.appendChild(catSw);
     wrap.appendChild(head);
+
     for (const o of orgs) {
-      const lab = document.createElement('label');
-      lab.className = 'org';
-      lab.style.cssText = style(o.id);
-      lab.innerHTML = `<input type="checkbox" ${hidden.has(o.id) ? '' : 'checked'}>
-        <span class="n" title="${o.name}">${o.name}</span><span class="c">${counts[o.id] || 0}</span>`;
-      lab.querySelector('input').onchange = (ev) => { ev.target.checked ? hidden.delete(o.id) : hidden.add(o.id); draw(); };
-      wrap.appendChild(lab);
+      const row = document.createElement('div');
+      row.className = 'org';
+      row.style.cssText = style(o.id);
+      row.innerHTML = `<span class="n" title="${o.name}">${o.name}</span><span class="c">${counts[o.id] || 0}</span>`;
+      const sw = toggle(!hidden.has(o.id), (on) => {
+        on ? hidden.delete(o.id) : hidden.add(o.id);
+        saveHidden(); draw();
+      });
+      sw.setAttribute('aria-label', `${o.name} 켜고 끄기`);
+      row.appendChild(sw);
+      wrap.appendChild(row);
     }
     box.appendChild(wrap);
   }
+}
+
+/** 켜짐·꺼짐 토글 하나를 만듭니다. */
+function toggle(on, onChange, extra = '') {
+  const el = document.createElement('input');
+  el.type = 'checkbox';
+  el.className = 'sw' + (extra ? ' ' + extra : '');
+  el.checked = on;
+  el.onchange = (ev) => onChange(ev.target.checked);
+  return el;
+}
+
+function saveHidden() {
+  try { localStorage.setItem('bbangcal-off', JSON.stringify([...hidden])); } catch {}
 }
 
 function renderMonth() {
@@ -423,6 +531,100 @@ function renderList() {
   box.appendChild(holder);
 }
 
+/* ── 이번 주 행사 배너 ─────────────────────────────────── */
+let bannerList = [], bannerIdx = 0, bannerTimer = null;
+const ROTATE_MS = 3000;
+
+const shift = (isoDate, n) => {
+  const d = new Date(isoDate + 'T00:00:00');
+  d.setDate(d.getDate() + n);
+  return ymd(d);
+};
+
+/** 오늘부터 이레 안에 열리는 행사를 고릅니다. 없으면 가장 가까운 행사 셋을 보여 줍니다. */
+function bannerScope() {
+  const weekEnd = shift(TODAY, 7);
+  const soon = visible().filter((e) => (e.end || e.start) >= TODAY);
+  const week = soon.filter((e) => e.start <= weekEnd);
+  if (week.length) return { label: '이번 주', list: week };
+  return { label: '다가오는 행사', list: soon.slice(0, 3) };
+}
+
+function renderBanner() {
+  const sec = $('#banner');
+  const { label, list } = bannerScope();
+  if (!list.length) { sec.hidden = true; stopRotate(); return; }
+  sec.hidden = false;
+  sec.dataset.label = label;
+  bannerList = list;
+  if (bannerIdx >= list.length) bannerIdx = 0;
+  paintBanner();
+
+  const rot = $('#banner-rot');
+  rot.hidden = list.length < 2;
+  if (list.length >= 2) { buildDots(); startRotate(); } else stopRotate();
+}
+
+function paintBanner() {
+  const e = bannerList[bannerIdx];
+  if (!e) return;
+  const sec = $('#banner');
+  sec.style.cssText = style(e.org);
+  const d = new Date(e.start + 'T00:00:00');
+  const running = e.start <= TODAY && (e.end || e.start) >= TODAY;
+  $('#banner-label').textContent = running ? '오늘' : (sec.dataset.label || '이번 주');
+
+  const when = e.startTime ? `${e.startTime}${e.endTime ? '~' + e.endTime : ''}` : '시간 미정';
+  const dayGap = Math.round((new Date(e.start + 'T00:00:00') - new Date(TODAY + 'T00:00:00')) / 86400000);
+  const countdown = dayGap <= 0 ? '오늘 열립니다' : dayGap === 1 ? '내일' : `${dayGap}일 뒤`;
+
+  const slide = $('#banner-slide');
+  slide.innerHTML = `
+    <div class="poster">
+      <span class="wd">${DOW[d.getDay()]}</span>
+      <span class="dd">${d.getDate()}</span>
+      <span class="mm">${d.getMonth() + 1}월</span>
+    </div>
+    <div class="body fade">
+      <div class="kicker">
+        <span class="chip">${escapeHtml(ORGS[e.org]?.name || '기타')}</span>
+        <span class="when">${escapeHtml(countdown)}</span>
+        <span>${escapeHtml(dateLabel(e))}</span>
+      </div>
+      <h2>${escapeHtml(e.title)}</h2>
+      <div class="where">${escapeHtml(e.place || when)}</div>
+    </div>`;
+  slide.onclick = () => openEvent(e);
+  slide.setAttribute('aria-label', `${e.title} 자세히 보기`);
+  markDots();
+}
+
+function buildDots() {
+  const box = $('#banner-dots');
+  box.innerHTML = '';
+  bannerList.forEach((_, i) => {
+    const dot = document.createElement('i');
+    dot.onclick = (ev) => { ev.stopPropagation(); bannerIdx = i; paintBanner(); startRotate(); };
+    box.appendChild(dot);
+  });
+  markDots();
+}
+function markDots() {
+  [...$('#banner-dots').children].forEach((d, i) => d.classList.toggle('on', i === bannerIdx));
+}
+function step(n) {
+  if (bannerList.length < 2) return;
+  bannerIdx = (bannerIdx + n + bannerList.length) % bannerList.length;
+  paintBanner();
+}
+function startRotate() {
+  stopRotate();
+  if (bannerList.length < 2) return;
+  // 행사가 둘 이상이면 3초마다 다음 행사를 보여 줍니다.
+  bannerTimer = setInterval(() => step(1), ROTATE_MS);
+}
+function stopRotate() { if (bannerTimer) { clearInterval(bannerTimer); bannerTimer = null; } }
+
 const DOW = ['일', '월', '화', '수', '목', '금', '토'];
 function dateLabel(e) {
   const d = new Date(e.start + 'T00:00:00');
@@ -508,6 +710,7 @@ function setView() {
 }
 function draw() {
   renderFilters();
+  renderBanner();
   const monthNav = [$('#prev'), $('#next'), $('#today')];
   for (const b of monthNav) b.hidden = view !== 'month';
   if (view === 'month') renderMonth();
@@ -528,6 +731,11 @@ async function boot() {
     $('#cal-view').innerHTML = `<div class="empty"><div class="big">🍞</div>일정을 불러오지 못했습니다. 잠시 뒤 새로고침해 주세요.</div>`;
     return;
   }
+  try {
+    const off = JSON.parse(localStorage.getItem('bbangcal-off') || '[]');
+    if (Array.isArray(off)) hidden = new Set(off.filter((id) => ORGS[id]));
+  } catch {}
+
   // 앞으로 열릴 일정이 있는 달로 첫 화면을 맞춥니다.
   const next = EVENTS.find((e) => (e.end || e.start) >= TODAY);
   if (next) cursor = new Date(next.start + 'T00:00:00');
@@ -539,8 +747,17 @@ async function boot() {
   $('#today').onclick = () => { cursor = new Date(); draw(); };
   $('#view-month').onclick = () => { view = 'month'; setView(); };
   $('#view-list').onclick = () => { view = 'list'; setView(); };
-  $('#reset').onclick = () => { hidden.clear(); query = ''; $('#q').value = ''; draw(); };
+  $('#reset').onclick = () => { hidden.clear(); saveHidden(); query = ''; $('#q').value = ''; draw(); };
   $('#q').oninput = (e) => { query = e.target.value.trim().toLowerCase(); if (query && view === 'month') { view = 'list'; setView(); } else draw(); };
+  $('#banner-prev').onclick = (ev) => { ev.stopPropagation(); step(-1); startRotate(); };
+  $('#banner-next').onclick = (ev) => { ev.stopPropagation(); step(1); startRotate(); };
+  const bn = $('#banner');
+  // 읽는 동안에는 넘어가지 않게 멈춥니다.
+  bn.addEventListener('pointerenter', stopRotate);
+  bn.addEventListener('pointerleave', startRotate);
+  bn.addEventListener('focusin', stopRotate);
+  bn.addEventListener('focusout', startRotate);
+  document.addEventListener('visibilitychange', () => document.hidden ? stopRotate() : startRotate());
   $('#btn-subscribe').onclick = openSub;
   $('#btn-theme').onclick = () => {
     const now = document.documentElement.dataset.theme;
