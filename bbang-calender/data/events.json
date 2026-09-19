@@ -1,205 +1,18 @@
 {
  "name": "빵캘",
- "updatedAt": "2026-09-19T11:15:14.737Z",
+ "updatedAt": "2026-09-19T13:16:21.795Z",
  "counts": {
   "total": 35,
   "upcoming": 10
  },
  "sources": [
   {
-   "id": "org-kdca",
-   "name": "질병관리청 공지",
-   "ok": true,
-   "found": 52,
-   "events": 0,
-   "ms": 6421
-  },
-  {
-   "id": "org-mohw",
-   "name": "보건복지부 공지",
-   "ok": true,
-   "found": 19,
-   "events": 4,
-   "ms": 17617
-  },
-  {
-   "id": "org-khealth",
-   "name": "한국건강증진개발원 공지",
-   "ok": true,
-   "found": 11,
-   "events": 0,
-   "ms": 4652
-  },
-  {
-   "id": "nkis",
-   "name": "NKIS 정책세미나안내",
-   "ok": true,
-   "found": 20,
-   "events": 0,
-   "ms": 25808
-  },
-  {
-   "id": "org-ncc",
-   "name": "국립암센터 공지",
-   "ok": true,
-   "found": 4,
-   "events": 3,
-   "ms": 8343
-  },
-  {
-   "id": "org-nhis",
-   "name": "국민건강보험공단 공지",
-   "ok": true,
-   "found": 24,
-   "events": 0,
-   "ms": 4842
-  },
-  {
-   "id": "org-mfds",
-   "name": "식품의약품안전처 공지",
-   "ok": true,
-   "found": 16,
-   "events": 8,
-   "ms": 25393
-  },
-  {
-   "id": "org-kihasa",
-   "name": "한국보건사회연구원 공지",
-   "ok": true,
-   "found": 3,
-   "events": 2,
-   "ms": 4930
-  },
-  {
-   "id": "org-hira",
-   "name": "건강보험심사평가원 공지",
-   "ok": true,
-   "found": 12,
-   "events": 1,
-   "ms": 6548
-  },
-  {
-   "id": "org-neca",
-   "name": "한국보건의료연구원 공지",
-   "ok": false,
-   "error": "HTTP 503",
-   "ms": 7681
-  },
-  {
-   "id": "org-khidi",
-   "name": "한국보건산업진흥원 공지",
-   "ok": false,
-   "error": "HTTP 503",
-   "ms": 8637
-  },
-  {
-   "id": "org-nmc",
-   "name": "국립중앙의료원 공지",
-   "ok": true,
-   "found": 11,
-   "events": 0,
-   "ms": 8742
-  },
-  {
-   "id": "org-nibp",
-   "name": "국가생명윤리정책원 공지",
-   "ok": true,
-   "found": 16,
-   "events": 4,
-   "ms": 9436
-  },
-  {
-   "id": "org-ksepi",
-   "name": "한국역학회 공지",
-   "ok": true,
-   "found": 10,
-   "events": 5,
-   "ms": 5866
-  },
-  {
-   "id": "org-kams",
-   "name": "대한의학회 공지",
-   "ok": true,
-   "found": 2,
-   "events": 0,
-   "ms": 2055
-  },
-  {
-   "id": "org-prevmed",
-   "name": "대한예방의학회 공지",
-   "ok": true,
-   "found": 15,
-   "events": 7,
-   "ms": 14527
-  },
-  {
-   "id": "org-kshpa",
-   "name": "한국보건행정학회 공지",
-   "ok": true,
-   "found": 9,
-   "events": 6,
-   "ms": 12808
-  },
-  {
-   "id": "org-kshep",
-   "name": "한국보건교육건강증진학회 공지",
-   "ok": true,
-   "found": 1,
-   "events": 1,
-   "ms": 4770
-  },
-  {
-   "id": "org-kosqua",
-   "name": "한국의료질향상학회 공지",
-   "ok": true,
-   "found": 7,
-   "events": 1,
-   "ms": 2145
-  },
-  {
-   "id": "org-kpha",
-   "name": "대한보건협회 공지",
-   "ok": false,
-   "error": "HTTP 503",
-   "ms": 7868
-  },
-  {
-   "id": "org-cochrane",
-   "name": "한국코크란 공지",
-   "ok": true,
-   "found": 16,
-   "events": 0,
-   "ms": 752
-  },
-  {
-   "id": "snu-health",
-   "name": "서울대 보건대학원 세미나정보",
-   "ok": true,
-   "found": 30,
-   "events": 20,
-   "ms": 71476
-  },
-  {
-   "id": "org-koddi",
-   "name": "한국장애인개발원 공지",
-   "ok": false,
-   "error": "HTTP 404",
-   "ms": 6226
-  },
-  {
-   "id": "org-kdca-ilje",
-   "name": "질병관리청 일정",
-   "ok": true,
-   "found": 32,
-   "events": 0,
-   "ms": 6392
-  },
-  {
    "id": "org-kspm",
    "name": "대한공공의학회 공지",
-   "ok": false,
-   "error": "HTTP 503",
-   "ms": 35346
+   "ok": true,
+   "found": 16,
+   "events": 0,
+   "ms": 14747
   }
  ],
  "events": [
@@ -238,7 +51,8 @@
    ],
    "lat": 37.560671,
    "lng": 126.973731,
-   "geo": "exact"
+   "geo": "exact",
+   "city": "서울"
   },
   {
    "id": "49a599a2e168a68b",
@@ -271,7 +85,8 @@
    "collectedAt": "2026-09-19",
    "lat": 37.458115,
    "lng": 126.952161,
-   "geo": "exact"
+   "geo": "exact",
+   "city": "서울"
   },
   {
    "id": "43b28ce89be69716",
@@ -289,7 +104,8 @@
    "collectedAt": "2026-09-19",
    "lat": 36.81028,
    "lng": 127.14684,
-   "geo": "approx"
+   "geo": "approx",
+   "city": "천안"
   },
   {
    "id": "2d91db80ab929bfc",
@@ -357,7 +173,8 @@
    ],
    "lat": 35.179953,
    "lng": 129.075236,
-   "geo": "approx"
+   "geo": "approx",
+   "city": "부산"
   },
   {
    "id": "b7e181f2438d5f3f",
@@ -488,7 +305,8 @@
    ],
    "lat": 37.566485,
    "lng": 126.979505,
-   "geo": "exact"
+   "geo": "exact",
+   "city": "서울"
   },
   {
    "id": "5846096ea0875583",
@@ -536,7 +354,8 @@
    "collectedAt": "2026-09-19",
    "lat": 37.465022,
    "lng": 126.9547,
-   "geo": "exact"
+   "geo": "exact",
+   "city": "서울"
   },
   {
    "id": "7959f356b5bb6342",
@@ -599,7 +418,8 @@
    "collectedAt": "2026-09-19",
    "lat": 37.560819,
    "lng": 126.968226,
-   "geo": "exact"
+   "geo": "exact",
+   "city": "서울"
   },
   {
    "id": "caf7a5632554fce9",
@@ -637,7 +457,8 @@
    "note": "포스터에 주최가 질병관리청·한국보건사회연구원 두 곳으로 적혀 있습니다.",
    "lat": 37.566679,
    "lng": 126.978291,
-   "geo": "approx"
+   "geo": "approx",
+   "city": "서울"
   },
   {
    "id": "e9558e2c65552cf4",
@@ -670,7 +491,8 @@
    "collectedAt": "2026-09-19",
    "lat": 37.465022,
    "lng": 126.9547,
-   "geo": "exact"
+   "geo": "exact",
+   "city": "서울"
   },
   {
    "id": "53f2ef954dea2f84",
@@ -688,7 +510,8 @@
    "collectedAt": "2026-09-19",
    "lat": 37.560671,
    "lng": 126.973764,
-   "geo": "exact"
+   "geo": "exact",
+   "city": "서울"
   },
   {
    "id": "7edfdde6847968e6",
@@ -706,7 +529,8 @@
    "collectedAt": "2026-09-19",
    "lat": 37.638567,
    "lng": 127.010551,
-   "geo": "exact"
+   "geo": "exact",
+   "city": "서울"
   },
   {
    "id": "9b57a4beacb03ae1",
@@ -728,7 +552,8 @@
    ],
    "lat": 37.579661,
    "lng": 127.003746,
-   "geo": "exact"
+   "geo": "exact",
+   "city": "서울"
   },
   {
    "id": "9dd628608a1050e2",
@@ -777,7 +602,8 @@
    "collectedAt": "2026-09-19",
    "lat": 38.208678,
    "lng": 128.583518,
-   "geo": "approx"
+   "geo": "approx",
+   "city": "속초"
   },
   {
    "id": "b744d68864203471",

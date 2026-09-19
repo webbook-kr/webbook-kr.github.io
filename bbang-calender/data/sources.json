@@ -171,10 +171,9 @@
    "name": "대한공공의학회",
    "short": "공공의학",
    "category": "society",
-   "home": "https://www.kspm.kr/",
-   "board": "https://www.kspm.kr/",
-   "verified": false,
-   "note": "kspm.kr 은 학회 사이트가 아닙니다. 고정 주소를 찾으면 다시 켜세요."
+   "home": "https://www.pubmed.or.kr/",
+   "board": "https://www.pubmed.or.kr/",
+   "verified": true
   },
   {
    "id": "kshep",
@@ -407,10 +406,10 @@
    "id": "org-kspm",
    "name": "대한공공의학회 공지",
    "adapter": "generic",
-   "url": "https://www.kspm.kr/",
+   "url": "https://www.pubmed.or.kr/",
    "org": "kspm",
-   "enabled": false,
-   "note": "누리집이 응답하지 않습니다. 주소를 확인하면 enabled 를 true 로 바꾸세요"
+   "enabled": true,
+   "note": "첫 화면에 여러 게시판 글이 함께 뜹니다"
   },
   {
    "id": "org-kshep",

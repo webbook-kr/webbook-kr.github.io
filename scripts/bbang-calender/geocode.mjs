@@ -74,6 +74,15 @@ async function ask(q) {
   return null;
 }
 
+/** 지도 답에서 '서울특별시', '속초시' 같은 도시 이름을 뽑습니다. */
+export function cityOf(label) {
+  const parts = String(label || '').split(',').map((x) => x.trim());
+  const hit = parts.find((x) => /(?:특별시|광역시|특별자치시)$/.test(x))
+    || parts.find((x) => /[가-힣]{2,6}(?:시|군)$/.test(x));
+  if (!hit) return null;
+  return hit.replace(/특별자치시$|특별시$|광역시$/, '').replace(/시$|군$/, '') || hit;
+}
+
 async function main() {
   const db = JSON.parse(await fs.readFile(path.join(DATA, 'events.json'), 'utf8'));
   let cache = {};
@@ -123,6 +132,8 @@ async function main() {
     if (c.online) { e.online = true; online++; continue; }
     if (c.none) continue;
     e.lat = c.lat; e.lng = c.lng; e.geo = c.precision;
+    const city = cityOf(c.label);
+    if (city) e.city = city;
     mapped++;
   }
   db.map = { mapped, online, places: places.length, geocodedAt: new Date().toISOString().slice(0, 10) };
