@@ -49,6 +49,10 @@ function blockLens(body) {
     }
     if (/^:::\s?/.test(s)) { out.push(s.length + 40); i++; continue; }
     if (/^(발표자|연사|speaker)\s*[:：]/i.test(s)) { out.push(70); i++; continue; }
+    if (/^qr:\s*\S/i.test(s)) {
+      const q = s.replace(/^qr:\s*/i, '').split('|');
+      out.push(340 + (q[1] ? q[1].length + 60 : 0) + (q[2] ? q[2].length : 0)); i++; continue;
+    }
     if (/^(핵심|요점|결론)\s*[:：]/.test(s)) { out.push(s.length + 70); i++; continue; }
     if (/^Q\s*[:：]/i.test(s)) {
       let n = 0; const start = i;
@@ -85,7 +89,7 @@ function blockLens(body) {
     if (/^youtube:\s*\S/i.test(s) || /^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(s.trim())) {
       out.push(380); i++; continue;
     }
-    const STOP = /^(#|##|---|>|:::|[-*]\s|\d+[.)]\s|\||!\[|```|youtube:|Q\s*[:：]|A\s*[:：]|발표자\s*[:：]|연사\s*[:：]|speaker\s*[:：]|핵심\s*[:：]|요점\s*[:：]|결론\s*[:：]|\d{1,2}:\d{2}(?::\d{2})?\s+\S|https?:\/\/(www\.)?(youtube\.com|youtu\.be))/i;
+    const STOP = /^(#|##|---|>|:::|[-*]\s|\d+[.)]\s|\||!\[|```|youtube:|qr:|Q\s*[:：]|A\s*[:：]|발표자\s*[:：]|연사\s*[:：]|speaker\s*[:：]|핵심\s*[:：]|요점\s*[:：]|결론\s*[:：]|\d{1,2}:\d{2}(?::\d{2})?\s+\S|https?:\/\/(www\.)?(youtube\.com|youtu\.be))/i;
     const p = [s]; i++;
     while (i < L.length && L[i].trim() && !STOP.test(L[i])) p.push(L[i++]);
     out.push(p.join('\n').length);
@@ -106,8 +110,19 @@ function flush() {
   sec.groups[sec.groups.length - 1].push(...buf);
   buf = [];
 }
+let skipTo = -1;
 lines.forEach((s, n) => {
-  if (/^#\s+/.test(s)) { flush(); ch = { title: s.replace(/^#\s+/, '').trim(), line: n + 1, secs: [] }; chapters.push(ch); sec = null; return; }
+  if (n <= skipTo) return;                       // 장 표지로 빨려 들어간 그림 줄
+  if (/^#\s+/.test(s)) {
+    flush();
+    ch = { title: s.replace(/^#\s+/, '').split('|')[0].trim(), line: n + 1, secs: [] };
+    chapters.push(ch); sec = null;
+    // 장 제목 바로 다음(빈 줄 건너뛰고)이 그림이면 제작기가 장 표지에 넣는다
+    let j = n + 1;
+    while (j < lines.length && !lines[j].trim()) j++;
+    if (j < lines.length && /^!\[([^\]]*)\]\(([^)\s]+)\)\s*$/.test(lines[j])) skipTo = j;
+    return;
+  }
   if (/^##\s+/.test(s)) { flush(); if (!ch) { ch = { title: '', line: n + 1, secs: [] }; chapters.push(ch); } pushSec(s.replace(/^##\s+/, '').trim(), n + 1); return; }
   if (/^---\s*$/.test(s)) { flush(); forced = true; return; }
   buf.push(s);

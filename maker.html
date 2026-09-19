@@ -68,6 +68,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  body.tab-edit #view{display:none}
 }
 </style>
+<script src="vendor/qrcode.js"></script>
 </head>
 <body>
 <header>
@@ -98,6 +99,8 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    <summary>쓰는 법</summary>
    <table>
     <tr><td># 제목</td><td>새 챕터. 챕터 표지가 자동으로 생기고 차례에 들어감</td></tr>
+    <tr><td># 제목 | 부제</td><td>챕터 표지와 차례에 설명 한 줄이 같이 나옴</td></tr>
+    <tr><td># 제목<br>![](주소)</td><td>챕터 제목 바로 다음 줄에 그림을 두면 챕터 표지에 들어감</td></tr>
     <tr><td>## 소제목</td><td>새 쪽</td></tr>
     <tr><td>---</td><td>같은 소제목으로 쪽 나누기</td></tr>
     <tr><td>**굵게**</td><td>강조</td></tr>
@@ -108,6 +111,8 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
     <tr><td>![설명](주소)</td><td>사진</td></tr>
     <tr><td>youtube: 영상ID</td><td>유튜브 (누르면 재생). 주소 전체를 붙여도 됨</td></tr>
     <tr><td>::: 메모</td><td>회색 메모 상자 (한 줄)</td></tr>
+    <tr><td>qr: 주소</td><td>QR 코드. 휴대폰으로 찍으면 바로 열림</td></tr>
+    <tr><td>qr: 주소 | 제목 | 설명</td><td>제목과 설명을 같이 보여 줌 (뒤는 생략 가능)</td></tr>
    </table>
    <p class="hint" style="margin:10px 0 4px"><b>세미나·강연 정리용</b></p>
    <table>
@@ -209,6 +214,29 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   s=s.replace(/&lt;br\s*\/?&gt;/gi,'<br>');
   return s;
  }
+ // ── QR ────────────────────────────────────────────────
+ // 주소를 QR 그림으로 바꿔 책 안에 박아 넣는다. 책 파일만 있으면 되고
+ // 읽을 때 인터넷으로 뭔가를 더 받아 오지 않는다.
+ function qrSvg(text){
+  if(typeof qrcode!=='function')return null;
+  try{
+   var q=qrcode(0,'M'); q.addData(text); q.make();
+   var n=q.getModuleCount(), d='';
+   for(var r=0;r<n;r++){                       // 한 줄에서 이어진 칸은 하나로 묶어 그린다
+    var c=0;
+    while(c<n){
+     if(!q.isDark(r,c)){c++;continue;}
+     var s2=c; while(c<n&&q.isDark(r,c))c++;
+     d+='M'+s2+' '+r+'h'+(c-s2)+'v1h-'+(c-s2)+'z';
+    }
+   }
+   return '<svg viewBox="0 0 '+n+' '+n+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="QR 코드">'
+    +'<rect width="'+n+'" height="'+n+'" fill="#fff"/><path d="'+d+'" fill="#15130f"/></svg>';
+  }catch(e){ return null; }
+ }
+ // 화면에 보여 줄 짧은 주소
+ function shortUrl(u){ return u.replace(/^https?:\/\//,'').replace(/\/$/,''); }
+
  function ytid(s){var m=s.match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/)||s.match(/^([\w-]{11})$/);return m?m[1]:null;}
  // "12:30" 또는 "1:02:30" → 초
  function toSec(t){
@@ -227,6 +255,19 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    if(/^```/.test(L)){var c=[];i++;while(i<lines.length&&!/^```/.test(lines[i]))c.push(lines[i++]);i++;out.push({html:'<pre>'+esc(c.join('\n'))+'</pre>',len:c.join('\n').length*1.3+40});continue;}
    if(/^>\s?/.test(L)){var q=[];while(i<lines.length&&/^>\s?/.test(lines[i]))q.push(lines[i++].replace(/^>\s?/,''));out.push({html:'<blockquote>'+inline(q.join(' '))+'</blockquote>',len:q.join(' ').length+60});continue;}
    if(/^:::\s?/.test(L)){out.push({html:'<p class="note">'+inline(L.replace(/^:::\s?/,''))+'</p>',len:L.length+40});i++;continue;}
+   // qr: 주소 | 제목 | 설명   (제목과 설명은 없어도 됨)
+   if(/^qr:\s*\S/i.test(L)){
+    var qp=L.replace(/^qr:\s*/i,'').split('|').map(function(x){return x.trim();});
+    var url=qp[0], svg=qrSvg(url);
+    var h='<div class="qr">'
+     +(qp[1]?'<span class="eyebrow">영상으로 보기</span><h4>'+inline(qp[1])+'</h4>':'')
+     +(qp[2]?'<p class="qm">'+inline(qp[2])+'</p>':'')
+     +'<div class="qbox">'+(svg?'<div class="qimg">'+svg+'</div>':'')
+     +'<div class="qtxt"><a href="'+esc(url)+'" target="_blank" rel="noopener">'+esc(shortUrl(url))+'</a>'
+     +'<span>'+(svg?'휴대폰으로 찍으면 바로 열립니다':'주소를 눌러 여세요')+'</span></div></div></div>';
+    out.push({html:h,len:(svg?340:150)+(qp[1]?qp[1].length+60:0)+(qp[2]?qp[2].length:0)});
+    i++;continue;
+   }
    // 발표자:  홍길동 | 소속 | 14:00-14:40
    if(/^(발표자|연사|speaker)\s*[::]/i.test(L)){
     var w=L.replace(/^[^::]*[::]\s*/,'').split('|').map(function(x){return x.trim();});
@@ -283,7 +324,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    if(im){out.push({html:'<figure><img src="'+esc(im[2])+'" alt="'+esc(im[1])+'" loading="lazy">'+(im[1]?'<figcaption>'+esc(im[1])+'</figcaption>':'')+'</figure>',len:420});i++;continue;}
    var yt=/^youtube:\s*(.+)$/i.test(L)?ytid(L.replace(/^youtube:\s*/i,'').trim()):(/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(L.trim())?ytid(L.trim()):null);
    if(yt){out.push({html:'<div class="vwrap" data-v="'+yt+'"><div class="vframe" style="background-image:url(https://i.ytimg.com/vi/'+yt+'/hqdefault.jpg)"></div></div>',len:380});i++;continue;}
-   var STOP=/^(#|##|---|>|:::|[-*]\s|\d+[.)]\s|\||!\[|```|youtube:|Q\s*[::]|A\s*[::]|발표자\s*[::]|연사\s*[::]|speaker\s*[::]|핵심\s*[::]|요점\s*[::]|결론\s*[::]|\d{1,2}:\d{2}(?::\d{2})?\s+\S|https?:\/\/(www\.)?(youtube\.com|youtu\.be))/i;
+   var STOP=/^(#|##|---|>|:::|[-*]\s|\d+[.)]\s|\||!\[|```|youtube:|qr:|Q\s*[::]|A\s*[::]|발표자\s*[::]|연사\s*[::]|speaker\s*[::]|핵심\s*[::]|요점\s*[::]|결론\s*[::]|\d{1,2}:\d{2}(?::\d{2})?\s+\S|https?:\/\/(www\.)?(youtube\.com|youtu\.be))/i;
    var p=[L];i++;while(i<lines.length&&lines[i].trim()&&!STOP.test(lines[i]))p.push(lines[i++]);
    para(p.join('\n'));
   }
@@ -298,7 +339,17 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   function flush(){ if(!buf.length)return; if(!buf.some(function(s){return s.trim();})){buf=[];return;} if(!ch){ch={title:'',secs:[]};chapters.push(ch);} if(!sec)newSec(''); sec.parts.push(buf); buf=[]; }
   for(var i=0;i<lines.length;i++){
    var L=lines[i];
-   if(/^#\s+/.test(L)){flush();ch={title:L.replace(/^#\s+/,'').trim(),secs:[]};chapters.push(ch);sec=null;continue;}
+   if(/^#\s+/.test(L)){
+    flush();
+    var ht=L.replace(/^#\s+/,'').trim(), hp=ht.split('|');           // "# 제목 | 부제"
+    ch={title:hp[0].trim(),sub:(hp[1]||'').trim(),img:null,secs:[]};
+    chapters.push(ch);sec=null;
+    // 장 제목 바로 다음 줄(빈 줄은 건너뜀)이 그림이면 장 표지에 넣는다
+    var j=i+1; while(j<lines.length&&!lines[j].trim())j++;
+    var cim=j<lines.length?lines[j].match(/^!\[([^\]]*)\]\(([^)\s]+)\)\s*$/):null;
+    if(cim){ch.img={alt:cim[1],src:cim[2]};i=j;}
+    continue;
+   }
    if(/^##\s+/.test(L)){flush();if(!ch){ch={title:'',secs:[]};chapters.push(ch);}newSec(L.replace(/^##\s+/,'').trim());continue;}
    if(/^---\s*$/.test(L)){flush();if(sec)sec.parts.push(null);continue;} // null = 강제 쪽 나눔 표시
    buf.push(L);
@@ -306,7 +357,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   flush();
   return chapters;
  }
- function pageHtml(cls,inner,footL,footR){return '<section class="s'+(cls?' '+cls:'')+'">\n <div class="paper"><div class="pin">\n'+inner+'\n </div><div class="foot"><span>'+esc(footL)+'</span><span>'+esc(footR)+'</span></div></div>\n</section>\n';}
+ function pageHtml(cls,inner,footL,footR){return '<section class="s'+(cls?' '+cls:'')+'">\n <div class="paper"><div class="pin">\n'+inner+'\n </div><div class="foot"><span>'+esc(footL)+'</span><span class="pno">'+esc(footR)+'</span></div></div>\n</section>\n';}
  function build(){
   var rawTitle=ti.value.trim()||'제목 없는 책', title=rawTitle.replace(/\s*\|\s*/g,' '), sub=su.value.trim(), author=au.value.trim();
   var chapters=parse(md.value), pages=[], n=0;
@@ -315,8 +366,11 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   var toc=[];
   chapters.forEach(function(ch,ci){
    var num=String(ci+1).padStart(2,'0'), foot=num+' '+ch.title;
-   if(ch.title){ toc.push({num:num,title:ch.title,page:pages.length+1});
-    pages.push(pageHtml('open alt','  <div class="chnum">'+num+'</div>\n  <span class="eyebrow">Chapter '+(ci+1)+'</span>\n  <h2>'+inline(ch.title)+'</h2>',foot,String(pages.length+1))); }
+   if(ch.title){ toc.push({num:num,title:ch.title,sub:ch.sub,page:pages.length+1});
+    pages.push(pageHtml('open alt','  <div class="chnum">'+num+'</div>\n  <span class="eyebrow">Chapter '+(ci+1)+'</span>\n  <h2>'+inline(ch.title)+'</h2>'
+     +(ch.sub?'\n  <p class="chsub">'+inline(ch.sub)+'</p>':'')
+     +(ch.img?'\n  <figure class="chimg"><img src="'+esc(ch.img.src)+'" alt="'+esc(ch.img.alt)+'" loading="lazy"></figure>':''),
+     foot,String(pages.length+1))); }
    ch.secs.forEach(function(sec){
     // parts: 줄 묶음 배열 (null 은 강제 나눔). 블록으로 바꾼 뒤 글자 수로 쪽 나눔
     var groups=[[]];
@@ -330,8 +384,12 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    });
   });
   pages.push(pageHtml('cover','  <span class="eyebrow">The End</span>\n  <h2>여기까지입니다</h2>\n  <p class="kick">읽어 주셔서 고맙습니다.</p>\n  <div class="by">© '+new Date().getFullYear()+' '+esc(author)+'</div>',title,'끝'));
-  pages[tocIdx]=pageHtml('','  <span class="eyebrow">Contents</span>\n  <h2 style="margin-bottom:18px">차례</h2>\n'+toc.map(function(t){return '  <div class="tocrow" data-go="'+t.num+'"><span class="tn">'+t.num+'</span><span class="tt">'+inline(t.title)+'</span><span class="tp">'+t.page+'쪽</span></div>';}).join('\n')+'\n  <p class="note" style="margin-top:22px"><b>읽는 법</b> ‹ › 단추, 키보드 ← →, 손가락으로 넘기기. 아래 드롭다운으로 바로 이동.</p>','차례','2');
-  return {deck:pages.join(''), title:title, sub:sub, author:author, n:pages.length};
+  pages[tocIdx]=pageHtml('','  <span class="eyebrow">Contents</span>\n  <h2 style="margin-bottom:18px">차례</h2>\n'+toc.map(function(t){return '  <div class="tocrow" data-go="'+t.num+'"><span class="tn">'+t.num+'</span><span class="tt">'+inline(t.title)
+   +(t.sub?'<span class="ts">'+inline(t.sub)+'</span>':'')+'</span><span class="tp">'+t.page+'쪽</span></div>';}).join('\n')+'\n  <p class="note" style="margin-top:22px"><b>읽는 법</b> ‹ › 단추, 키보드 ← →, 손가락으로 넘기기. 아래 드롭다운으로 바로 이동.</p>','차례','2');
+  // 바닥글 쪽수를 "7 / 68" 로. 표지·끝처럼 숫자가 아닌 것은 그대로 둔다.
+  var total=pages.length;
+  pages=pages.map(function(pg){return pg.replace(/<span class="pno">(\d+)<\/span>/,function(m,d){return '<span class="pno">'+d+' / '+total+'</span>';});});
+  return {deck:pages.join(''), title:title, sub:sub, author:author, n:total};
  }
  function assemble(b, cipherJson){
   var t=TPL;
