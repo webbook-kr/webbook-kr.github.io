@@ -19,7 +19,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:e2b2c2fbf7e54ad8@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;TZID=Asia/Seoul:20260805T090000
 DTEND;TZID=Asia/Seoul:20260805T103000
 SUMMARY:[그 밖의 기관] '건강불평등을 과정으로 보기' 
@@ -32,7 +32,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:e691b38120fb4fbd@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;TZID=Asia/Seoul:20260807T130000
 DTEND;TZID=Asia/Seoul:20260807T170000
 SUMMARY:[국민건강보험공단] 2026년 한국의료패널 자료설
@@ -45,8 +45,23 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&pageid=2&uid=5668
 END:VEVENT
 BEGIN:VEVENT
+UID:aed2c67663fa9ab9@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T025251Z
+DTSTART;VALUE=DATE:20260825
+DTEND;VALUE=DATE:20260827
+SUMMARY:[식품의약품안전처] 2026 K-건강기능식품\, 세계
+ 를 향한 혁신적 도약 전략 콘퍼런스 발표자료
+DESCRIPTION:주최: 식품의약품안전처\n원문: https://www.mfds.
+ go.kr/brd/m_220/view.do?seq=32928&srchFr=&srchTo=&srchWord=&srchTp=&itm
+ _seq_1=0&itm_seq_2=0&multi_itm_seq=0&company_cd=&company_nm=&page=1\n
+ 빵캘: https://webbook-kr.github.io/cal/
+URL:https://www.mfds.go.kr/brd/m_220/view.do?seq=32928&srchFr=&srchTo=&
+ srchWord=&srchTp=&itm_seq_1=0&itm_seq_2=0&multi_itm_seq=0&company_cd=&c
+ ompany_nm=&page=1
+END:VEVENT
+BEGIN:VEVENT
 UID:08147d693f210f47@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;TZID=Asia/Seoul:20260826T140000
 DTEND;TZID=Asia/Seoul:20260826T160000
 SUMMARY:[그 밖의 기관] 졸업생-재학생 간담회 안내 (8/26 
@@ -60,7 +75,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:1c1734342f0cd9ef@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260827
 DTEND;VALUE=DATE:20260828
 SUMMARY:[그 밖의 기관] 다양한 감염병 모델 기반 통합분
@@ -74,7 +89,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:80cfe26e012d3c48@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260828
 DTEND;VALUE=DATE:20260829
 SUMMARY:[국가생명윤리정책원] 제76회 콜로키움 개최 안내
@@ -87,7 +102,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:21cc604a068d667f@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;TZID=Asia/Seoul:20260901T090000
 DTEND;TZID=Asia/Seoul:20260901T180000
 SUMMARY:[건강보험심사평가원] 검체검사 위·수탁 제도 
@@ -101,7 +116,7 @@ URL:https://www.hira.or.kr/bbsDummy.do?pgmid=HIRAA020002000100&brdScnBl
 END:VEVENT
 BEGIN:VEVENT
 UID:9d75bb1b007d5d2b@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;TZID=Asia/Seoul:20260902T090000
 DTEND;TZID=Asia/Seoul:20260902T170000
 SUMMARY:[건강보험심사평가원] <안내> 2026 가을학술대회 
@@ -114,7 +129,7 @@ URL:https://www.kosqua.net/index.php?page=view&idx=4312&hCode=BOARD&bo_
 END:VEVENT
 BEGIN:VEVENT
 UID:f623228caa027750@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;TZID=Asia/Seoul:20260903T130000
 DTEND;TZID=Asia/Seoul:20260903T180000
 SUMMARY:[국민건강보험공단] 2026년 한국의료패널 지역 
@@ -128,7 +143,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:f92f1cd5eed064e2@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260908
 SUMMARY:[대한예방의학회] 2026 대한약리학회 제78차 추계
@@ -145,7 +160,7 @@ URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
 END:VEVENT
 BEGIN:VEVENT
 UID:c0955c34680f3dda@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260908
 SUMMARY:[보건복지부] 2026년 제27회 한국장애와건강포럼 
@@ -162,7 +177,7 @@ URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
 END:VEVENT
 BEGIN:VEVENT
 UID:4da8b49543234e8e@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260908
 SUMMARY:[대한예방의학회] 2026년 추계학술대회 사전접수
@@ -179,7 +194,7 @@ URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
 END:VEVENT
 BEGIN:VEVENT
 UID:1b4eb4c81b872525@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260908
 SUMMARY:[질병관리청] 9월 세미나 <보건정책학의 이해: 
@@ -196,7 +211,7 @@ URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
 END:VEVENT
 BEGIN:VEVENT
 UID:0d0963332b71fb8c@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260908
 SUMMARY:[질병관리청] 미세먼지 대응 질병연구포럼 연구
@@ -213,7 +228,7 @@ URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
 END:VEVENT
 BEGIN:VEVENT
 UID:ee3f3bb710076b5e@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260908
 SUMMARY:[보건복지부] 제13차 미래 건강전략 포럼 개최
@@ -229,7 +244,7 @@ URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
 END:VEVENT
 BEGIN:VEVENT
 UID:6b488f1c93b0d840@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260909
 DTEND;VALUE=DATE:20260910
 SUMMARY:[국가생명윤리정책원] 제1회 유네스코 첨단과학
@@ -241,8 +256,31 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5777
 END:VEVENT
 BEGIN:VEVENT
+UID:8863fff0698db946@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T025251Z
+DTSTART;TZID=Asia/Seoul:20260911T140000
+DTEND;TZID=Asia/Seoul:20260911T163000
+SUMMARY:[보건복지부] 상병수당 제도화 방안 마련을 위
+ 한 토론회
+LOCATION:프레지던트호텔 슈벨트홀
+DESCRIPTION:주최: 보건복지부\n원문: https://www.kihasa.re.kr/n
+ ews/event/view?seq=76736\n빵캘: https://webbook-kr.github.io/cal/
+URL:https://www.kihasa.re.kr/news/event/view?seq=76736
+END:VEVENT
+BEGIN:VEVENT
+UID:41512a0be88afa16@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T025251Z
+DTSTART;VALUE=DATE:20260914
+DTEND;VALUE=DATE:20260917
+SUMMARY:[한국보건행정학회] 2026 한국사회약학회 후기 
+ 연수교육 개최 안내
+DESCRIPTION:주최: 한국보건행정학회\n원문: https://www.kshpa
+ .org/bbs/notice2/1541\n빵캘: https://webbook-kr.github.io/cal/
+URL:https://www.kshpa.org/bbs/notice2/1541
+END:VEVENT
+BEGIN:VEVENT
 UID:00abfeb5af51f67f@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260915
 DTEND;VALUE=DATE:20260916
 SUMMARY:[그 밖의 기관] 서울시 중장년 정책포럼 2026
@@ -254,7 +292,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:260151e9b8b2ab2d@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260916
 DTEND;VALUE=DATE:20260917
 SUMMARY:[그 밖의 기관] 효과 검증에서 실제 시행으로: 
@@ -269,7 +307,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:13706adb8c626720@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260917
 DTEND;VALUE=DATE:20260919
 SUMMARY:[한국역학회] 2026 추계학술대회
@@ -280,8 +318,23 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5753
 END:VEVENT
 BEGIN:VEVENT
+UID:2c57d0506c4fcfef@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T025251Z
+DTSTART;VALUE=DATE:20260917
+DTEND;VALUE=DATE:20260919
+SUMMARY:[식품의약품안전처] 의료기기의 사이버보안 업
+ 무설명회(20차) 발표자료
+DESCRIPTION:주최: 식품의약품안전처\n원문: https://www.mfds.
+ go.kr/brd/m_220/view.do?seq=32930&srchFr=&srchTo=&srchWord=&srchTp=&itm
+ _seq_1=0&itm_seq_2=0&multi_itm_seq=0&company_cd=&company_nm=&page=1\n
+ 빵캘: https://webbook-kr.github.io/cal/
+URL:https://www.mfds.go.kr/brd/m_220/view.do?seq=32930&srchFr=&srchTo=&
+ srchWord=&srchTp=&itm_seq_1=0&itm_seq_2=0&multi_itm_seq=0&company_cd=&c
+ ompany_nm=&page=1
+END:VEVENT
+BEGIN:VEVENT
 UID:005058a275d6f443@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;TZID=Asia/Seoul:20260918T130000
 DTEND;TZID=Asia/Seoul:20260918T172000
 SUMMARY:[질병관리청] 2026 담배폐해 전문가 심포지엄
@@ -294,7 +347,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:3fbe6de7f4e44862@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;TZID=Asia/Seoul:20260918T090000
 DTEND;TZID=Asia/Seoul:20260918T173000
 SUMMARY:[그 밖의 기관] 고려대학교 한국코크란 워크숍 
@@ -306,8 +359,33 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&pageid=2&uid=5715
 END:VEVENT
 BEGIN:VEVENT
+UID:0638367633c24267@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T025251Z
+DTSTART;VALUE=DATE:20260921
+DTEND;VALUE=DATE:20260922
+SUMMARY:[한국보건사회연구원] 2026년 제1차 감염병 위기 
+ 사회대응 포럼
+LOCATION:코트야드 메리어트 서울 명동
+DESCRIPTION:주최: 한국보건사회연구원\n원문: https://www.ki
+ hasa.re.kr/news/event/view?seq=76820\n빵캘: https://webbook-kr.github
+ .io/cal/
+URL:https://www.kihasa.re.kr/news/event/view?seq=76820
+END:VEVENT
+BEGIN:VEVENT
+UID:7d09fcc26aa802a9@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T025251Z
+DTSTART;TZID=Asia/Seoul:20260923T160000
+DTEND;TZID=Asia/Seoul:20260923T173000
+SUMMARY:[한국역학회] 9월 세미나
+DESCRIPTION:주최: 한국역학회\n원문: https://www.ksepi.org/web/
+ lay1/bbs/S1T298C325/A/9/view.do?article_seq=2999&cpage=&rows=&condition
+ =&keyword=\n빵캘: https://webbook-kr.github.io/cal/
+URL:https://www.ksepi.org/web/lay1/bbs/S1T298C325/A/9/view.do?article_s
+ eq=2999&cpage=&rows=&condition=&keyword=
+END:VEVENT
+BEGIN:VEVENT
 UID:ed890f396422b452@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260930
 DTEND;VALUE=DATE:20261001
 SUMMARY:[그 밖의 기관] 개방 공간 데이터과학과 건강영
@@ -321,7 +399,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:8fab4ff328187ecf@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;TZID=Asia/Seoul:20261001T103000
 DTEND;TZID=Asia/Seoul:20261001T170000
 SUMMARY:[그 밖의 기관] 제6회 장애인삶 패널조사 학술대
@@ -336,7 +414,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:6d9335d9c6966017@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;TZID=Asia/Seoul:20261029T133000
 DTEND;TZID=Asia/Seoul:20261029T163000
 SUMMARY:[그 밖의 기관] 2026년도 장애인 건강보건통계 컨
@@ -350,8 +428,21 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5807
 END:VEVENT
 BEGIN:VEVENT
+UID:1b809f1dd497092d@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T025251Z
+DTSTART;TZID=Asia/Seoul:20261030T100000
+DTEND;TZID=Asia/Seoul:20261030T183000
+SUMMARY:[한국보건교육건강증진학회] 2026년 추계학술대
+ 회 일정 안내 및 발표·토론 참여 요청 (10/30 금)
+LOCATION:한국방송통신대학교 열린관 대강당 및 414호
+DESCRIPTION:주최: 한국보건교육건강증진학회\n원문: https
+ ://khep.or.kr/board/notice/article/284380\n빵캘: https://webbook-kr.g
+ ithub.io/cal/
+URL:https://khep.or.kr/board/notice/article/284380
+END:VEVENT
+BEGIN:VEVENT
 UID:ccae6ddb5f4819a7@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20261030
 DTEND;VALUE=DATE:20261031
 SUMMARY:[그 밖의 기관] 치료 체계적문헌고찰 워크숍
@@ -363,10 +454,22 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5802
 END:VEVENT
 BEGIN:VEVENT
-UID:b8d1cc86b4573221@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+UID:b36e3e7ec0bccbaa@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T025251Z
+DTSTART;TZID=Asia/Seoul:20261105T120000
+DTEND;TZID=Asia/Seoul:20261105T140000
+SUMMARY:[한국보건행정학회] 2026 후기학술대회 북페어 
+ 참여자 모집
+LOCATION:후기학술대회장 로비
+DESCRIPTION:주최: 한국보건행정학회\n원문: https://www.kshpa
+ .org/bbs/notice/1535\n빵캘: https://webbook-kr.github.io/cal/
+URL:https://www.kshpa.org/bbs/notice/1535
+END:VEVENT
+BEGIN:VEVENT
+UID:168baded7fdae589@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20261105
-DTEND;VALUE=DATE:20261107
+DTEND;VALUE=DATE:20261106
 SUMMARY:[한국보건행정학회] 2026년 한국보건행정학회 후
  기 학술대회
 LOCATION:속초 델피노
@@ -376,7 +479,7 @@ URL:https://www.kshpa.org/calendar/list/14
 END:VEVENT
 BEGIN:VEVENT
 UID:13546f77977b6498@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20261216
 DTEND;VALUE=DATE:20261217
 SUMMARY:[대한예방의학회] 기획 세미나「자살예방의 정

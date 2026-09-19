@@ -46,8 +46,8 @@
    "short": "식약처",
    "category": "gov",
    "home": "https://www.mfds.go.kr/",
-   "board": "https://www.mfds.go.kr/brd/m_99/list.do",
-   "verified": false
+   "board": "https://www.mfds.go.kr/brd/m_220/list.do",
+   "verified": true
   },
   {
    "id": "khealth",
@@ -64,8 +64,8 @@
    "short": "암센터",
    "category": "gov",
    "home": "https://www.ncc.re.kr/",
-   "board": "https://www.ncc.re.kr/main.ncc?uri=manage01_6",
-   "verified": false
+   "board": "https://www.ncc.re.kr/board.ncc?uri=notice01",
+   "verified": true
   },
   {
    "id": "nhis",
@@ -100,8 +100,8 @@
    "short": "보사연",
    "category": "research",
    "home": "https://www.kihasa.re.kr/",
-   "board": "https://www.kihasa.re.kr/news/notice/list",
-   "verified": false
+   "board": "https://www.kihasa.re.kr/news/event",
+   "verified": true
   },
   {
    "id": "khidi",
@@ -118,17 +118,17 @@
    "short": "중앙의료원",
    "category": "research",
    "home": "https://www.nmc.or.kr/",
-   "board": "https://www.nmc.or.kr/nmc/bbs/B0000002/list.do?menuNo=200078",
-   "verified": false
+   "board": "https://www.nmc.or.kr/nmc/board/B0000001",
+   "verified": true
   },
   {
    "id": "nibp",
    "name": "국가생명윤리정책원",
    "short": "생명윤리",
    "category": "research",
-   "home": "https://www.nibp.kr/",
-   "board": "https://www.nibp.kr/xe/notice",
-   "verified": false
+   "home": "https://nibp.kr/",
+   "board": "https://nibp.kr/board/notice",
+   "verified": true
   },
   {
    "id": "prevmed",
@@ -180,9 +180,9 @@
    "name": "한국보건교육건강증진학회",
    "short": "보건교육",
    "category": "society",
-   "home": "https://www.kshep.or.kr/",
-   "board": "https://www.kshep.or.kr/",
-   "verified": false
+   "home": "https://khep.or.kr/",
+   "board": "https://khep.or.kr/board/notice",
+   "verified": true
   },
   {
    "id": "kpha",
@@ -253,7 +253,7 @@
    "id": "org-mfds",
    "name": "식품의약품안전처 공지",
    "adapter": "generic",
-   "url": "https://www.mfds.go.kr/brd/m_99/list.do",
+   "url": "https://www.mfds.go.kr/brd/m_220/list.do",
    "org": "mfds",
    "enabled": true,
    "note": "국내 인터넷에서 돌려야 열립니다"
@@ -271,7 +271,7 @@
    "id": "org-ncc",
    "name": "국립암센터 공지",
    "adapter": "generic",
-   "url": "https://www.ncc.re.kr/main.ncc?uri=manage01_6",
+   "url": "https://www.ncc.re.kr/board.ncc?uri=notice01",
    "org": "ncc",
    "enabled": true,
    "note": "국내 인터넷에서 돌려야 열립니다"
@@ -307,7 +307,7 @@
    "id": "org-kihasa",
    "name": "한국보건사회연구원 공지",
    "adapter": "generic",
-   "url": "https://www.kihasa.re.kr/news/notice/list",
+   "url": "https://www.kihasa.re.kr/news/event",
    "org": "kihasa",
    "enabled": true,
    "note": "국내 인터넷에서 돌려야 열립니다"
@@ -325,7 +325,7 @@
    "id": "org-nmc",
    "name": "국립중앙의료원 공지",
    "adapter": "generic",
-   "url": "https://www.nmc.or.kr/nmc/bbs/B0000002/list.do?menuNo=200078",
+   "url": "https://www.nmc.or.kr/nmc/board/B0000001",
    "org": "nmc",
    "enabled": true,
    "note": "국내 인터넷에서 돌려야 열립니다"
@@ -334,7 +334,7 @@
    "id": "org-nibp",
    "name": "국가생명윤리정책원 공지",
    "adapter": "generic",
-   "url": "https://www.nibp.kr/xe/notice",
+   "url": "https://nibp.kr/board/notice",
    "org": "nibp",
    "enabled": true,
    "note": "국내 인터넷에서 돌려야 열립니다"
@@ -388,7 +388,7 @@
    "id": "org-kshep",
    "name": "한국보건교육건강증진학회 공지",
    "adapter": "generic",
-   "url": "https://www.kshep.or.kr/",
+   "url": "https://khep.or.kr/board/notice",
    "org": "kshep",
    "enabled": true,
    "note": "국내 인터넷에서 돌려야 열립니다"

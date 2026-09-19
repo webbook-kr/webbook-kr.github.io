@@ -19,7 +19,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:f92f1cd5eed064e2@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260908
 SUMMARY:[대한예방의학회] 2026 대한약리학회 제78차 추계
@@ -36,7 +36,7 @@ URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
 END:VEVENT
 BEGIN:VEVENT
 UID:4da8b49543234e8e@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260904
 DTEND;VALUE=DATE:20260908
 SUMMARY:[대한예방의학회] 2026년 추계학술대회 사전접수
@@ -52,8 +52,19 @@ URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
  gid=895&cpage=1&spage=1
 END:VEVENT
 BEGIN:VEVENT
+UID:41512a0be88afa16@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T025251Z
+DTSTART;VALUE=DATE:20260914
+DTEND;VALUE=DATE:20260917
+SUMMARY:[한국보건행정학회] 2026 한국사회약학회 후기 
+ 연수교육 개최 안내
+DESCRIPTION:주최: 한국보건행정학회\n원문: https://www.kshpa
+ .org/bbs/notice2/1541\n빵캘: https://webbook-kr.github.io/cal/
+URL:https://www.kshpa.org/bbs/notice2/1541
+END:VEVENT
+BEGIN:VEVENT
 UID:13706adb8c626720@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20260917
 DTEND;VALUE=DATE:20260919
 SUMMARY:[한국역학회] 2026 추계학술대회
@@ -64,10 +75,47 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5753
 END:VEVENT
 BEGIN:VEVENT
-UID:b8d1cc86b4573221@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+UID:7d09fcc26aa802a9@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T025251Z
+DTSTART;TZID=Asia/Seoul:20260923T160000
+DTEND;TZID=Asia/Seoul:20260923T173000
+SUMMARY:[한국역학회] 9월 세미나
+DESCRIPTION:주최: 한국역학회\n원문: https://www.ksepi.org/web/
+ lay1/bbs/S1T298C325/A/9/view.do?article_seq=2999&cpage=&rows=&condition
+ =&keyword=\n빵캘: https://webbook-kr.github.io/cal/
+URL:https://www.ksepi.org/web/lay1/bbs/S1T298C325/A/9/view.do?article_s
+ eq=2999&cpage=&rows=&condition=&keyword=
+END:VEVENT
+BEGIN:VEVENT
+UID:1b809f1dd497092d@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T025251Z
+DTSTART;TZID=Asia/Seoul:20261030T100000
+DTEND;TZID=Asia/Seoul:20261030T183000
+SUMMARY:[한국보건교육건강증진학회] 2026년 추계학술대
+ 회 일정 안내 및 발표·토론 참여 요청 (10/30 금)
+LOCATION:한국방송통신대학교 열린관 대강당 및 414호
+DESCRIPTION:주최: 한국보건교육건강증진학회\n원문: https
+ ://khep.or.kr/board/notice/article/284380\n빵캘: https://webbook-kr.g
+ ithub.io/cal/
+URL:https://khep.or.kr/board/notice/article/284380
+END:VEVENT
+BEGIN:VEVENT
+UID:b36e3e7ec0bccbaa@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T025251Z
+DTSTART;TZID=Asia/Seoul:20261105T120000
+DTEND;TZID=Asia/Seoul:20261105T140000
+SUMMARY:[한국보건행정학회] 2026 후기학술대회 북페어 
+ 참여자 모집
+LOCATION:후기학술대회장 로비
+DESCRIPTION:주최: 한국보건행정학회\n원문: https://www.kshpa
+ .org/bbs/notice/1535\n빵캘: https://webbook-kr.github.io/cal/
+URL:https://www.kshpa.org/bbs/notice/1535
+END:VEVENT
+BEGIN:VEVENT
+UID:168baded7fdae589@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20261105
-DTEND;VALUE=DATE:20261107
+DTEND;VALUE=DATE:20261106
 SUMMARY:[한국보건행정학회] 2026년 한국보건행정학회 후
  기 학술대회
 LOCATION:속초 델피노
@@ -77,7 +125,7 @@ URL:https://www.kshpa.org/calendar/list/14
 END:VEVENT
 BEGIN:VEVENT
 UID:13546f77977b6498@bbangcal.webbook-kr.github.io
-DTSTAMP:20260919T024224Z
+DTSTAMP:20260919T025251Z
 DTSTART;VALUE=DATE:20261216
 DTEND;VALUE=DATE:20261217
 SUMMARY:[대한예방의학회] 기획 세미나「자살예방의 정

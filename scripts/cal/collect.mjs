@@ -93,32 +93,31 @@ async function nkis(feed) {
   return items;
 }
 
-// 일반 게시판 — 목록 영역을 먼저 찾고, 그 안의 줄에서 제목·링크·게시일을 읽습니다.
+// 일반 게시판 — 목록 상자 이름이 기관마다 달라, 글줄을 하나씩 훑어 게시글만 골라냅니다.
 async function generic(feed) {
   const html = await get(feed.url);
-
-  // 메뉴 링크를 긁지 않도록 가장 큰 목록 덩어리만 남깁니다.
-  const blocks = [
-    ...html.matchAll(/<tbody[\s\S]*?<\/tbody>/gi),
-    ...html.matchAll(/<ul[^>]*class="[^"]*(?:board|bbs|list|notice|photo)[^"]*"[\s\S]*?<\/ul>/gi),
-    ...html.matchAll(/<table[^>]*class="[^"]*(?:board|bbs|list)[^"]*"[\s\S]*?<\/table>/gi)
-  ].map((m) => m[0]).sort((a, b) => b.length - a.length);
-  const region = blocks[0] && blocks[0].length > 400 ? blocks[0] : html;
-
-  const rows = region.match(/<tr[\s\S]*?<\/tr>|<li[\s\S]*?<\/li>/gi) || [];
+  const rows = html.match(/<tr[\s\S]{0,5000}?<\/tr>|<li[\s\S]{0,5000}?<\/li>/gi) || [];
   const items = [];
   const seen = new Set();
   for (const row of rows) {
     const a = row.match(/<a[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/i);
     if (!a) continue;
-    const title = clean(a[2]).replace(/^\s*(?:새글|NEW|공지)\s*/i, '');
-    if (title.length < 8 || title.length > 180) continue;
-    const href = a[1];
-    if (/^(?:#|javascript:void)/i.test(href) && !/goView|fn_|artclView/i.test(href)) continue;
+    const title = clean(a[2])
+      .split('\n')[0]
+      .replace(/^\s*(?:새글|NEW|공지|새로운게시물|답변)\s*/i, '')
+      .trim();
+    if (title.length < 12 || title.length > 180) continue;
+    if (seen.has(title)) continue;
+
+    // 메뉴 글자가 아니라 게시글 줄인지 살핍니다. 날짜나 조회수가 붙어 있거나 제목이 깁니다.
+    const rowText = clean(row);
+    const posted = rowText.match(/(20\d{2})[.\-](\d{1,2})[.\-](\d{1,2})/);
+    if (!posted && !/조회|등록일|작성일|게시일/.test(rowText) && title.length < 20) continue;
+
+    const href = decode(a[1]);
     const url = /^(?:#|javascript:)/i.test(href) ? feed.url : abs(href, feed.url);
-    if (!url || seen.has(title)) continue;
+    if (!url) continue;
     seen.add(title);
-    const posted = clean(row).match(/(20\d{2})[.\-](\d{1,2})[.\-](\d{1,2})/);
     items.push({
       title,
       url,
