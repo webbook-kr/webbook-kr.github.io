@@ -136,11 +136,15 @@ header.top{padding:22px 0 14px;display:flex;flex-wrap:wrap;gap:12px;align-items:
 .banner .label{position:absolute;left:0;top:0;z-index:2;background:var(--accent);color:#fff;font-size:10.5px;font-weight:700;
   padding:3px 10px;border-bottom-right-radius:10px;letter-spacing:.02em}
 @media (max-width:640px){
-  .banner .slide{grid-template-columns:86px 1fr;min-height:104px}
-  .banner .poster{padding-top:20px}
-  .banner .poster .dd{font-size:32px}
-  .banner h2{font-size:15.5px}
-  .banner .body{padding:13px 13px 26px}
+  .banner .slide{grid-template-columns:62px 1fr;min-height:96px}
+  .banner .poster{padding-top:18px}
+  .banner .poster .wd{font-size:10.5px;letter-spacing:.12em}
+  .banner .poster .dd{font-size:26px}
+  .banner .poster .mm{font-size:10.5px}
+  /* 날짜는 왼쪽 칸에 이미 있습니다. 좁은 화면에서 또 적으면 제목이 밀립니다. */
+  .banner .kicker .full-date{display:none}
+  .banner h2{font-size:15.5px;-webkit-line-clamp:3}
+  .banner .body{padding:11px 12px 24px}
   .banner .rot{right:10px;bottom:7px}
 }
 @media (prefers-reduced-motion:reduce){.banner .fade{animation:none}}
@@ -365,11 +369,17 @@ footer a{color:var(--accent)}
   <div class="sub-list" id="sub-list"></div>
   <ol class="steps">
     <li>위에서 원하는 달력의 <b>주소 복사</b>를 누릅니다.</li>
-    <li>컴퓨터에서 <b>구글 캘린더</b>를 엽니다. (휴대폰 앱에서는 이 기능이 없습니다)</li>
-    <li>왼쪽 <b>다른 캘린더</b> 옆 <b>＋</b> → <b>URL로 만들기</b>를 누릅니다.</li>
-    <li>복사한 주소를 붙여넣고 <b>캘린더 추가</b>를 누릅니다.<br>
-        붙여넣기는 윈도우 <b>Ctrl + V</b>, 맥 <b>⌘ + V</b> 입니다.</li>
+    <li>아래 <b>구글 캘린더 열기</b>를 누릅니다. 주소 넣는 칸이 바로 나옵니다.</li>
+    <li>그 칸에 붙여넣고 <b>캘린더 추가</b>를 누릅니다.<br>
+        붙여넣기는 윈도우 <b>Ctrl + V</b>, 맥 <b>⌘ + V</b>, 휴대폰은 <b>길게 눌러 붙여넣기</b> 입니다.</li>
   </ol>
+  <div class="acts" style="margin-top:12px">
+    <a class="btn primary" href="https://calendar.google.com/calendar/u/0/r/settings/addbyurl" target="_blank" rel="noopener">구글 캘린더 열기</a>
+  </div>
+  <div class="steps" style="margin-top:10px;padding-left:0">
+    한 번 넣어 두면 그다음부터는 손댈 것이 없습니다. 새 행사가 알아서 들어옵니다.<br>
+    빼고 싶을 때는 구글 캘린더 왼쪽 목록에서 그 달력 옆 <b>⋮</b> → <b>구독 취소</b> 입니다.
+  </div>
   <div class="notice">구글은 구독한 달력을 보통 하루에 한두 번 새로 읽습니다. 방금 올라온 일정이 바로 안 보여도 잠시 기다리시면 됩니다.</div>
 </div></dialog>
 
@@ -893,7 +903,7 @@ function paintBanner() {
       <div class="kicker">
         <span class="chip">${escapeHtml(hostNames(e))}</span>
         <span class="when">${escapeHtml(countdown)}</span>
-        <span>${escapeHtml(dateLabel(e))}</span>
+        <span class="full-date">${escapeHtml(dateLabel(e))}</span>
       </div>
       <h2>${escapeHtml(e.title)}</h2>
       <div class="where">${escapeHtml(e.place || when)}</div>
