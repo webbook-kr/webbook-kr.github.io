@@ -1,0 +1,32 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//빵캘//보건의료 일정 달력//KO
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:빵캘 · 한국보건행정학회
+X-WR-TIMEZONE:Asia/Seoul
+X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
+ 나·학술대회 일정. https://webbook-kr.github.io/cal/
+BEGIN:VTIMEZONE
+TZID:Asia/Seoul
+X-LIC-LOCATION:Asia/Seoul
+BEGIN:STANDARD
+TZOFFSETFROM:+0900
+TZOFFSETTO:+0900
+TZNAME:KST
+DTSTART:19700101T000000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:b8d1cc86b4573221@bbangcal.webbook-kr.github.io
+DTSTAMP:20260919T024224Z
+DTSTART;VALUE=DATE:20261105
+DTEND;VALUE=DATE:20261107
+SUMMARY:[한국보건행정학회] 2026년 한국보건행정학회 후
+ 기 학술대회
+LOCATION:속초 델피노
+DESCRIPTION:주최: 한국보건행정학회\n원문: https://www.kshpa
+ .org/calendar/list/14\n빵캘: https://webbook-kr.github.io/cal/
+URL:https://www.kshpa.org/calendar/list/14
+END:VEVENT
+END:VCALENDAR

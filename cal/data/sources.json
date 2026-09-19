@@ -1,0 +1,415 @@
+{
+ "categories": [
+  {
+   "id": "gov",
+   "name": "정부·공공기관",
+   "hue": 212
+  },
+  {
+   "id": "insurer",
+   "name": "보험자·심사",
+   "hue": 24
+  },
+  {
+   "id": "research",
+   "name": "연구·평가기관",
+   "hue": 158
+  },
+  {
+   "id": "society",
+   "name": "학회·협회",
+   "hue": 280
+  }
+ ],
+ "orgs": [
+  {
+   "id": "mohw",
+   "name": "보건복지부",
+   "short": "복지부",
+   "category": "gov",
+   "home": "https://www.mohw.go.kr/",
+   "board": "https://www.mohw.go.kr/menu.es?mid=a10501010500",
+   "verified": true
+  },
+  {
+   "id": "kdca",
+   "name": "질병관리청",
+   "short": "질병청",
+   "category": "gov",
+   "home": "https://www.kdca.go.kr/",
+   "board": "https://www.kdca.go.kr/kdca/5507/subview.do",
+   "verified": true
+  },
+  {
+   "id": "mfds",
+   "name": "식품의약품안전처",
+   "short": "식약처",
+   "category": "gov",
+   "home": "https://www.mfds.go.kr/",
+   "board": "https://www.mfds.go.kr/brd/m_99/list.do",
+   "verified": false
+  },
+  {
+   "id": "khealth",
+   "name": "한국건강증진개발원",
+   "short": "건강증진",
+   "category": "gov",
+   "home": "https://www.khealth.or.kr/",
+   "board": "https://www.khealth.or.kr/board?menuId=MENU00907",
+   "verified": true
+  },
+  {
+   "id": "ncc",
+   "name": "국립암센터",
+   "short": "암센터",
+   "category": "gov",
+   "home": "https://www.ncc.re.kr/",
+   "board": "https://www.ncc.re.kr/main.ncc?uri=manage01_6",
+   "verified": false
+  },
+  {
+   "id": "nhis",
+   "name": "국민건강보험공단",
+   "short": "건보공단",
+   "category": "insurer",
+   "home": "https://www.nhis.or.kr/",
+   "board": "https://www.nhis.or.kr/nhis/together/wbhaec07000m01.do",
+   "verified": true
+  },
+  {
+   "id": "hira",
+   "name": "건강보험심사평가원",
+   "short": "심평원",
+   "category": "insurer",
+   "home": "https://www.hira.or.kr/",
+   "board": "https://www.hira.or.kr/bbsDummy.do?pgmid=HIRAA020002000100",
+   "verified": true
+  },
+  {
+   "id": "neca",
+   "name": "한국보건의료연구원",
+   "short": "NECA",
+   "category": "research",
+   "home": "https://www.neca.re.kr/",
+   "board": "https://www.neca.re.kr/lay1/bbs/S1T11C41/H/25/list.do",
+   "verified": false
+  },
+  {
+   "id": "kihasa",
+   "name": "한국보건사회연구원",
+   "short": "보사연",
+   "category": "research",
+   "home": "https://www.kihasa.re.kr/",
+   "board": "https://www.kihasa.re.kr/news/notice/list",
+   "verified": false
+  },
+  {
+   "id": "khidi",
+   "name": "한국보건산업진흥원",
+   "short": "진흥원",
+   "category": "research",
+   "home": "https://www.khidi.or.kr/",
+   "board": "https://www.khidi.or.kr/board?menuId=MENU01906",
+   "verified": false
+  },
+  {
+   "id": "nmc",
+   "name": "국립중앙의료원",
+   "short": "중앙의료원",
+   "category": "research",
+   "home": "https://www.nmc.or.kr/",
+   "board": "https://www.nmc.or.kr/nmc/bbs/B0000002/list.do?menuNo=200078",
+   "verified": false
+  },
+  {
+   "id": "nibp",
+   "name": "국가생명윤리정책원",
+   "short": "생명윤리",
+   "category": "research",
+   "home": "https://www.nibp.kr/",
+   "board": "https://www.nibp.kr/xe/notice",
+   "verified": false
+  },
+  {
+   "id": "prevmed",
+   "name": "대한예방의학회",
+   "short": "예방의학",
+   "category": "society",
+   "home": "https://www.prevmed.or.kr/",
+   "board": "https://www.prevmed.or.kr/board_community_notice01/list.php?tn=board_community_notice01",
+   "verified": true
+  },
+  {
+   "id": "ksepi",
+   "name": "한국역학회",
+   "short": "역학회",
+   "category": "society",
+   "home": "https://www.ksepi.org/",
+   "board": "https://www.ksepi.org/",
+   "verified": true
+  },
+  {
+   "id": "kshpa",
+   "name": "한국보건행정학회",
+   "short": "보건행정",
+   "category": "society",
+   "home": "https://www.kshpa.org/",
+   "board": "https://www.kshpa.org/",
+   "verified": true
+  },
+  {
+   "id": "kams",
+   "name": "대한의학회",
+   "short": "대한의학",
+   "category": "society",
+   "home": "https://www.kams.or.kr/",
+   "board": "https://www.kams.or.kr/bbs/?code=ws",
+   "verified": true
+  },
+  {
+   "id": "kspm",
+   "name": "대한공공의학회",
+   "short": "공공의학",
+   "category": "society",
+   "home": "https://www.kspm.kr/",
+   "board": "https://www.kspm.kr/",
+   "verified": false
+  },
+  {
+   "id": "kshep",
+   "name": "한국보건교육건강증진학회",
+   "short": "보건교육",
+   "category": "society",
+   "home": "https://www.kshep.or.kr/",
+   "board": "https://www.kshep.or.kr/",
+   "verified": false
+  },
+  {
+   "id": "kpha",
+   "name": "대한보건협회",
+   "short": "보건협회",
+   "category": "society",
+   "home": "https://www.kpha.or.kr/",
+   "board": "https://www.kpha.or.kr/",
+   "verified": false
+  },
+  {
+   "id": "kosqua",
+   "name": "한국의료질향상학회",
+   "short": "의료질",
+   "category": "society",
+   "home": "https://www.kosqua.net/",
+   "board": "https://www.kosqua.net/",
+   "verified": true
+  },
+  {
+   "id": "etc",
+   "name": "그 밖의 기관",
+   "short": "기타",
+   "category": "research",
+   "home": "",
+   "board": "",
+   "verified": true
+  }
+ ],
+ "feeds": [
+  {
+   "id": "snu-health",
+   "name": "서울대 보건대학원 세미나정보",
+   "adapter": "kboard",
+   "url": "https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/",
+   "pages": 3,
+   "fetchBody": true,
+   "enabled": true
+  },
+  {
+   "id": "nkis",
+   "name": "NKIS 정책세미나안내",
+   "adapter": "nkis",
+   "url": "https://www.nkis.re.kr/commonBoard_list.do?bbs_id=BBSMSTR_000000000154&cate_code=E",
+   "pages": 2,
+   "enabled": true,
+   "healthOnly": true
+  },
+  {
+   "id": "org-mohw",
+   "name": "보건복지부 공지",
+   "adapter": "generic",
+   "url": "https://www.mohw.go.kr/menu.es?mid=a10501010500",
+   "org": "mohw",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-kdca",
+   "name": "질병관리청 공지",
+   "adapter": "generic",
+   "url": "https://www.kdca.go.kr/kdca/5507/subview.do",
+   "org": "kdca",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-mfds",
+   "name": "식품의약품안전처 공지",
+   "adapter": "generic",
+   "url": "https://www.mfds.go.kr/brd/m_99/list.do",
+   "org": "mfds",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-khealth",
+   "name": "한국건강증진개발원 공지",
+   "adapter": "generic",
+   "url": "https://www.khealth.or.kr/board?menuId=MENU00907",
+   "org": "khealth",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-ncc",
+   "name": "국립암센터 공지",
+   "adapter": "generic",
+   "url": "https://www.ncc.re.kr/main.ncc?uri=manage01_6",
+   "org": "ncc",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-nhis",
+   "name": "국민건강보험공단 공지",
+   "adapter": "generic",
+   "url": "https://www.nhis.or.kr/nhis/together/wbhaec07000m01.do",
+   "org": "nhis",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-hira",
+   "name": "건강보험심사평가원 공지",
+   "adapter": "generic",
+   "url": "https://www.hira.or.kr/bbsDummy.do?pgmid=HIRAA020002000100",
+   "org": "hira",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-neca",
+   "name": "한국보건의료연구원 공지",
+   "adapter": "generic",
+   "url": "https://www.neca.re.kr/lay1/bbs/S1T11C41/H/25/list.do",
+   "org": "neca",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-kihasa",
+   "name": "한국보건사회연구원 공지",
+   "adapter": "generic",
+   "url": "https://www.kihasa.re.kr/news/notice/list",
+   "org": "kihasa",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-khidi",
+   "name": "한국보건산업진흥원 공지",
+   "adapter": "generic",
+   "url": "https://www.khidi.or.kr/board?menuId=MENU01906",
+   "org": "khidi",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-nmc",
+   "name": "국립중앙의료원 공지",
+   "adapter": "generic",
+   "url": "https://www.nmc.or.kr/nmc/bbs/B0000002/list.do?menuNo=200078",
+   "org": "nmc",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-nibp",
+   "name": "국가생명윤리정책원 공지",
+   "adapter": "generic",
+   "url": "https://www.nibp.kr/xe/notice",
+   "org": "nibp",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-prevmed",
+   "name": "대한예방의학회 공지",
+   "adapter": "generic",
+   "url": "https://www.prevmed.or.kr/board_community_notice01/list.php?tn=board_community_notice01",
+   "org": "prevmed",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-ksepi",
+   "name": "한국역학회 공지",
+   "adapter": "generic",
+   "url": "https://www.ksepi.org/",
+   "org": "ksepi",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-kshpa",
+   "name": "한국보건행정학회 공지",
+   "adapter": "generic",
+   "url": "https://www.kshpa.org/",
+   "org": "kshpa",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-kams",
+   "name": "대한의학회 공지",
+   "adapter": "generic",
+   "url": "https://www.kams.or.kr/bbs/?code=ws",
+   "org": "kams",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-kspm",
+   "name": "대한공공의학회 공지",
+   "adapter": "generic",
+   "url": "https://www.kspm.kr/",
+   "org": "kspm",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-kshep",
+   "name": "한국보건교육건강증진학회 공지",
+   "adapter": "generic",
+   "url": "https://www.kshep.or.kr/",
+   "org": "kshep",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-kpha",
+   "name": "대한보건협회 공지",
+   "adapter": "generic",
+   "url": "https://www.kpha.or.kr/",
+   "org": "kpha",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  },
+  {
+   "id": "org-kosqua",
+   "name": "한국의료질향상학회 공지",
+   "adapter": "generic",
+   "url": "https://www.kosqua.net/",
+   "org": "kosqua",
+   "enabled": true,
+   "note": "국내 인터넷에서 돌려야 열립니다"
+  }
+ ]
+}
