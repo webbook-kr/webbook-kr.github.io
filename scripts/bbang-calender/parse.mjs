@@ -97,16 +97,29 @@ const DOW = String.raw`\s*\(\s*[월화수목금토일]\s*\)`;
  * 글 한 편에서 행사 기간을 뽑습니다.
  * 반환: { start, end, startTime, endTime, allDay } 또는 null
  */
+/** 글에 적힌 서로 다른 날짜가 몇 개인지 셉니다. 게시판 목록은 날짜가 잔뜩 있습니다. */
+export function countDates(text) {
+  const s = decode(String(text || ''));
+  const hits = new Set();
+  for (const m of s.matchAll(/(20\d{2})\s*[.\-/년]\s*(\d{1,2})\s*[.\-/월]\s*(\d{1,2})/g)) hits.add(m[1] + m[2] + m[3]);
+  for (const m of s.matchAll(/(\d{1,2})\s*월\s*(\d{1,2})\s*일/g)) hits.add('x' + m[1] + m[2]);
+  return hits.size;
+}
+
+const WHEN_MARK = /(일\s*시|일\s*자|기\s*간|개최\s*일|행사\s*일|날\s*짜)\s*[:：]/;
+
 export function extractDate(text, postedISO, opts = {}) {
   // '일시 :' 라고 적힌 줄이 있으면 그 줄을 먼저 믿습니다. 게시일과 헷갈리지 않습니다.
   if (!opts._inner) {
     const whenLines = String(text || '')
       .split(/\n|\|/)
-      .filter((l) => /(일\s*시|일\s*자|개최\s*일시|행사\s*일시|개최\s*일자)\s*[:：]/.test(l) && /\d/.test(l));
+      .filter((l) => WHEN_MARK.test(l) && /\d/.test(l));
     if (whenLines.length) {
       const hit = extractDate(whenLines.join('\n'), postedISO, { ...opts, _inner: true });
       if (hit) return hit;
     }
+    // 날짜만 잔뜩 널린 글은 게시판 목록입니다. 거기서 고른 날짜는 행사 날짜가 아닙니다.
+    if (opts.markerOnly) return null;
   }
   const s = decode(String(text || '')).replace(/\s+/g, ' ');
 

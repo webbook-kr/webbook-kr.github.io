@@ -18,22 +18,10 @@ DTSTART:19700101T000000
 END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:5846096ea0875583@bbangcal.epibrief.github.io
-DTSTAMP:20260919T111630Z
-DTSTART;VALUE=DATE:20260914
-DTEND;VALUE=DATE:20260917
-SUMMARY:[한국보건행정학회] 2026 한국사회약학회 후기 
- 연수교육 개최 안내
-DESCRIPTION:주최: 한국보건행정학회\n원문: https://www.kshpa
- .org/bbs/notice2/1541\n빵캘: https://epibrief.github.io/bbang-calende
- r/
-URL:https://www.kshpa.org/bbs/notice2/1541
-END:VEVENT
-BEGIN:VEVENT
-UID:0825bbb90a895924@bbangcal.epibrief.github.io
-DTSTAMP:20260919T111630Z
-DTSTART;TZID=Asia/Seoul:20261105T120000
-DTEND;TZID=Asia/Seoul:20261105T140000
+UID:9fbccb5f1fb43221@bbangcal.epibrief.github.io
+DTSTAMP:20260920T005915Z
+DTSTART;VALUE=DATE:20261102
+DTEND;VALUE=DATE:20261106
 SUMMARY:[한국보건행정학회] 2026 후기학술대회 북페어 
  참여자 모집
 LOCATION:후기학술대회장 로비
@@ -44,7 +32,7 @@ URL:https://www.kshpa.org/bbs/notice/1535
 END:VEVENT
 BEGIN:VEVENT
 UID:e719a95bba4d99ff@bbangcal.epibrief.github.io
-DTSTAMP:20260919T111630Z
+DTSTAMP:20260920T005915Z
 DTSTART;VALUE=DATE:20261105
 DTEND;VALUE=DATE:20261106
 SUMMARY:[한국보건행정학회] 2026년 한국보건행정학회 후

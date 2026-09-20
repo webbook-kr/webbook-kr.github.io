@@ -395,12 +395,15 @@
   },
   {
    "id": "org-kams",
-   "name": "대한의학회 공지",
-   "adapter": "generic",
-   "url": "https://www.kams.or.kr/bbs/?code=ws",
-   "org": "kams",
+   "name": "대한의학회 학술행사 표",
+   "adapter": "kams",
+   "url": "https://www.kams.or.kr/bbs/index.php?code=ws",
    "enabled": true,
-   "note": "국내 인터넷에서 돌려야 열립니다"
+   "note": "여러 학회의 학술대회를 모아 둔 표입니다. 주최는 각 학회입니다",
+   "fetchBody": false,
+   "healthOnly": false,
+   "months": 5,
+   "trustAll": true
   },
   {
    "id": "org-kspm",

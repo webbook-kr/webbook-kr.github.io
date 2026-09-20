@@ -5,7 +5,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { clean, decode, looksLikeEvent, isHealthTopic, extractDate, extractPlace, matchOrg, matchOrgs, dropRegistrationLines, ORG_ALIASES } from './parse.mjs';
+import { clean, decode, looksLikeEvent, isHealthTopic, extractDate, countDates, extractPlace, matchOrg, matchOrgs, dropRegistrationLines, ORG_ALIASES } from './parse.mjs';
 
 const ROOT = path.resolve(new URL('../../', import.meta.url).pathname);
 const DATA = path.join(ROOT, 'bbang-calender', 'data');
@@ -93,6 +93,54 @@ async function nkis(feed) {
   return items;
 }
 
+// 대한의학회 학술행사 표 — 학회 이름, 행사 이름, 기간, 장소가 칸으로 나뉘어 있습니다.
+// 여러 학회의 학술대회가 한곳에 모여 있어 가장 알찬 자료원입니다.
+// 연도와 달을 함께 넘겨야 앞으로 열릴 행사가 나옵니다. 이번 달부터 몇 달치를 훑습니다.
+async function kams(feed) {
+  const items = [];
+  const months = feed.months || 5;
+  const now = new Date();
+  for (let i = 0; i < months; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    for (let page = 1; page <= 4; page++) {
+      const url = `https://www.kams.or.kr/bbs/index.php?code=ws&start_y=${y}&start_m=${m}&page=${page}`;
+      let html;
+      try { html = await get(url); } catch { break; }
+      let found = 0;
+      for (const tr of html.match(/<tr[\s\S]{0,4000}?<\/tr>/gi) || []) {
+        const tds = (tr.match(/<td[\s\S]*?<\/td>/gi) || []).map((td) => clean(td));
+        if (tds.length < 5) continue;
+        const [, society, name, when, place] = tds;
+        if (!name || !/\d{4}-\d{2}-\d{2}/.test(when)) continue;
+        // 고른 달이 아닌 줄은 건너뜁니다.
+        if (!when.includes(`${y}-${m}`)) continue;
+        const href = tr.match(/<a[^>]+href="([^"]+)"/i)?.[1];
+        items.push({
+          title: name.replace(/\s+/g, ' ').trim(),
+          url: href ? abs(href, url) : 'https://www.kams.or.kr/bbs/?code=ws',
+          postedAt: null,
+          scheduleText: when.replace(/\s+/g, ' '),
+          orgText: society,
+          placeText: place && place !== '-' ? place : null
+        });
+        found++;
+      }
+      await sleep(700);
+      if (found < 15) break;
+    }
+  }
+  // 같은 행사가 여러 쪽에 겹쳐 나올 수 있습니다.
+  const seen = new Set();
+  return items.filter((x) => {
+    const k = x.title + '|' + x.scheduleText;
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+}
+
 // 일반 게시판 — 목록 상자 이름이 기관마다 달라, 글줄을 하나씩 훑어 게시글만 골라냅니다.
 async function generic(feed) {
   const html = await get(feed.url);
@@ -127,7 +175,7 @@ async function generic(feed) {
   return items;
 }
 
-const ADAPTERS = { kboard, nkis, generic };
+const ADAPTERS = { kboard, nkis, kams, generic };
 
 /* ── 본문 읽어 일시·장소 보강 ──────────────────────────── */
 async function enrich(item) {
@@ -173,7 +221,8 @@ async function main() {
     const t0 = Date.now();
     try {
       const raw = await (ADAPTERS[feed.adapter] || generic)(feed, orgs);
-      const candidates = raw.filter((r) => looksLikeEvent(r.title));
+      // 학술행사 표는 줄 하나가 곧 행사라, 행사 낱말로 거르지 않습니다.
+      const candidates = feed.trustAll ? raw : raw.filter((r) => looksLikeEvent(r.title));
       const bodyCap = feed.fetchBody === false ? 0 : (feed.adapter === 'kboard' ? 40 : 15);
       for (const c of candidates.slice(0, bodyCap)) await enrich(c);
 
@@ -183,7 +232,12 @@ async function main() {
         const head = dropRegistrationLines([c.scheduleText || '', c.title].join('\n'));
         const bodyText = dropRegistrationLines(c.body || '');
         const fromHead = extractDate(head, c.postedAt, { loose: true });
-        const fromBody = extractDate(bodyText, c.postedAt);
+        // 상세 글을 못 열고 목록이 되돌아오는 게시판이 있습니다. 날짜가 여럿이면 목록으로 보고,
+        // '일시 :' 라고 적힌 줄에서만 날짜를 받습니다. 게시 날짜를 행사 날짜로 읽지 않기 위해서입니다.
+        // 날짜가 여럿이거나, '관리자·조회' 같은 목록 표시가 되풀이되면 목록 페이지입니다.
+        const repeatedRowMarks = /(?:조회|작성자|관리자)[\s\S]{0,60}(?:조회|작성자|관리자)[\s\S]{0,60}(?:조회|작성자|관리자)/.test(bodyText);
+        const looksLikeList = countDates(bodyText) > 3 || repeatedRowMarks;
+        const fromBody = extractDate(bodyText, c.postedAt, { markerOnly: looksLikeList });
         let when = fromHead || fromBody;
         if (!when) continue;
         // 제목은 날짜만, 본문은 기간과 시간까지 적는 일이 많습니다. 같은 날이면 본문에서 보탭니다.
@@ -261,10 +315,17 @@ async function main() {
   // 같은 제목·같은 날짜면 같은 행사입니다. 주최 기관을 다시 읽어도 둘로 갈라지지 않습니다.
   const keyOf = (e) => uid(e.title + '|' + e.start);
   const byId = new Map();
+
+  // 잘 읽힌 수집원은 이번 결과로 갈아 끼웁니다. 그래야 잘못 읽었던 일정이 사라집니다.
+  // 실패한 수집원 것은 그대로 두어, 한 번 못 읽었다고 일정이 비지 않게 합니다.
+  const refreshed = new Set(status.filter((s) => s.ok).map((s) => s.id));
+  let dropped = 0;
   for (const e of previous.events || []) {
+    if (e.source && refreshed.has(e.source) && !e.manual) { dropped++; continue; }
     const k = keyOf(e);
     byId.set(k, { ...e, id: k });
   }
+  if (dropped) console.log(`\n다시 읽은 수집원의 옛 기록 ${dropped}건을 걷어 냈습니다.`);
   for (const e of collected) byId.set(e.id, { ...byId.get(e.id), ...e });
   for (const e of manual) {
     const id = e.id || uid(e.title + '|' + e.start);
