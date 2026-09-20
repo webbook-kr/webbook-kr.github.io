@@ -178,6 +178,17 @@ header.top{padding:22px 0 14px;display:flex;flex-wrap:wrap;gap:12px;align-items:
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;min-width:0;font-weight:600
 }
 .ev:hover{filter:brightness(.96)}
+/* 달력 칸은 좁아서 제목이 잘립니다. 마우스를 얹으면 전체 이름을 띄워 줍니다. */
+.tip{position:fixed;z-index:70;max-width:min(320px,86vw);padding:10px 12px;border-radius:12px;
+  background:var(--panel);border:1px solid var(--line);box-shadow:0 10px 28px rgba(0,0,0,.16);
+  font-size:12.5px;line-height:1.45;color:var(--ink);pointer-events:none;opacity:0;transform:translateY(3px);
+  transition:opacity .12s ease,transform .12s ease}
+.tip[data-on]{opacity:1;transform:translateY(0)}
+.tip .who{font-size:11px;font-weight:700;color:var(--dim);margin-bottom:2px}
+.tip .what{font-weight:700;color:var(--strong)}
+.tip .when,.tip .where{font-size:11.5px;color:var(--dim);margin-top:3px}
+@media (hover:none){.tip{display:none}}
+@media (prefers-reduced-motion:reduce){.tip{transition:none}}
 .ev .t{font-weight:700;opacity:.85;margin-right:3px;font-variant-numeric:tabular-nums}
 .more{font-size:11px;color:var(--dim);border:0;background:transparent;text-align:left;padding:0 6px}
 
@@ -633,10 +644,58 @@ function chip(e, day) {
   const cont = day !== e.start;
   b.innerHTML = (e.startTime && !cont ? `<span class="t">${e.startTime}</span>` : cont ? '<span class="t">↳</span>' : '') +
     escapeHtml(e.title);
-  b.title = `${hostNames(e)} · ${e.title}`;
+  // 기본 말풍선은 느리고 글자가 작아서, 직접 만든 말풍선을 씁니다.
+  b.setAttribute('aria-label', `${hostNames(e)} · ${e.title}`);
+  bindTip(b, e);
   b.onclick = (ev) => { ev.stopPropagation(); openEvent(e); };
   return b;
 }
+
+let tipBox = null, tipTimer = 0;
+
+/** 달력 칸의 행사에 마우스를 얹으면 전체 이름을 띄웁니다. */
+function bindTip(el, e) {
+  if (!matchMedia('(hover:hover)').matches) return;
+  el.addEventListener('mouseenter', () => { clearTimeout(tipTimer); tipTimer = setTimeout(() => showTip(el, e), 120); });
+  el.addEventListener('mouseleave', hideTip);
+  el.addEventListener('focus', () => showTip(el, e));
+  el.addEventListener('blur', hideTip);
+}
+
+function showTip(el, e) {
+  if (!document.body.contains(el)) return;
+  if (!tipBox) {
+    tipBox = document.createElement('div');
+    tipBox.className = 'tip';
+    tipBox.setAttribute('role', 'tooltip');
+    document.body.appendChild(tipBox);
+  }
+  tipBox.innerHTML = `<div class="who">${escapeHtml(hostNames(e))}</div>`
+    + `<div class="what">${escapeHtml(e.title)}</div>`
+    + `<div class="when">${escapeHtml(dateLabel(e))}</div>`
+    + (e.place ? `<div class="where">${escapeHtml(e.place)}</div>` : '');
+
+  // 화면 밖으로 나가지 않게 자리를 잡습니다.
+  tipBox.style.left = '0px';
+  tipBox.style.top = '0px';
+  const r = el.getBoundingClientRect();
+  const t = tipBox.getBoundingClientRect();
+  const pad = 8;
+  let left = r.left + r.width / 2 - t.width / 2;
+  left = Math.max(pad, Math.min(left, innerWidth - t.width - pad));
+  let top = r.top - t.height - 8;
+  if (top < pad) top = Math.min(r.bottom + 8, innerHeight - t.height - pad);
+  tipBox.style.left = Math.round(left) + 'px';
+  tipBox.style.top = Math.round(top) + 'px';
+  tipBox.setAttribute('data-on', '');
+}
+
+function hideTip() {
+  clearTimeout(tipTimer);
+  if (tipBox) tipBox.removeAttribute('data-on');
+}
+addEventListener('scroll', hideTip, true);
+addEventListener('keydown', (ev) => { if (ev.key === 'Escape') hideTip(); });
 
 let dayPick = null;   // 누른 날짜. 그날 행사만 보여 줍니다.
 function renderList() {
