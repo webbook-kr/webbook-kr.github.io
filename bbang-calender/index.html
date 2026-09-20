@@ -562,7 +562,12 @@ function toggle(on, onChange, extra = '') {
 }
 
 function saveHidden() {
-  try { localStorage.setItem('bbangcal-off', JSON.stringify([...hidden])); } catch {}
+  // 끈 기관과 함께 '그때 있던 기관 목록'도 적어 둡니다.
+  // 나중에 새 기관이 늘어나면, 그 기관은 저장해 두신 설정 대신 기본값을 따릅니다.
+  const known = CONF && CONF.orgs ? CONF.orgs.map((o) => o.id) : [...hidden];
+  try {
+    localStorage.setItem('bbangcal-off', JSON.stringify({ off: [...hidden], known }));
+  } catch {}
 }
 
 function renderMonth() {
@@ -1159,9 +1164,20 @@ async function boot() {
   // 처음 오신 분에게는 임상 학회를 꺼 둡니다. 보건정책 행사가 학술대회에 묻히지 않게 하기 위해서입니다.
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem('bbangcal-off') || 'null'); } catch {}
-  hidden = Array.isArray(saved)
-    ? new Set(saved.filter((id) => ORGS[id]))
-    : new Set(CONF.orgs.filter((o) => o.offByDefault).map((o) => o.id));
+  const defaultOff = CONF.orgs.filter((o) => o.offByDefault).map((o) => o.id);
+  let off = [];
+  let known = new Set();
+  if (saved && !Array.isArray(saved) && Array.isArray(saved.off)) {
+    off = saved.off.filter((id) => ORGS[id]);
+    known = new Set((saved.known || []).filter((id) => ORGS[id]));
+  } else if (Array.isArray(saved)) {
+    // 예전 방식으로 저장된 설정입니다. 그때는 없던 기관은 기본값(꺼짐)으로 시작합니다.
+    off = saved.filter((id) => ORGS[id]);
+    known = new Set(CONF.orgs.map((o) => o.id).filter((id) => !defaultOff.includes(id)));
+  }
+  hidden = new Set(off);
+  for (const id of defaultOff) if (!known.has(id)) hidden.add(id);
+  saveHidden();
 
   // 앞으로 열릴 일정이 있는 달로 첫 화면을 맞춥니다.
   const next = EVENTS.find((e) => (e.end || e.start) >= TODAY);
