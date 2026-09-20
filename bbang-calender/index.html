@@ -854,8 +854,18 @@ function renderAway(list) {
     box.appendChild(bt);
   }
   const home = document.createElement('button');
-  home.textContent = me ? '내 자리로' : '서울로';
-  home.onclick = () => { mapMoved = true; map.setView([from.lat, from.lng], compact() ? 10 : 11); };
+  home.textContent = me ? '📍 현재 위치' : '서울로';
+  home.title = me ? '지도를 내 위치로 당겨서 봅니다' : '서울을 비춥니다';
+  home.onclick = () => {
+    mapMoved = true;
+    if (!me) { map.setView([SEOUL.lat, SEOUL.lng], compact() ? 10 : 11); return; }
+    // 내 위치는 바짝 당겨서 보여 줍니다. 어느 골목인지 보이게 합니다.
+    const slow = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const z = 16;
+    if (slow && map.flyTo) map.flyTo([me.lat, me.lng], z, { duration: 0.8 });
+    else map.setView([me.lat, me.lng], z);
+    if (meMarker) setTimeout(() => meMarker.openPopup(), slow ? 850 : 60);
+  };
   box.appendChild(home);
 }
 
