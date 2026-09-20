@@ -19,7 +19,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:0e538847abc7d1b3@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;TZID=Asia/Seoul:20260805T090000
 DTEND;TZID=Asia/Seoul:20260805T103000
 SUMMARY:[그 밖의 기관] '건강불평등을 과정으로 보기' 
@@ -32,7 +32,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:c5f91c89a8bf52a8@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;TZID=Asia/Seoul:20260807T130000
 DTEND;TZID=Asia/Seoul:20260807T170000
 SUMMARY:[국민건강보험공단·한국보건사회연구원] 2026년
@@ -47,7 +47,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:25ceb2ec225ac7b2@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;TZID=Asia/Seoul:20260826T140000
 DTEND;TZID=Asia/Seoul:20260826T160000
 SUMMARY:[서울대 보건대학원] 졸업생-재학생 간담회 안
@@ -61,7 +61,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:43b28ce89be69716@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;VALUE=DATE:20260827
 DTEND;VALUE=DATE:20260828
 SUMMARY:[그 밖의 기관] 다양한 감염병 모델 기반 통합분
@@ -75,7 +75,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:2d91db80ab929bfc@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;VALUE=DATE:20260828
 DTEND;VALUE=DATE:20260829
 SUMMARY:[국가생명윤리정책원] 제76회 콜로키움 개최 안내
@@ -88,7 +88,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:9ff89e7ff7d157b7@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;TZID=Asia/Seoul:20260903T130000
 DTEND;TZID=Asia/Seoul:20260903T180000
 SUMMARY:[국민건강보험공단·한국보건사회연구원] 2026년
@@ -103,7 +103,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:b35fb3a9b2fb7dfd@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;VALUE=DATE:20260909
 DTEND;VALUE=DATE:20260910
 SUMMARY:[국가생명윤리정책원] 제1회 유네스코 첨단과학
@@ -116,7 +116,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:040331ec9f9f6eca@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;TZID=Asia/Seoul:20260911T140000
 DTEND;TZID=Asia/Seoul:20260911T163000
 SUMMARY:[한국보건사회연구원·보건복지부] 상병수당 제
@@ -129,7 +129,7 @@ URL:https://www.kihasa.re.kr/news/event/view?seq=76736
 END:VEVENT
 BEGIN:VEVENT
 UID:39aebf171b731f77@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;VALUE=DATE:20260915
 DTEND;VALUE=DATE:20260916
 SUMMARY:[그 밖의 기관] 서울시 중장년 정책포럼 2026
@@ -140,8 +140,21 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&pageid=2&uid=5728
 END:VEVENT
 BEGIN:VEVENT
+UID:594de9f192adb995@bbangcal.epibrief.github.io
+DTSTAMP:20260920T071146Z
+DTSTART;TZID=Asia/Seoul:20260916T130000
+DTEND;TZID=Asia/Seoul:20260916T173000
+SUMMARY:[한국보건산업진흥원·보건복지부] 제32회 보건
+ 의료포럼 개최 안내
+LOCATION:서울대학교병원 암연구소 이건희홀
+DESCRIPTION:주최: 한국보건산업진흥원·보건복지부\n원
+ 문: https://www.khidi.or.kr/board/view?linkId=48949861&menuId=MENU0009
+ 9\n빵캘: https://epibrief.github.io/bbang-calender/
+URL:https://www.khidi.or.kr/board/view?linkId=48949861&menuId=MENU00099
+END:VEVENT
+BEGIN:VEVENT
 UID:270e86def34b1060@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;VALUE=DATE:20260916
 DTEND;VALUE=DATE:20260917
 SUMMARY:[서울대 보건대학원] 효과 검증에서 실제 시행
@@ -155,8 +168,21 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&uid=5783
 END:VEVENT
 BEGIN:VEVENT
+UID:37d8480181aadd55@bbangcal.epibrief.github.io
+DTSTAMP:20260920T071146Z
+DTSTART;TZID=Asia/Seoul:20260918T180000
+DTEND;TZID=Asia/Seoul:20260918T200000
+SUMMARY:[한국보건산업진흥원] 「2026 한-카자흐스탄 보
+ 건의료 해외진출 홍보 및 공공조달 협력 세미나」 참
+ 가기관 모집 공고(~9.18(금) 18:00)
+DESCRIPTION:주최: 한국보건산업진흥원\n원문: https://www.kh
+ idi.or.kr/board/view?linkId=48949928&menuId=MENU01108\n빵캘: https://
+ epibrief.github.io/bbang-calender/
+URL:https://www.khidi.or.kr/board/view?linkId=48949928&menuId=MENU01108
+END:VEVENT
+BEGIN:VEVENT
 UID:caf7a5632554fce9@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;TZID=Asia/Seoul:20260918T090000
 DTEND;TZID=Asia/Seoul:20260918T173000
 SUMMARY:[한국코크란] 고려대학교 한국코크란 워크숍 홍
@@ -169,7 +195,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:09798fc9504bd155@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;VALUE=DATE:20260921
 DTEND;VALUE=DATE:20260922
 SUMMARY:[질병관리청·한국보건사회연구원] 2026년 제1차 
@@ -181,8 +207,35 @@ DESCRIPTION:주최: 질병관리청·한국보건사회연구원\n원
 URL:https://www.kihasa.re.kr/news/event/view?seq=76820
 END:VEVENT
 BEGIN:VEVENT
+UID:992059f00f573279@bbangcal.epibrief.github.io
+DTSTAMP:20260920T071146Z
+DTSTART;TZID=Asia/Seoul:20260922T150000
+DTEND;TZID=Asia/Seoul:20260922T180000
+SUMMARY:[한국보건산업진흥원] 2026 한·독 바이오·헬스
+ 케어 온라인 사전 세미나 안내
+DESCRIPTION:주최: 한국보건산업진흥원\n원문: https://www.kh
+ idi.or.kr/board/view?linkId=48950195&menuId=MENU00099\n빵캘: https://
+ epibrief.github.io/bbang-calender/
+URL:https://www.khidi.or.kr/board/view?linkId=48950195&menuId=MENU00099
+END:VEVENT
+BEGIN:VEVENT
+UID:2b86b8382de4828c@bbangcal.epibrief.github.io
+DTSTAMP:20260920T071146Z
+DTSTART;TZID=Asia/Seoul:20260923T160000
+DTEND;TZID=Asia/Seoul:20260923T173000
+SUMMARY:[그 밖의 기관] 9월 세미나 <보건정책학의 이해: 
+ 시사점과 연구 과제>
+LOCATION:영상 회의(ZOOM)
+DESCRIPTION:주최: 한림의대 사회의학연구소\n원문: https:/
+ /www.prevmed.or.kr/board_community_notice01/view.php?tn=board_community
+ _notice01&uid=910&gid=886\n빵캘: https://epibrief.github.io/bbang-cal
+ ender/
+URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
+ d_community_notice01&uid=910&gid=886
+END:VEVENT
+BEGIN:VEVENT
 UID:77927bb0829c4f6a@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;VALUE=DATE:20260930
 DTEND;VALUE=DATE:20261001
 SUMMARY:[서울대 보건대학원] 개방 공간 데이터과학과 
@@ -196,7 +249,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:9dd628608a1050e2@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;VALUE=DATE:20261030
 DTEND;VALUE=DATE:20261031
 SUMMARY:[한국코크란] 치료 체계적문헌고찰 워크숍

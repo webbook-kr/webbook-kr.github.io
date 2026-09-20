@@ -1,1 +1,15 @@
-[]
+[
+  {
+    "org": "etc",
+    "orgLabel": "한림의대 사회의학연구소",
+    "title": "9월 세미나 <보건정책학의 이해: 시사점과 연구 과제>",
+    "start": "2026-09-23",
+    "end": "2026-09-23",
+    "startTime": "16:00",
+    "endTime": "17:30",
+    "allDay": false,
+    "online": true,
+    "place": "영상 회의(ZOOM)",
+    "url": "https://www.prevmed.or.kr/board_community_notice01/view.php?tn=board_community_notice01&uid=910&gid=886"
+  }
+]

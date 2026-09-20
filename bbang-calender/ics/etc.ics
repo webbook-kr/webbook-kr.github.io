@@ -19,7 +19,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:0e538847abc7d1b3@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;TZID=Asia/Seoul:20260805T090000
 DTEND;TZID=Asia/Seoul:20260805T103000
 SUMMARY:[그 밖의 기관] '건강불평등을 과정으로 보기' 
@@ -32,7 +32,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:43b28ce89be69716@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;VALUE=DATE:20260827
 DTEND;VALUE=DATE:20260828
 SUMMARY:[그 밖의 기관] 다양한 감염병 모델 기반 통합분
@@ -46,7 +46,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:39aebf171b731f77@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;VALUE=DATE:20260915
 DTEND;VALUE=DATE:20260916
 SUMMARY:[그 밖의 기관] 서울시 중장년 정책포럼 2026
@@ -55,5 +55,20 @@ DESCRIPTION:주최: 그 밖의 기관\n원문: https://health.snu.ac.kr
  id=5728\n빵캘: https://epibrief.github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&pageid=2&uid=5728
+END:VEVENT
+BEGIN:VEVENT
+UID:2b86b8382de4828c@bbangcal.epibrief.github.io
+DTSTAMP:20260920T071146Z
+DTSTART;TZID=Asia/Seoul:20260923T160000
+DTEND;TZID=Asia/Seoul:20260923T173000
+SUMMARY:[그 밖의 기관] 9월 세미나 <보건정책학의 이해: 
+ 시사점과 연구 과제>
+LOCATION:영상 회의(ZOOM)
+DESCRIPTION:주최: 한림의대 사회의학연구소\n원문: https:/
+ /www.prevmed.or.kr/board_community_notice01/view.php?tn=board_community
+ _notice01&uid=910&gid=886\n빵캘: https://epibrief.github.io/bbang-cal
+ ender/
+URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
+ d_community_notice01&uid=910&gid=886
 END:VEVENT
 END:VCALENDAR

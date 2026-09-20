@@ -178,6 +178,32 @@ async function generic(feed) {
 const ADAPTERS = { kboard, nkis, kams, generic };
 
 /* ── 본문 읽어 일시·장소 보강 ──────────────────────────── */
+/**
+ * 게시판 글 아래에는 다른 글 목록이 딸려 옵니다.
+ * 거기까지 본문으로 읽으면 남의 글 제목에서 기관을, 글쓴 날짜에서 행사 날짜를 잘못 가져옵니다.
+ * 목록이 시작되는 자리에서 잘라 냅니다.
+ */
+const LIST_MARK = /\n\s*목록\s*(?:\n|$)|전체\s*:\s*\d+\s*,\s*현재\s*:|(?:이전|다음)\s*글\s*(?:\n|:)|\n\s*제목\s*\n\s*내용\s*\n\s*작성자|\n\s*페이징\s*\n|사업자등록번호|개인정보처리방침|Copyright/;
+// 글쓴이 표시는 이 글에 한 번 나옵니다. 두 번째부터는 아래 목록에 실린 남의 글입니다.
+const WRITER_MARK = /\n\s*(?:관리자|작성자|운영자)\s*(?:\n|ㅣ|\|)/g;
+
+function cutAtList(body) {
+  const text = String(body || '');
+  let at = text.search(LIST_MARK);
+  WRITER_MARK.lastIndex = 0;
+  let seen = 0;
+  for (let hit = WRITER_MARK.exec(text); hit; hit = WRITER_MARK.exec(text)) {
+    if (++seen < 2) continue;
+    if (at < 0 || hit.index < at) at = hit.index;
+    break;
+  }
+  const cut = at > 80 ? text.slice(0, at) : text;
+  // 글쓴이와 올린 날짜는 글의 꼬리표입니다. 행사 날짜로 읽지 않게 지웁니다.
+  return cut.replace(BYLINE, ' ');
+}
+
+const BYLINE = /(?:관리자|작성자|운영자|등록일|작성일|게시일)\s*(?:ㅣ|\||:)?\s*\n?\s*\d{4}\s*[.\-/]\s*\d{1,2}\s*[.\-/]\s*\d{1,2}\.?/g;
+
 async function enrich(item) {
   if (!item.url) return item;
   try {
@@ -193,6 +219,7 @@ async function enrich(item) {
       const at = key.length > 6 ? text.lastIndexOf(key) : -1;
       item.body = (at >= 0 ? text.slice(at, at + 3500) : text.slice(0, 3500));
     }
+    item.body = cutAtList(item.body);
   } catch { /* 본문을 못 읽어도 제목만으로 진행합니다 */ }
   await sleep(700);
   return item;
@@ -255,18 +282,17 @@ async function main() {
           .slice(0, 4)
           .join('\n');
         const hostHay = [c.orgText || '', c.title, hostLines].join('\n');
+        const bracket = c.title.match(/[\[【]\s*([^\]】]{2,40})\s*[\]】]/)?.[1] || null;
         let orgIds = matchOrgs(hostHay, orgs, ORG_ALIASES);
-        if (!orgIds.length) {
-          // 주최 줄이 없으면 본문 첫머리에서 가장 먼저 나온 기관 '하나만' 봅니다.
-          // 여럿을 받으면 게시판 메뉴나 발표자 소속까지 주최로 붙습니다.
-          const first = matchOrgs([c.orgText || '', c.title].join(' '), orgs, ORG_ALIASES)[0]
-            || matchOrgs((c.body || '').slice(0, 400), orgs, ORG_ALIASES)[0];
+        if (!orgIds.length && !bracket) {
+          // 주최 줄도 대괄호도 없을 때만 본문 첫머리에서 기관 '하나만' 봅니다.
+          // 제목 앞 대괄호는 대개 주최 기관이라, 그때는 본문을 뒤지지 않습니다.
+          const first = matchOrgs((c.body || '').slice(0, 400), orgs, ORG_ALIASES)[0];
           orgIds = first ? [first] : (feed.org ? [feed.org] : []);
         }
         const orgId = orgIds[0] || 'etc';
         // 여러 분야가 섞인 수집원은 보건의료 행사만 받습니다.
         if (feed.healthOnly && orgId === 'etc' && !isHealthTopic(c.title + ' ' + (c.orgText || ''))) continue;
-        const bracket = c.title.match(/[\[【]\s*([^\]】]{2,40})\s*[\]】]/)?.[1] || null;
         // 게시판에 따라 목록 링크 안에 본문 첫 줄까지 들어 있습니다. 첫 줄만 제목으로 씁니다.
         let title = c.title.split('\n')[0].trim();
         for (let i = 0; i < 3; i++) {

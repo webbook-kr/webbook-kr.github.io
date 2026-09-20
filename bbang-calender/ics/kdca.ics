@@ -18,25 +18,8 @@ DTSTART:19700101T000000
 END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:576998bba8b5c880@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
-DTSTART;VALUE=DATE:20260904
-DTEND;VALUE=DATE:20260908
-SUMMARY:[질병관리청] 9월 세미나 <보건정책학의 이해: 
- 시사점과 연구과제> 개최
-DESCRIPTION:주최: 질병관리청\n원문: https://www.prevmed.or.kr/
- board_community_notice01/view.php?tn=board_community_notice01&list_coun
- t_s=&G_state=&pm=5.1&part_part_s=&subject_s=&content_s=&name_s=&writeda
- te_s=&keyfield_s=&search_word_s=&uid=910&gid=886&cpage=1&spage=1\n빵
- 캘: https://epibrief.github.io/bbang-calender/
-URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
- d_community_notice01&list_count_s=&G_state=&pm=5.1&part_part_s=&subject
- _s=&content_s=&name_s=&writedate_s=&keyfield_s=&search_word_s=&uid=910&
- gid=886&cpage=1&spage=1
-END:VEVENT
-BEGIN:VEVENT
 UID:5bc672f76bff1996@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;TZID=Asia/Seoul:20260918T130000
 DTEND;TZID=Asia/Seoul:20260918T172000
 SUMMARY:[질병관리청] 2026 담배폐해 전문가 심포지엄
@@ -49,7 +32,7 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
 END:VEVENT
 BEGIN:VEVENT
 UID:09798fc9504bd155@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;VALUE=DATE:20260921
 DTEND;VALUE=DATE:20260922
 SUMMARY:[질병관리청·한국보건사회연구원] 2026년 제1차 

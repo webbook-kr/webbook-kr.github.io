@@ -19,7 +19,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:c5f91c89a8bf52a8@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;TZID=Asia/Seoul:20260807T130000
 DTEND;TZID=Asia/Seoul:20260807T170000
 SUMMARY:[국민건강보험공단·한국보건사회연구원] 2026년
@@ -33,25 +33,10 @@ URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&pageid=2&uid=5668
 END:VEVENT
 BEGIN:VEVENT
-UID:afe7abb4d2b8d690@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
-DTSTART;TZID=Asia/Seoul:20260901T090000
-DTEND;TZID=Asia/Seoul:20260901T180000
-SUMMARY:[건강보험심사평가원] 검체검사 위·수탁 제도 
- 개편 관련 청구소프트웨어 공급업체 온라인 간담회 
- 질의응답 추가 게시
-DESCRIPTION:주최: 건강보험심사평가원\n원문: https://www.hi
- ra.or.kr/bbsDummy.do?pgmid=HIRAA020002000100&brdScnBltNo=4&brdBltNo=122
- 54&pageIndex=1&pageIndex2=1\n빵캘: https://epibrief.github.io/bbang-c
- alender/
-URL:https://www.hira.or.kr/bbsDummy.do?pgmid=HIRAA020002000100&brdScnBl
- tNo=4&brdBltNo=12254&pageIndex=1&pageIndex2=1
-END:VEVENT
-BEGIN:VEVENT
 UID:44bbaac95dbb924f@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
-DTSTART;TZID=Asia/Seoul:20260902T090000
-DTEND;TZID=Asia/Seoul:20260902T170000
+DTSTAMP:20260920T071146Z
+DTSTART;TZID=Asia/Seoul:20260902T143800
+DTEND;TZID=Asia/Seoul:20260902T163800
 SUMMARY:[건강보험심사평가원] <안내> 2026 가을학술대회 
  초록_적정성평가 관련 안내
 DESCRIPTION:주최: 건강보험심사평가원\n원문: https://www.ko
@@ -62,7 +47,7 @@ URL:https://www.kosqua.net/index.php?page=view&idx=4312&hCode=BOARD&bo_
 END:VEVENT
 BEGIN:VEVENT
 UID:9ff89e7ff7d157b7@bbangcal.epibrief.github.io
-DTSTAMP:20260920T054816Z
+DTSTAMP:20260920T071146Z
 DTSTART;TZID=Asia/Seoul:20260903T130000
 DTEND;TZID=Asia/Seoul:20260903T180000
 SUMMARY:[국민건강보험공단·한국보건사회연구원] 2026년
@@ -74,5 +59,20 @@ DESCRIPTION:주최: 국민건강보험공단·한국보건사회연구
  github.io/bbang-calender/
 URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
  %B4/?mod=document&pageid=2&uid=5723
+END:VEVENT
+BEGIN:VEVENT
+UID:4fc8013a39f3daa0@bbangcal.epibrief.github.io
+DTSTAMP:20260920T071146Z
+DTSTART;VALUE=DATE:20260918
+DTEND;VALUE=DATE:20260919
+SUMMARY:[건강보험심사평가원] 검체검사 위·수탁 제도 
+ 개편 관련 청구소프트웨어 공급업체 온라인 간담회 
+ 질의응답 추가 게시
+DESCRIPTION:주최: 건강보험심사평가원\n원문: https://www.hi
+ ra.or.kr/bbsDummy.do?pgmid=HIRAA020002000100&brdScnBltNo=4&brdBltNo=122
+ 54&pageIndex=1&pageIndex2=1\n빵캘: https://epibrief.github.io/bbang-c
+ alender/
+URL:https://www.hira.or.kr/bbsDummy.do?pgmid=HIRAA020002000100&brdScnBl
+ tNo=4&brdBltNo=12254&pageIndex=1&pageIndex2=1
 END:VEVENT
 END:VCALENDAR
