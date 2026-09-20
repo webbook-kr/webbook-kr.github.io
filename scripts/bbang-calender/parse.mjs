@@ -222,15 +222,34 @@ export function extractPlace(text) {
 }
 
 /** 주최기관을 찾습니다. orgs 는 sources.json 의 기관 목록입니다. */
+const HANGUL_CH = /[가-힣]/;
+
+/**
+ * 줄임말이 다른 이름 안에 묻혀 있으면 세지 않습니다.
+ * '대한면역학회' 안의 '역학회' 를 한국역학회로 잘못 읽던 일을 막습니다.
+ * 앞 글자가 한글이면 다른 이름의 일부로 봅니다. 정식 이름은 따로 대조하므로 놓치지 않습니다.
+ */
+function aliasIndex(s, alias) {
+  const ascii = /^[A-Za-z]/.test(alias);
+  for (let i = s.indexOf(alias); i >= 0; i = s.indexOf(alias, i + 1)) {
+    const before = i > 0 ? s[i - 1] : '';
+    if (!before) return i;
+    if (HANGUL_CH.test(before)) continue;
+    if (ascii && /[A-Za-z]/.test(before)) continue;
+    return i;
+  }
+  return -1;
+}
+
 export function matchOrg(text, orgs, aliases = {}) {
   const s = decode(String(text || ''));
   const bracket = s.match(/[\[【(]\s*([^\]】)]{2,30})\s*[\]】)]/);
   const candidates = [bracket ? bracket[1] : '', s];
   for (const c of candidates) {
     if (!c) continue;
-    for (const [alias, id] of Object.entries(aliases)) if (c.includes(alias)) return id;
+    for (const [alias, id] of Object.entries(aliases)) if (aliasIndex(c, alias) >= 0) return id;
     for (const o of orgs) {
-      if (o.id === 'etc') continue;
+      if (o.bucket || o.id === 'etc') continue;
       if (c.includes(o.name)) return o.id;
     }
   }
@@ -243,12 +262,12 @@ export function matchOrgs(text, orgs, aliases = {}) {
   const found = [];
   const at = {};
   for (const [alias, id] of Object.entries(aliases)) {
-    const i = s.indexOf(alias);
+    const i = aliasIndex(s, alias);
     if (i < 0) continue;
     if (at[id] === undefined || i < at[id]) at[id] = i;
   }
   for (const o of orgs) {
-    if (o.id === 'etc') continue;
+    if (o.bucket || o.id === 'etc') continue;
     const i = s.indexOf(o.name);
     if (i >= 0 && (at[o.id] === undefined || i < at[o.id])) at[o.id] = i;
   }
