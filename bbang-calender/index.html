@@ -523,23 +523,32 @@ function renderFilters() {
 /** 꺼 둔 기관이 있으면 그 사실과 건수를 알려 줍니다. 모르고 못 보는 일이 없게 합니다. */
 function renderHiddenNote() {
   const box = $('#hidden-note');
-  const offIds = [...hidden].filter((id) => ORGS[id]);
-  if (!offIds.length) { box.hidden = true; box.innerHTML = ''; return; }
+  // 내용을 다 만든 다음에야 보여 줍니다. 중간에 걸려도 빈 상자가 남지 않습니다.
+  box.hidden = true;
+  box.innerHTML = '';
+  try {
+    const offIds = [...hidden].filter((id) => ORGS[id]);
+    if (!offIds.length) return;
 
-  const today = TODAY;
-  const count = EVENTS.filter((e) =>
-    (e.orgs && e.orgs.length ? e.orgs : [e.org]).some((id) => hidden.has(id))
-    && (e.end || e.start) >= today).length;
-  if (!count) { box.hidden = true; box.innerHTML = ''; return; }
+    const count = EVENTS.filter((e) =>
+      (e.orgs && e.orgs.length ? e.orgs : [e.org]).some((id) => hidden.has(id))
+      && (e.end || e.start) >= TODAY).length;
+    if (!count) return;
 
-  const names = offIds.map((id) => ORGS[id].name);
-  const label = names.length <= 2 ? names.join('·') : `${names[0]} 등 ${names.length}곳`;
-  box.hidden = false;
-  box.innerHTML = `<span><b>${escapeHtml(label)}</b> 행사 ${count}건은 지금 꺼져 있습니다.</span>`;
-  const on = document.createElement('button');
-  on.textContent = names.length === 1 ? `${names[0]} 켜기` : '전부 켜기';
-  on.onclick = () => { hidden.clear(); saveHidden(); draw(); };
-  box.appendChild(on);
+    const names = offIds.map((id) => ORGS[id].name);
+    const label = names.length <= 2 ? names.join('·') : `${names[0]} 등 ${names.length}곳`;
+    const text = document.createElement('span');
+    text.innerHTML = `<b>${escapeHtml(label)}</b> 행사 ${count}건은 지금 꺼져 있습니다.`;
+    const on = document.createElement('button');
+    on.textContent = names.length === 1 ? `${names[0]} 켜기` : '전부 켜기';
+    on.onclick = () => { hidden.clear(); saveHidden(); draw(); };
+    box.appendChild(text);
+    box.appendChild(on);
+    box.hidden = false;
+  } catch {
+    box.hidden = true;
+    box.innerHTML = '';
+  }
 }
 
 /** 켜짐·꺼짐 토글 하나를 만듭니다. */
