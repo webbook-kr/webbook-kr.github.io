@@ -816,6 +816,13 @@ function renderMap() {
 
   const off = visible().filter((e) => e.online).length;
   const noGeo = visible().length - list.length - off;
+  // 위치를 이미 잡았으면 이 단추가 할 일은 '다시 잡기' 뿐입니다.
+  // 지도 위의 '현재 위치' 단추와 역할이 겹쳐 보이지 않게 이름을 바꿉니다.
+  const here = $('#btn-here');
+  if (here) {
+    here.textContent = me ? '🔄 위치 다시 잡기' : '📍 내 위치 쓰기';
+    here.title = me ? '지금 자리를 새로 잡아 순서를 다시 매깁니다' : '지금 자리를 잡아 가까운 차례로 늘어놓습니다';
+  }
   if (me) {
     const kind = me.fresh ? (me.label || '지금 위치') : '지난번에 잡아 둔 위치';
     const acc = me.accuracy && me.accuracy > 3000 ? ` (오차 약 ${Math.round(me.accuracy / 1000)}km)` : '';
