@@ -1266,7 +1266,7 @@ async function boot() {
     query = '';
     $('#q').value = '';
     cursor = new Date();
-    view = compact() ? 'list' : 'month';
+    view = 'month';   // 좁은 화면에서도 달력을 보여 줍니다. 처음 화면은 달력입니다.
     setView();
     scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   };
