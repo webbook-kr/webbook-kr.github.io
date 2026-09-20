@@ -3,7 +3,7 @@ VERSION:2.0
 PRODID:-//빵캘//보건의료 일정 달력//KO
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-X-WR-CALNAME:빵캘 · 보건의료 전체 일정
+X-WR-CALNAME:빵캘 · 임상 학회
 X-WR-TIMEZONE:Asia/Seoul
 X-WR-CALDESC:보건의료 공공기관과 학회의 공청회·세미
  나·학술대회 일정. https://epibrief.github.io/bbang-calender/
@@ -18,118 +18,6 @@ DTSTART:19700101T000000
 END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:0e538847abc7d1b3@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;TZID=Asia/Seoul:20260805T090000
-DTEND;TZID=Asia/Seoul:20260805T103000
-SUMMARY:[그 밖의 기관] '건강불평등을 과정으로 보기' 
- 세미나
-DESCRIPTION:주최: 그 밖의 기관\n원문: https://health.snu.ac.kr
- /%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&pageid=2&u
- id=5653\n빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&pageid=2&uid=5653
-END:VEVENT
-BEGIN:VEVENT
-UID:c5f91c89a8bf52a8@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;TZID=Asia/Seoul:20260807T130000
-DTEND;TZID=Asia/Seoul:20260807T170000
-SUMMARY:[국민건강보험공단·한국보건사회연구원] 2026년
-  한국의료패널 자료설명회 개최
-LOCATION:대한상공회의소(서울) 의원회의실
-DESCRIPTION:주최: 국민건강보험공단·한국보건사회연구
- 원\n원문: https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0
- %95%EB%B3%B4/?mod=document&pageid=2&uid=5668\n빵캘: https://epibrief.
- github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&pageid=2&uid=5668
-END:VEVENT
-BEGIN:VEVENT
-UID:49a599a2e168a68b@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20260825
-DTEND;VALUE=DATE:20260827
-SUMMARY:[식품의약품안전처] 2026 K-건강기능식품\, 세계
- 를 향한 혁신적 도약 전략 콘퍼런스 발표자료
-DESCRIPTION:주최: 식품의약품안전처\n원문: https://www.mfds.
- go.kr/brd/m_220/view.do?seq=32928&srchFr=&srchTo=&srchWord=&srchTp=&itm
- _seq_1=0&itm_seq_2=0&multi_itm_seq=0&company_cd=&company_nm=&page=1\n
- 빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://www.mfds.go.kr/brd/m_220/view.do?seq=32928&srchFr=&srchTo=&
- srchWord=&srchTp=&itm_seq_1=0&itm_seq_2=0&multi_itm_seq=0&company_cd=&c
- ompany_nm=&page=1
-END:VEVENT
-BEGIN:VEVENT
-UID:25ceb2ec225ac7b2@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;TZID=Asia/Seoul:20260826T140000
-DTEND;TZID=Asia/Seoul:20260826T160000
-SUMMARY:[서울대 보건대학원] 졸업생-재학생 간담회 안
- 내 (8/26 수\, 오후 2–4시)
-LOCATION:서울대학교 보건대학원 221동 110호
-DESCRIPTION:주최: 서울대 보건대학원\n원문: https://health.s
- nu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&pa
- geid=2&uid=5722\n빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&pageid=2&uid=5722
-END:VEVENT
-BEGIN:VEVENT
-UID:43b28ce89be69716@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20260827
-DTEND;VALUE=DATE:20260828
-SUMMARY:[그 밖의 기관] 다양한 감염병 모델 기반 통합분
- 석예측시스템 구축 워크숍 안내
-LOCATION:천안 소노벨
-DESCRIPTION:주최: 그 밖의 기관\n원문: https://health.snu.ac.kr
- /%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&pageid=2&u
- id=5707\n빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&pageid=2&uid=5707
-END:VEVENT
-BEGIN:VEVENT
-UID:2d91db80ab929bfc@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20260828
-DTEND;VALUE=DATE:20260829
-SUMMARY:[국가생명윤리정책원] 제76회 콜로키움 개최 안내
-LOCATION:온라인(zoom)
-DESCRIPTION:주최: 국가생명윤리정책원\n원문: https://health
- .snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&
- pageid=2&uid=5727\n빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&pageid=2&uid=5727
-END:VEVENT
-BEGIN:VEVENT
-UID:afe7abb4d2b8d690@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;TZID=Asia/Seoul:20260901T090000
-DTEND;TZID=Asia/Seoul:20260901T180000
-SUMMARY:[건강보험심사평가원] 검체검사 위·수탁 제도 
- 개편 관련 청구소프트웨어 공급업체 온라인 간담회 
- 질의응답 추가 게시
-DESCRIPTION:주최: 건강보험심사평가원\n원문: https://www.hi
- ra.or.kr/bbsDummy.do?pgmid=HIRAA020002000100&brdScnBltNo=4&brdBltNo=122
- 54&pageIndex=1&pageIndex2=1\n빵캘: https://epibrief.github.io/bbang-c
- alender/
-URL:https://www.hira.or.kr/bbsDummy.do?pgmid=HIRAA020002000100&brdScnBl
- tNo=4&brdBltNo=12254&pageIndex=1&pageIndex2=1
-END:VEVENT
-BEGIN:VEVENT
-UID:44bbaac95dbb924f@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;TZID=Asia/Seoul:20260902T090000
-DTEND;TZID=Asia/Seoul:20260902T170000
-SUMMARY:[건강보험심사평가원] <안내> 2026 가을학술대회 
- 초록_적정성평가 관련 안내
-DESCRIPTION:주최: 건강보험심사평가원\n원문: https://www.ko
- squa.net/index.php?page=view&idx=4312&hCode=BOARD&bo_idx=1\n빵캘: htt
- ps://epibrief.github.io/bbang-calender/
-URL:https://www.kosqua.net/index.php?page=view&idx=4312&hCode=BOARD&bo_
- idx=1
-END:VEVENT
-BEGIN:VEVENT
 UID:802f132236fa1cb3@bbangcal.epibrief.github.io
 DTSTAMP:20260920T045000Z
 DTSTART;VALUE=DATE:20260902
@@ -141,21 +29,6 @@ DESCRIPTION:주최: 대한종양내과학회\n원문: http://www.ksmo.o
 URL:http://www.ksmo.or.kr/
 END:VEVENT
 BEGIN:VEVENT
-UID:9ff89e7ff7d157b7@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;TZID=Asia/Seoul:20260903T130000
-DTEND;TZID=Asia/Seoul:20260903T180000
-SUMMARY:[국민건강보험공단·한국보건사회연구원] 2026년
-  한국의료패널 지역 자료설명회
-LOCATION:부산 웨스틴조선 2층 오키드홀
-DESCRIPTION:주최: 국민건강보험공단·한국보건사회연구
- 원\n원문: https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0
- %95%EB%B3%B4/?mod=document&pageid=2&uid=5723\n빵캘: https://epibrief.
- github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&pageid=2&uid=5723
-END:VEVENT
-BEGIN:VEVENT
 UID:28bf87359fee2f1f@bbangcal.epibrief.github.io
 DTSTAMP:20260920T045000Z
 DTSTART;VALUE=DATE:20260903
@@ -165,23 +38,6 @@ LOCATION:콘래드 서울
 DESCRIPTION:주최: 대한비만학회\n원문: http://www.kosso.or.kr/
  \n빵캘: https://epibrief.github.io/bbang-calender/
 URL:http://www.kosso.or.kr/
-END:VEVENT
-BEGIN:VEVENT
-UID:576998bba8b5c880@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20260904
-DTEND;VALUE=DATE:20260908
-SUMMARY:[질병관리청] 9월 세미나 <보건정책학의 이해: 
- 시사점과 연구과제> 개최
-DESCRIPTION:주최: 질병관리청\n원문: https://www.prevmed.or.kr/
- board_community_notice01/view.php?tn=board_community_notice01&list_coun
- t_s=&G_state=&pm=5.1&part_part_s=&subject_s=&content_s=&name_s=&writeda
- te_s=&keyfield_s=&search_word_s=&uid=910&gid=886&cpage=1&spage=1\n빵
- 캘: https://epibrief.github.io/bbang-calender/
-URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
- d_community_notice01&list_count_s=&G_state=&pm=5.1&part_part_s=&subject
- _s=&content_s=&name_s=&writedate_s=&keyfield_s=&search_word_s=&uid=910&
- gid=886&cpage=1&spage=1
 END:VEVENT
 BEGIN:VEVENT
 UID:be7226deb335717a@bbangcal.epibrief.github.io
@@ -230,19 +86,6 @@ LOCATION:부산 BPEX
 DESCRIPTION:주최: 한국의학물리학회\n원문: http://www.ksmp.o
  r.kr/\n빵캘: https://epibrief.github.io/bbang-calender/
 URL:http://www.ksmp.or.kr/
-END:VEVENT
-BEGIN:VEVENT
-UID:b35fb3a9b2fb7dfd@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20260909
-DTEND;VALUE=DATE:20260910
-SUMMARY:[국가생명윤리정책원] 제1회 유네스코 첨단과학
- 기술 윤리 포럼
-DESCRIPTION:주최: 국가생명윤리정책원\n원문: https://health
- .snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&
- uid=5777\n빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&uid=5777
 END:VEVENT
 BEGIN:VEVENT
 UID:e5c78893aa865281@bbangcal.epibrief.github.io
@@ -323,19 +166,6 @@ LOCATION:송도컨벤시아
 DESCRIPTION:주최: 대한전립선학회\n원문: http://www.theprosta
  te.org/\n빵캘: https://epibrief.github.io/bbang-calender/
 URL:http://www.theprostate.org/
-END:VEVENT
-BEGIN:VEVENT
-UID:040331ec9f9f6eca@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;TZID=Asia/Seoul:20260911T140000
-DTEND;TZID=Asia/Seoul:20260911T163000
-SUMMARY:[한국보건사회연구원·보건복지부] 상병수당 제
- 도화 방안 마련을 위한 토론회
-LOCATION:프레지던트호텔 슈벨트홀
-DESCRIPTION:주최: 한국보건사회연구원·보건복지부\n원
- 문: https://www.kihasa.re.kr/news/event/view?seq=76736\n빵캘: https:
- //epibrief.github.io/bbang-calender/
-URL:https://www.kihasa.re.kr/news/event/view?seq=76736
 END:VEVENT
 BEGIN:VEVENT
 UID:71837e8cfdb5c2e8@bbangcal.epibrief.github.io
@@ -438,33 +268,6 @@ DESCRIPTION:주최: 한국간담췌외과학회\n원문: https://www.ka
 URL:https://www.kahbps.or.kr/
 END:VEVENT
 BEGIN:VEVENT
-UID:39aebf171b731f77@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20260915
-DTEND;VALUE=DATE:20260916
-SUMMARY:[그 밖의 기관] 서울시 중장년 정책포럼 2026
-DESCRIPTION:주최: 그 밖의 기관\n원문: https://health.snu.ac.kr
- /%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&pageid=2&u
- id=5728\n빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&pageid=2&uid=5728
-END:VEVENT
-BEGIN:VEVENT
-UID:270e86def34b1060@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20260916
-DTEND;VALUE=DATE:20260917
-SUMMARY:[서울대 보건대학원] 효과 검증에서 실제 시행
- 으로: 공중보건 맥락에서의 임신 중 Balanced Energy and Pro
- tein 보충제 사업의 교훈
-LOCATION:보건대학원 221동 113호
-DESCRIPTION:주최: 서울대 보건대학원\n원문: https://health.s
- nu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&ui
- d=5783\n빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&uid=5783
-END:VEVENT
-BEGIN:VEVENT
 UID:5b9f0fa9ba974fbe@bbangcal.epibrief.github.io
 DTSTAMP:20260920T045000Z
 DTSTART;VALUE=DATE:20260917
@@ -501,31 +304,6 @@ DESCRIPTION:주최: 대한위암학회\n원문: http://www.kgca-i.or.kr
 URL:http://www.kgca-i.or.kr/
 END:VEVENT
 BEGIN:VEVENT
-UID:7959f356b5bb6342@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20260917
-DTEND;VALUE=DATE:20260919
-SUMMARY:[한국역학회] 2026 추계학술대회
-DESCRIPTION:주최: 한국역학회\n원문: https://health.snu.ac.kr/%
- EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid=5753\n
- 빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&uid=5753
-END:VEVENT
-BEGIN:VEVENT
-UID:bc573858125cf556@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20260917
-DTEND;VALUE=DATE:20260919
-SUMMARY:[한국역학회] 2026 추계학술대회 사전등록 / 초록
-  접수 (구연 및 포스터 발표) 안내
-DESCRIPTION:주최: 한국역학회\n원문: https://ksepi.org/web/lay1
- /bbs/S1T298C326/A/10/view.do?article_seq=2977&cpage=1&rows=10&condition
- =&keyword=\n빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://ksepi.org/web/lay1/bbs/S1T298C326/A/10/view.do?article_seq=
- 2977&cpage=1&rows=10&condition=&keyword=
-END:VEVENT
-BEGIN:VEVENT
 UID:62725c281fe5ecfd@bbangcal.epibrief.github.io
 DTSTAMP:20260920T045000Z
 DTSTART;VALUE=DATE:20260917
@@ -560,34 +338,6 @@ DESCRIPTION:주최: 대한척추신경외과학회\n원문: http://neur
 URL:http://neurospine.or.kr/
 END:VEVENT
 BEGIN:VEVENT
-UID:5409e7115b83d106@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20260917
-DTEND;VALUE=DATE:20260919
-SUMMARY:[식품의약품안전처] 의료기기의 사이버보안 업
- 무설명회(20차) 발표자료
-DESCRIPTION:주최: 식품의약품안전처\n원문: https://www.mfds.
- go.kr/brd/m_220/view.do?seq=32930&srchFr=&srchTo=&srchWord=&srchTp=&itm
- _seq_1=0&itm_seq_2=0&multi_itm_seq=0&company_cd=&company_nm=&page=1\n
- 빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://www.mfds.go.kr/brd/m_220/view.do?seq=32930&srchFr=&srchTo=&
- srchWord=&srchTp=&itm_seq_1=0&itm_seq_2=0&multi_itm_seq=0&company_cd=&c
- ompany_nm=&page=1
-END:VEVENT
-BEGIN:VEVENT
-UID:5bc672f76bff1996@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;TZID=Asia/Seoul:20260918T130000
-DTEND;TZID=Asia/Seoul:20260918T172000
-SUMMARY:[질병관리청] 2026 담배폐해 전문가 심포지엄
-LOCATION:LW컨벤션센터 L홀 (서울 중구 청파로 464\, 3층)
-DESCRIPTION:주최: 질병관리청\n원문: https://health.snu.ac.kr/%
- EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid=5733\n
- 빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&uid=5733
-END:VEVENT
-BEGIN:VEVENT
 UID:9407b14529a573ec@bbangcal.epibrief.github.io
 DTSTAMP:20260920T045000Z
 DTSTART;VALUE=DATE:20260918
@@ -597,19 +347,6 @@ LOCATION:가톨릭대학교 옴니버스파크 컨벤션홀
 DESCRIPTION:주최: 대한백신학회\n원문: http://www.korvac.org/\
  n빵캘: https://epibrief.github.io/bbang-calender/
 URL:http://www.korvac.org/
-END:VEVENT
-BEGIN:VEVENT
-UID:caf7a5632554fce9@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;TZID=Asia/Seoul:20260918T090000
-DTEND;TZID=Asia/Seoul:20260918T173000
-SUMMARY:[한국코크란] 고려대학교 한국코크란 워크숍 홍
- 보
-DESCRIPTION:주최: 한국코크란\n원문: https://health.snu.ac.kr/%
- EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&pageid=2&uid
- =5715\n빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&pageid=2&uid=5715
 END:VEVENT
 BEGIN:VEVENT
 UID:3ae13ac8d2dedf1e@bbangcal.epibrief.github.io
@@ -633,48 +370,6 @@ LOCATION:삼성서울병원 암병원 지하1층 대강당 및 세미
 DESCRIPTION:주최: 대한내분비외과학회\n원문: http://www.kat
  es.or.kr/\n빵캘: https://epibrief.github.io/bbang-calender/
 URL:http://www.kates.or.kr/
-END:VEVENT
-BEGIN:VEVENT
-UID:09798fc9504bd155@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20260921
-DTEND;VALUE=DATE:20260922
-SUMMARY:[질병관리청·한국보건사회연구원] 2026년 제1차 
- 감염병 위기 사회대응 포럼
-LOCATION:코트야드 메리어트 서울 명동
-DESCRIPTION:주최: 질병관리청·한국보건사회연구원\n원
- 문: https://www.kihasa.re.kr/news/event/view?seq=76820\n빵캘: https:
- //epibrief.github.io/bbang-calender/
-URL:https://www.kihasa.re.kr/news/event/view?seq=76820
-END:VEVENT
-BEGIN:VEVENT
-UID:77927bb0829c4f6a@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20260930
-DTEND;VALUE=DATE:20261001
-SUMMARY:[서울대 보건대학원] 개방 공간 데이터과학과 
- 건강영향 지역차-개인차 연구의 연계와 그 과제
-LOCATION:보건대학원 221동 113호
-DESCRIPTION:주최: 서울대 보건대학원\n원문: https://health.s
- nu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&ui
- d=5808\n빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&uid=5808
-END:VEVENT
-BEGIN:VEVENT
-UID:53f2ef954dea2f84@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;TZID=Asia/Seoul:20261001T103000
-DTEND;TZID=Asia/Seoul:20261001T170000
-SUMMARY:[한국장애인개발원] 제6회 장애인삶 패널조사 
- 학술대회
-LOCATION:대한상공회의소 중회의실A (서울특별시 중구 
- 세종대로 39)
-DESCRIPTION:주최: 한국장애인개발원\n원문: https://health.sn
- u.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid
- =5816\n빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&uid=5816
 END:VEVENT
 BEGIN:VEVENT
 UID:dc82a282f34bf149@bbangcal.epibrief.github.io
@@ -825,18 +520,6 @@ LOCATION:웨스틴 서울 파르나스 호텔
 DESCRIPTION:주최: 대한피부과학회\n원문: http://www.derma.or.
  kr/\n빵캘: https://epibrief.github.io/bbang-calender/
 URL:http://www.derma.or.kr/
-END:VEVENT
-BEGIN:VEVENT
-UID:79e1a3d202c45798@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20261021
-DTEND;VALUE=DATE:20261024
-SUMMARY:[대한예방의학회] 2026년 제78차 대한예방의학회 
- 가을학술대회
-LOCATION:경주화백컨벤션센터
-DESCRIPTION:주최: 대한예방의학회\n원문: http://www.prevmed.o
- r.kr/\n빵캘: https://epibrief.github.io/bbang-calender/
-URL:http://www.prevmed.or.kr/
 END:VEVENT
 BEGIN:VEVENT
 UID:c431166f54bd6264@bbangcal.epibrief.github.io
@@ -1069,21 +752,6 @@ DESCRIPTION:주최: 대한내분비학회\n원문: http://www.endocrino
 URL:http://www.endocrinology.or.kr/
 END:VEVENT
 BEGIN:VEVENT
-UID:7edfdde6847968e6@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;TZID=Asia/Seoul:20261029T133000
-DTEND;TZID=Asia/Seoul:20261029T163000
-SUMMARY:[보건복지부] 2026년도 장애인 건강보건통계 컨
- 퍼런스 개최 및 사전등록 안내
-LOCATION:국립재활원 나래관 3층 중강당(서울시 강북구 
- 소재)
-DESCRIPTION:주최: 보건복지부\n원문: https://health.snu.ac.kr/%
- EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid=5807\n
- 빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&uid=5807
-END:VEVENT
-BEGIN:VEVENT
 UID:2c049dc342fbe284@bbangcal.epibrief.github.io
 DTSTAMP:20260920T045000Z
 DTSTART;VALUE=DATE:20261030
@@ -1094,20 +762,6 @@ LOCATION:콘래드 서울
 DESCRIPTION:주최: 대한혈액학회\n원문: http://www.hematology.o
  r.kr/\n빵캘: https://epibrief.github.io/bbang-calender/
 URL:http://www.hematology.or.kr/
-END:VEVENT
-BEGIN:VEVENT
-UID:9b57a4beacb03ae1@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;TZID=Asia/Seoul:20261030T100000
-DTEND;TZID=Asia/Seoul:20261030T183000
-SUMMARY:[한국보건교육건강증진학회·한국건강증진개발
- 원] 2026년 추계학술대회 일정 안내 및 발표·토론 참여
-  요청 (10/30 금)
-LOCATION:한국방송통신대학교 열린관 대강당 및 414호
-DESCRIPTION:주최: 한국보건교육건강증진학회·한국건강
- 증진개발원\n원문: https://khep.or.kr/board/notice/article/284380
- \n빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://khep.or.kr/board/notice/article/284380
 END:VEVENT
 BEGIN:VEVENT
 UID:decfb4c2905b0908@bbangcal.epibrief.github.io
@@ -1144,19 +798,6 @@ DESCRIPTION:주최: 대한생물정신의학회\n원문: http://www.bio
 URL:http://www.biolpsychiatry.or.kr/
 END:VEVENT
 BEGIN:VEVENT
-UID:9dd628608a1050e2@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20261030
-DTEND;VALUE=DATE:20261031
-SUMMARY:[한국코크란] 치료 체계적문헌고찰 워크숍
-LOCATION:실시간 온라인 강의(zoom)
-DESCRIPTION:주최: 한국코크란\n원문: https://health.snu.ac.kr/%
- EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3%B4/?mod=document&uid=5802\n
- 빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://health.snu.ac.kr/%EC%84%B8%EB%AF%B8%EB%82%98%EC%A0%95%EB%B3
- %B4/?mod=document&uid=5802
-END:VEVENT
-BEGIN:VEVENT
 UID:b1984af1ebcfe1f6@bbangcal.epibrief.github.io
 DTSTAMP:20260920T045000Z
 DTSTART;VALUE=DATE:20261031
@@ -1166,19 +807,6 @@ LOCATION:차바이오 컴플렉스
 DESCRIPTION:주최: 대한수부외과학회\n원문: http://www.handsu
  rgery.or.kr/\n빵캘: https://epibrief.github.io/bbang-calender/
 URL:http://www.handsurgery.or.kr/
-END:VEVENT
-BEGIN:VEVENT
-UID:9fbccb5f1fb43221@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20261102
-DTEND;VALUE=DATE:20261106
-SUMMARY:[한국보건행정학회] 2026 후기학술대회 북페어 
- 참여자 모집
-LOCATION:후기학술대회장 로비
-DESCRIPTION:주최: 한국보건행정학회\n원문: https://www.kshpa
- .org/bbs/notice/1535\n빵캘: https://epibrief.github.io/bbang-calender
- /
-URL:https://www.kshpa.org/bbs/notice/1535
 END:VEVENT
 BEGIN:VEVENT
 UID:99a0858200cc1aea@bbangcal.epibrief.github.io
@@ -1247,19 +875,6 @@ LOCATION:인천\, 송도컨벤시아
 DESCRIPTION:주최: 대한생리학회\n원문: http://www.koreaphysiol
  ogy.org/\n빵캘: https://epibrief.github.io/bbang-calender/
 URL:http://www.koreaphysiology.org/
-END:VEVENT
-BEGIN:VEVENT
-UID:e719a95bba4d99ff@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20261105
-DTEND;VALUE=DATE:20261106
-SUMMARY:[한국보건행정학회] 2026년 한국보건행정학회 후
- 기 학술대회
-LOCATION:속초 델피노
-DESCRIPTION:주최: 한국보건행정학회\n원문: https://www.kshpa
- .org/calendar/list/14\n빵캘: https://epibrief.github.io/bbang-calende
- r/
-URL:https://www.kshpa.org/calendar/list/14
 END:VEVENT
 BEGIN:VEVENT
 UID:269e4733b358723a@bbangcal.epibrief.github.io
@@ -1411,17 +1026,6 @@ LOCATION:부산 벡스코
 DESCRIPTION:주최: 대한이식학회\n원문: http://www.mykst.org/\n
  빵캘: https://epibrief.github.io/bbang-calender/
 URL:http://www.mykst.org/
-END:VEVENT
-BEGIN:VEVENT
-UID:ebcb515e5a9f00f5@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20261112
-DTEND;VALUE=DATE:20261115
-SUMMARY:[한국역학회] KAI International Meeting 2026
-LOCATION:송도컨벤시아
-DESCRIPTION:주최: 대한면역학회\n원문: http://www.ksimm.or.kr/
- \n빵캘: https://epibrief.github.io/bbang-calender/
-URL:http://www.ksimm.or.kr/
 END:VEVENT
 BEGIN:VEVENT
 UID:e6c30ed79d0602c7@bbangcal.epibrief.github.io
@@ -1859,17 +1463,6 @@ DESCRIPTION:주최: 대한평형의학회\n원문: http://www.vertigo.o
 URL:http://www.vertigo.or.kr/
 END:VEVENT
 BEGIN:VEVENT
-UID:16d66fa2ea37714c@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20261210
-DTEND;VALUE=DATE:20261212
-SUMMARY:[한국의료질향상학회] 2026 가을학술대회
-LOCATION:제주국제컨벤션센터
-DESCRIPTION:주최: 한국의료질향상학회\n원문: http://www.kos
- qua.net/\n빵캘: https://epibrief.github.io/bbang-calender/
-URL:http://www.kosqua.net/
-END:VEVENT
-BEGIN:VEVENT
 UID:8ff4f3feac01e18a@bbangcal.epibrief.github.io
 DTSTAMP:20260920T045000Z
 DTSTART;VALUE=DATE:20261214
@@ -1880,24 +1473,6 @@ LOCATION:서울대병원 이건희 홀
 DESCRIPTION:주최: 대한근골격종양학회\n원문: http://www.kms
  ts.org/\n빵캘: https://epibrief.github.io/bbang-calender/
 URL:http://www.kmsts.org/
-END:VEVENT
-BEGIN:VEVENT
-UID:b744d68864203471@bbangcal.epibrief.github.io
-DTSTAMP:20260920T045000Z
-DTSTART;VALUE=DATE:20261216
-DTEND;VALUE=DATE:20261217
-SUMMARY:[대한예방의학회] 기획 세미나「자살예방의 정
- 책 구성\, 균형\, 거버넌스」 (10/1~12/16\, 전 5회) 안내\, 
- 3회차 시간 변경 재공지
-DESCRIPTION:주최: 대한예방의학회\n원문: https://www.prevmed.
- or.kr/board_community_notice01/view.php?tn=board_community_notice01&lis
- t_count_s=&G_state=&pm=5.1&part_part_s=&subject_s=&content_s=&name_s=&w
- ritedate_s=&keyfield_s=&search_word_s=&uid=919&gid=894&cpage=1&spage=1\
- n빵캘: https://epibrief.github.io/bbang-calender/
-URL:https://www.prevmed.or.kr/board_community_notice01/view.php?tn=boar
- d_community_notice01&list_count_s=&G_state=&pm=5.1&part_part_s=&subject
- _s=&content_s=&name_s=&writedate_s=&keyfield_s=&search_word_s=&uid=919&
- gid=894&cpage=1&spage=1
 END:VEVENT
 BEGIN:VEVENT
 UID:d3b47a5130124f45@bbangcal.epibrief.github.io

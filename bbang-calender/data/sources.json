@@ -19,6 +19,11 @@
    "id": "society",
    "name": "학회·협회",
    "hue": 280
+  },
+  {
+   "id": "clinical",
+   "name": "임상 학회",
+   "hue": 340
   }
  ],
  "orgs": [
@@ -230,13 +235,25 @@
    "verified": false
   },
   {
+   "id": "clinic",
+   "name": "임상 학회",
+   "short": "임상",
+   "category": "clinical",
+   "home": "https://www.kams.or.kr/bbs/?code=ws",
+   "board": "https://www.kams.or.kr/bbs/?code=ws",
+   "verified": true,
+   "bucket": true,
+   "note": "대한의학회가 모아 둔 각 학회 학술대회입니다. 주최는 행사마다 다릅니다"
+  },
+  {
    "id": "etc",
    "name": "그 밖의 기관",
    "short": "기타",
    "category": "research",
    "home": "",
    "board": "",
-   "verified": true
+   "verified": true,
+   "bucket": true
   }
  ],
  "feeds": [
@@ -403,7 +420,8 @@
    "fetchBody": false,
    "healthOnly": false,
    "months": 5,
-   "trustAll": true
+   "trustAll": true,
+   "org": "clinic"
   },
   {
    "id": "org-kspm",

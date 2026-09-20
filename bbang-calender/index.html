@@ -433,10 +433,10 @@ const style = (id) => {
 /** 한 행사에 주최 기관이 여럿일 수 있습니다. */
 const hostsOf = (e) => (e.orgs && e.orgs.length ? e.orgs : [e.org]).filter((id) => ORGS[id]);
 const hostNames = (e) => {
-  // 우리가 아는 기관이면 그 이름을, 모르면 공고에 적힌 이름이라도 보여 줍니다.
-  const known = hostsOf(e).filter((id) => id !== 'etc').map((id) => ORGS[id].name);
+  // '임상 학회', '그 밖의 기관' 은 묶음 칸일 뿐입니다. 행사에 적힌 진짜 주최 이름을 보여 줍니다.
+  const known = hostsOf(e).filter((id) => !ORGS[id].bucket).map((id) => ORGS[id].name);
   if (known.length) return known.join('·');
-  return e.orgLabel || '그 밖의 기관';
+  return e.orgLabel || (ORGS[hostsOf(e)[0]] || {}).name || '그 밖의 기관';
 };
 
 const visible = () => EVENTS.filter((e) => {
