@@ -41,7 +41,10 @@ a{color:inherit}
 button{font:inherit;color:inherit;cursor:pointer}
 
 header.top{padding:22px 0 14px;display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;border:0;background:transparent;padding:0;
+  text-align:left;cursor:pointer;border-radius:12px}
+.brand:hover h1{color:var(--accent)}
+.brand:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .brand .logo{font-size:30px;line-height:1}
 .brand h1{margin:0;font-size:23px;letter-spacing:-.02em}
 .brand p{margin:2px 0 0;font-size:13px;color:var(--dim)}
@@ -303,7 +306,8 @@ footer a{color:var(--accent)}
 <div class="wrap">
 
 <header class="top">
-  <div class="brand">
+  <div class="brand" id="go-home" role="button" tabindex="0"
+       title="처음 화면으로 (이번 달 달력)" aria-label="처음 화면으로">
     <div class="logo" aria-hidden="true">🍞</div>
     <div>
       <h1>빵캘</h1>
@@ -1256,6 +1260,20 @@ async function boot() {
   $('#prev').onclick = () => { cursor.setMonth(cursor.getMonth() - 1); draw(); };
   $('#next').onclick = () => { cursor.setMonth(cursor.getMonth() + 1); draw(); };
   $('#today').onclick = () => { cursor = new Date(); draw(); };
+  // 이름을 누르면 처음 화면으로 돌아옵니다. 이번 달 달력, 검색어와 날짜 고름은 지웁니다.
+  const goHome = () => {
+    dayPick = null;
+    query = '';
+    $('#q').value = '';
+    cursor = new Date();
+    view = compact() ? 'list' : 'month';
+    setView();
+    scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  };
+  $('#go-home').onclick = goHome;
+  $('#go-home').onkeydown = (ev) => {
+    if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); goHome(); }
+  };
   $('#view-month').onclick = () => { dayPick = null; view = 'month'; setView(); };
   $('#view-list').onclick = () => { dayPick = null; view = 'list'; setView(); };
   $('#view-map').onclick = () => { dayPick = null; view = 'map'; setView(); };
