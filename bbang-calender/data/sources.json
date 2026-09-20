@@ -243,7 +243,8 @@
    "board": "https://www.kams.or.kr/bbs/?code=ws",
    "verified": true,
    "bucket": true,
-   "note": "대한의학회가 모아 둔 각 학회 학술대회입니다. 주최는 행사마다 다릅니다"
+   "note": "대한의학회가 모아 둔 각 학회 학술대회입니다. 주최는 행사마다 다릅니다",
+   "offByDefault": true
   },
   {
    "id": "etc",

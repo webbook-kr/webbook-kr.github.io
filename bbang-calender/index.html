@@ -67,6 +67,12 @@ header.top{padding:22px 0 14px;display:flex;flex-wrap:wrap;gap:12px;align-items:
 .seg button{border:0;background:transparent;padding:7px 13px;font-size:13px;font-weight:600}
 .seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent)}
 
+.hidden-note{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;
+  background:var(--panel);border:1px dashed var(--line);border-radius:12px;padding:9px 13px;font-size:13px;color:var(--dim)}
+.hidden-note b{color:var(--ink)}
+.hidden-note button{margin-left:auto;border:1px solid var(--line);background:var(--bg);border-radius:999px;
+  padding:5px 13px;font-size:12.5px;font-weight:700;color:var(--ink)}
+.hidden-note button:hover{border-color:var(--accent);color:var(--accent)}
 .layout{display:grid;grid-template-columns:232px minmax(0,1fr);gap:16px;margin-top:14px;align-items:start}
 .layout > main{min-width:0}
 #map-view,#list-view,#cal-view{min-width:0}
@@ -325,6 +331,8 @@ footer a{color:var(--accent)}
   </div>
 </div>
 
+<div class="hidden-note" id="hidden-note" hidden></div>
+
 <div class="layout">
   <aside class="side">
     <details id="filt" open>
@@ -510,6 +518,28 @@ function renderFilters() {
     }
     box.appendChild(wrap);
   }
+}
+
+/** 꺼 둔 기관이 있으면 그 사실과 건수를 알려 줍니다. 모르고 못 보는 일이 없게 합니다. */
+function renderHiddenNote() {
+  const box = $('#hidden-note');
+  const offIds = [...hidden].filter((id) => ORGS[id]);
+  if (!offIds.length) { box.hidden = true; box.innerHTML = ''; return; }
+
+  const today = TODAY;
+  const count = EVENTS.filter((e) =>
+    (e.orgs && e.orgs.length ? e.orgs : [e.org]).some((id) => hidden.has(id))
+    && (e.end || e.start) >= today).length;
+  if (!count) { box.hidden = true; box.innerHTML = ''; return; }
+
+  const names = offIds.map((id) => ORGS[id].name);
+  const label = names.length <= 2 ? names.join('·') : `${names[0]} 등 ${names.length}곳`;
+  box.hidden = false;
+  box.innerHTML = `<span><b>${escapeHtml(label)}</b> 행사 ${count}건은 지금 꺼져 있습니다.</span>`;
+  const on = document.createElement('button');
+  on.textContent = names.length === 1 ? `${names[0]} 켜기` : '전부 켜기';
+  on.onclick = () => { hidden.clear(); saveHidden(); draw(); };
+  box.appendChild(on);
 }
 
 /** 켜짐·꺼짐 토글 하나를 만듭니다. */
@@ -1084,6 +1114,7 @@ function setView() {
 }
 function draw() {
   renderFilters();
+  renderHiddenNote();
   renderBanner();
   const monthNav = [$('#prev'), $('#next'), $('#today')];
   for (const b of monthNav) b.hidden = view !== 'month';
@@ -1106,10 +1137,12 @@ async function boot() {
     $('#cal-view').innerHTML = `<div class="empty"><div class="big">🍞</div>일정을 불러오지 못했습니다. 잠시 뒤 새로고침해 주세요.</div>`;
     return;
   }
-  try {
-    const off = JSON.parse(localStorage.getItem('bbangcal-off') || '[]');
-    if (Array.isArray(off)) hidden = new Set(off.filter((id) => ORGS[id]));
-  } catch {}
+  // 처음 오신 분에게는 임상 학회를 꺼 둡니다. 보건정책 행사가 학술대회에 묻히지 않게 하기 위해서입니다.
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem('bbangcal-off') || 'null'); } catch {}
+  hidden = Array.isArray(saved)
+    ? new Set(saved.filter((id) => ORGS[id]))
+    : new Set(CONF.orgs.filter((o) => o.offByDefault).map((o) => o.id));
 
   // 앞으로 열릴 일정이 있는 달로 첫 화면을 맞춥니다.
   const next = EVENTS.find((e) => (e.end || e.start) >= TODAY);
