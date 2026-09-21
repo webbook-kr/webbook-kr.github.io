@@ -102,8 +102,18 @@ th{font-weight:800;color:var(--muted);font-size:11px;letter-spacing:.6px;text-tr
 .qr .qtxt span{font-size:11.5px;color:var(--dim);line-height:1.5}
 
 figure{margin:14px 0}
-figure img{width:100%;display:block;border:1px solid var(--line)}
+figure img{display:block;max-width:100%;max-height:52vh;width:auto;margin:0 auto;border:1px solid var(--line)} /* 세로로 긴 그림도 한 쪽을 넘지 않게 */
+figure img{cursor:zoom-in}
 figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
+/* ── 그림 크게 보기: 그림을 누르면 화면 가득, 한 번 더 누르면 2배로 커져 손가락으로 밀어 본다 ── */
+#lb{display:none;position:fixed;inset:0;z-index:95;background:rgba(10,10,12,.94);overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom}
+#lb.on{display:block}
+#lb .lbw{min-height:100%;display:flex;align-items:center;justify-content:center;padding:44px 8px 56px;box-sizing:border-box}
+#lb img{max-width:100%;max-height:calc(100vh - 110px);width:auto;height:auto;cursor:zoom-in;background:#fff}
+#lb.zoom .lbw{align-items:flex-start;justify-content:flex-start}
+#lb.zoom img{max-width:none;max-height:none;width:200vw;cursor:zoom-out}
+#lb .lbx{position:fixed;top:8px;right:10px;z-index:2;background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:20px;padding:8px 14px;font:700 14px 'Pretendard',sans-serif;cursor:pointer}
+#lb .lbc{position:fixed;left:0;right:0;bottom:0;z-index:2;padding:10px 14px;background:rgba(0,0,0,.6);color:#ddd;font:500 12.5px/1.5 'Pretendard',sans-serif;text-align:center;word-break:keep-all}
 
 /* ── 유튜브 (누르면 그때 불러옴) ─────────────────────── */
 .vwrap{position:relative;aspect-ratio:16/9;background:#000;margin:14px 0;overflow:hidden}
@@ -214,7 +224,7 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
 @page{size:A4;margin:0}
 @media print{
  html,body{height:auto;overflow:visible;background:#fff}
- #prog,#bar,#menu,#toast{display:none!important}
+ #prog,#bar,#menu,#toast,#lb{display:none!important}
  #deck{width:210mm;height:auto}
  .s{position:static;display:flex!important;width:210mm;height:297mm;padding:0;animation:none;
     break-after:page;page-break-after:always;overflow:hidden}
@@ -244,6 +254,7 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
  </div>
 </div>
 <div id="toast"></div>
+<div id="lb"><button class="lbx" type="button">닫기 ✕</button><div class="lbw"><img alt=""></div><div class="lbc"></div></div>
 <div id="gate"><div class="gbox">
  <div class="gi">🔒</div>
  <h3 id="gt">코드가 필요합니다</h3>
@@ -466,6 +477,19 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
     if(t>=0) go(t);
    };
   });
+  // 본문 그림을 누르면 크게 본다
+  var lb=document.getElementById('lb'), lbi=lb.querySelector('img'), lbc=lb.querySelector('.lbc');
+  function lbClose(){lb.classList.remove('on','zoom');lbi.src='';}
+  document.querySelectorAll('figure img').forEach(function(im){
+   im.addEventListener('click',function(){
+    var cap=im.closest('figure').querySelector('figcaption');
+    lbi.src=im.currentSrc||im.src; lbc.textContent=(cap?cap.textContent+' · ':'')+'그림을 누르면 2배, 다시 누르면 원래대로';
+    lb.classList.add('on'); lb.scrollTop=0; lb.scrollLeft=0;
+   });
+  });
+  lbi.onclick=function(e){e.stopPropagation();lb.classList.toggle('zoom');};
+  lb.onclick=function(e){ if(e.target===lb||e.target.classList.contains('lbw')||e.target.classList.contains('lbx')) lbClose(); };
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&lb.classList.contains('on')) lbClose(); });
   document.querySelectorAll('.vframe').forEach(function(b){
    b.onclick=function(){ playVideo(b.closest('.vwrap')); };
   });
@@ -516,6 +540,7 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
  jump.onchange=function(){go(+jump.value)};
  addEventListener('keydown',function(e){
   if(e.target.tagName==='SELECT'||e.target.tagName==='INPUT') return;
+  if(document.getElementById('lb').classList.contains('on')) return;   // 그림 크게 보는 중엔 쪽 안 넘김
   if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();go(i+1);}
   if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(i-1);}
   if(e.key==='Home')go(0); if(e.key==='End')go(N-1);
@@ -524,6 +549,7 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
  addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
  addEventListener('touchend',function(e){
   if(x0===null)return; var dx=e.changedTouches[0].clientX-x0; x0=null;
+  if(document.getElementById('lb').classList.contains('on')) return;   // 그림 크게 보는 중엔 쪽 안 넘김
   if(Math.abs(dx)>55) go(i+(dx<0?1:-1));
  },{passive:true});
  addEventListener('hashchange',function(){var m=location.hash.match(/^#p(\d+)$/); if(m) go(+m[1]-1);});
