@@ -542,7 +542,8 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    +'<button id="cp" type="button" style="padding:6px 10px;font-size:12px">주소 복사</button> '
    +'<a href="'+esc(pub.url)+'" target="_blank" style="margin-left:6px">열어 보기 ›</a> '
    +'<a href="#" id="newpub" style="margin-left:10px;color:var(--muted);font-weight:500">새 주소로 발행</a>'
-   +'<div class="hint" style="margin-top:6px">원고를 고치고 다시 "발행하기"를 누르면 같은 주소가 새 내용으로 바뀝니다. 이 브라우저에서만 수정할 수 있어요.</div>';
+   +'<div class="hint" style="margin-top:6px">원고를 고치고 다시 "발행하기"를 누르면 같은 주소가 새 내용으로 바뀝니다. 이 브라우저에서만 수정할 수 있어요.'
+   +(/\/b\/[a-z0-9-]+\/$/.test(pub.url)?' 카톡·문자 미리보기에 제목과 표지가 뜨는 건 발행 1분쯤 뒤부터예요.':'')+'</div>';
   pres.classList.add('on'); pubb.textContent='다시 발행 (같은 주소)';
   $('cp').onclick=function(){(navigator.clipboard?navigator.clipboard.writeText(pub.url):Promise.reject()).then(function(){say('주소를 복사했어요');},function(){prompt('주소',pub.url);});};
   $('newpub').onclick=function(e){e.preventDefault();if(confirm('새 주소로 발행할까요? 기존 주소는 그대로 남습니다.')){pub=null;try{localStorage.removeItem(KEYP);}catch(e2){}showPub();}};
@@ -558,7 +559,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    var r=await fetch(PUBLISH_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
    var j=await r.json();
    if(!r.ok||j.error){ say(j.error||'발행에 실패했어요.'); if(r.status===403&&pub&&/수정 권한/.test(j.error||'')){pub=null;try{localStorage.removeItem(KEYP);}catch(e){}showPub();} }
-   else { pub={url:j.url,slug:j.slug,token:j.token,title:o.b.title}; try{localStorage.setItem(KEYP,JSON.stringify(pub));}catch(e){} showPub(); say('발행됐어요!'); }
+   else { pub={url:j.url,slug:j.slug,token:j.token,title:o.b.title}; try{localStorage.setItem(KEYP,JSON.stringify(pub));}catch(e){} showPub(); say(j.warn?'발행됐어요 (예비 주소로): '+j.warn:'발행됐어요!'); }
   }catch(e){ say('연결이 안 됐어요. 잠시 후 다시 시도해 주세요.'); }
   pubb.disabled=false; if(pubb.textContent==='올리는 중…')pubb.textContent=old;
  };

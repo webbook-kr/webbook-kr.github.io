@@ -4,7 +4,10 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
-const READER = "https://webbook-kr.github.io/b/?";
+const SITE = "https://webbook-kr.github.io";
+const READER = SITE + "/b/?";              // 책 페이지를 못 만들었을 때의 예비 주소
+const REPO = "webbook-kr/webbook-kr.github.io";
+const PAGE_TPL = SITE + "/b/_book.html";   // 책마다 만드는 읽기 페이지의 틀
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "content-type, authorization, apikey, x-client-info",
@@ -27,6 +30,42 @@ function rand(n: number) {
 function slugify(t: string) {
   const s = t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
   return s || "book";
+}
+
+const escA = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const unesc = (s: string) => s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+function pick(html: string, re: RegExp) { const m = html.match(re); return m ? unesc(m[1]).trim() : ""; }
+
+// 책마다 읽기 페이지(b/<slug>/index.html)를 깃허브에 올린다. 카톡·문자 미리보기에 제목·설명·표지가 뜨게 하려는 것.
+// GITHUB_TOKEN 비밀값(저장소 Contents 쓰기 권한)이 있어야 하고, 없거나 실패하면 예비 주소(/b/?slug)를 쓴다.
+async function pushBookPage(slug: string, title: string, html: string): Promise<{ url: string; warn?: string }> {
+  const tok = Deno.env.get("GITHUB_TOKEN");
+  if (!tok) return { url: READER + slug, warn: "GITHUB_TOKEN 없음" };
+  try {
+    const tpl = await (await fetch(PAGE_TPL, { cache: "no-store" })).text();
+    if (!tpl.includes("{{SLUG}}")) throw new Error("틀 파일이 이상함");
+    const full = pick(html, /<title>([^<]*)<\/title>/) || title;
+    const short = full.split(" — ")[0];
+    const desc = pick(html, /<meta name="description" content="([^"]*)"/);
+    const img = pick(html, /class="cimg"[^>]*>\s*<img[^>]*src="([^"]+)"/);
+    const imgTags = img
+      ? `<meta property="og:image" content="${escA(img)}">\n<meta name="twitter:card" content="summary_large_image">`
+      : `<meta name="twitter:card" content="summary">`;
+    const page = tpl.replace("<title>{{TITLE}}</title>", "<title>" + escA(full) + "</title>")
+      .replaceAll("{{TITLE}}", escA(short)).replaceAll("{{DESC}}", escA(desc)).replaceAll("{{SLUG}}", slug).replace("{{IMAGE_TAGS}}", imgTags);
+    const api = `https://api.github.com/repos/${REPO}/contents/b/${slug}/index.html`;
+    const hdr = { Authorization: "Bearer " + tok, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28", "Content-Type": "application/json" };
+    const cur = await fetch(api, { headers: hdr });
+    const curJ = cur.ok ? await cur.json() : null;
+    const sha = curJ?.sha;
+    const b64 = btoa(String.fromCharCode(...new TextEncoder().encode(page)));
+    if (curJ && String(curJ.content ?? "").replace(/\s/g, "") === b64) return { url: `${SITE}/b/${slug}/` }; // 그대로면 커밋하지 않는다
+    const r = await fetch(api, { method: "PUT", headers: hdr, body: JSON.stringify({ message: `책 페이지: ${short}`, content: b64, ...(sha ? { sha } : {}) }) });
+    if (!r.ok) throw new Error("GitHub " + r.status + " " + (await r.text()).slice(0, 200));
+    return { url: `${SITE}/b/${slug}/` };
+  } catch (e) {
+    return { url: READER + slug, warn: "책 페이지 만들기 실패: " + String(e) };
+  }
 }
 
 Deno.serve(async (req) => {
@@ -77,5 +116,6 @@ Deno.serve(async (req) => {
   if (dbErr) return json({ error: "기록 실패: " + dbErr.message }, 500);
 
   const { data: pub } = sb.storage.from("webbook").getPublicUrl(`${slug}/index.html`);
-  return json({ url: READER + slug, raw: pub.publicUrl, slug, token });
+  const page = await pushBookPage(slug, title, html);
+  return json({ url: page.url, raw: pub.publicUrl, slug, token, ...(page.warn ? { warn: page.warn } : {}) });
 });

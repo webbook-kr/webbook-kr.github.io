@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>책 여는 중…</title>
+<meta name="robots" content="noindex">
+<style>
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#eceae5;color:#6b6560;font:500 14px 'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif}
+.b{text-align:center;padding:24px}
+.b h1{font-size:16px;color:#15130f;margin:0 0 8px}
+.b p{margin:0;line-height:1.7}
+.b a{color:#c8811f}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#c8811f;animation:p 1s infinite alternate;margin-bottom:14px}
+@keyframes p{to{opacity:.2}}
+</style>
+</head>
+<body>
+<div class="b" id="m"><div class="dot"></div><p>책을 여는 중입니다…</p></div>
+<script>
+// 없는 주소로 왔을 때. /b/책주소/ 꼴이면 아직 책 페이지가 깃허브에 올라오기 전(발행 직후 1분쯤)이니 책을 대신 열어 준다.
+(function(){
+ var STORAGE='https://dxhmprqfgigljgbstqrg.supabase.co/storage/v1/object/public/webbook/';
+ var m=document.getElementById('m');
+ var mt=location.pathname.match(/^\/b\/([a-z0-9-]{3,60})\/?$/);
+ function fail(t){document.title='페이지가 없어요';m.innerHTML='<h1>'+(mt?'책을 열 수 없어요':'이런 주소는 없어요')+'</h1><p>'+t+'</p><p style="margin-top:10px"><a href="/">웹북 첫 화면 ›</a> · <a href="/maker.html">내 책 만들기 ›</a></p>';}
+ if(!mt){fail('주소를 다시 확인해 주세요.');return;}
+ var slug=mt[1];
+ fetch(STORAGE+slug+'/index.html?t='+Date.now(),{cache:'no-store'}).then(function(r){
+  if(r.status===404||r.status===400) throw new Error('nf');
+  if(!r.ok) throw new Error('bad');
+  return r.text();
+ }).then(function(html){
+  if(html.indexOf('id="deck"')<0) throw new Error('nf');
+  window.EBOOK_BASE=STORAGE+slug+'/index';
+  document.open(); document.write(html); document.close();
+ }).catch(function(e){
+  fail(e.message==='nf'?'이 주소의 책이 없습니다. 주소를 다시 확인해 주세요.':'연결이 잘 안 됩니다. 잠시 후 다시 열어 주세요.');
+ });
+})();
+</script>
+</body>
+</html>
