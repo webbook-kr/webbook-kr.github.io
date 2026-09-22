@@ -121,6 +121,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    <p class="hint" style="margin:10px 0 4px"><b>세미나·강연 정리용</b></p>
    <table>
     <tr><td>발표자: 이름 | 소속 | 시간</td><td>발표자 정보칸 (| 로 구분, 뒤는 생략 가능)</td></tr>
+    <tr><td>머리글: 세션 2 · 패널 토론</td><td>그 쪽부터 장 끝까지 쪽 맨 위에 작은 표시. 빈 값이면 끔</td></tr>
     <tr><td>핵심: 한 줄</td><td>눈에 띄는 결론 상자</td></tr>
     <tr><td>Q: 질문<br>A: 답변</td><td>질의응답 카드. 끝에 <code>-- 이름</code> 을 붙이면 말한 사람 표시</td></tr>
     <tr><td>12:30 내용</td><td>시간 목차. 누르면 영상이 그 지점부터 재생</td></tr>
@@ -318,6 +319,11 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
     out.push({html:h,len:(svg?340:150)+(qp[1]?qp[1].length+60:0)+(qp[2]?qp[2].length:0)});
     i++;continue;
    }
+   // 머리글: 세션 2 · 패널 토론   → 이 쪽부터 장이 끝날 때까지 쪽 맨 위에 작은 표시. 빈 값이면 끄기
+   if(/^(머리글|running)\s*[::]/i.test(L)){
+    out.push({rh:inline(L.replace(/^[^::]*[::]\s*/,'').trim()),html:'',len:0});
+    i++;continue;
+   }
    // 발표자:  홍길동 | 소속 | 14:00-14:40
    if(/^(발표자|연사|speaker)\s*[::]/i.test(L)){
     var w=L.replace(/^[^::]*[::]\s*/,'').split('|').map(function(x){return x.trim();});
@@ -374,7 +380,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    if(im){out.push({html:'<figure><img src="'+esc(im[2])+'" alt="'+esc(im[1])+'" loading="lazy">'+(im[1]?'<figcaption>'+esc(im[1])+'</figcaption>':'')+'</figure>',len:420});i++;continue;}
    var yt=/^youtube:\s*(.+)$/i.test(L)?ytid(L.replace(/^youtube:\s*/i,'').trim()):(/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(L.trim())?ytid(L.trim()):null);
    if(yt){out.push({html:'<div class="vwrap" data-v="'+yt+'"><div class="vframe" style="background-image:url(https://i.ytimg.com/vi/'+yt+'/hqdefault.jpg)"></div></div><a class="vlink" href="https://www.youtube.com/watch?v='+yt+'" target="_blank" rel="noopener">여기서 안 나오면 → 유튜브에서 열기 ↗</a>',len:410});i++;continue;}
-   var STOP=/^(#|##|---|>|:::|[-*]\s|\d+[.)]\s|\||!\[|```|youtube:|qr:|Q\s*[::]|A\s*[::]|발표자\s*[::]|연사\s*[::]|speaker\s*[::]|핵심\s*[::]|요점\s*[::]|결론\s*[::]|\d{1,2}:\d{2}(?::\d{2})?\s+\S|https?:\/\/(www\.)?(youtube\.com|youtu\.be))/i;
+   var STOP=/^(#|##|---|>|:::|[-*]\s|\d+[.)]\s|\||!\[|```|youtube:|qr:|Q\s*[::]|A\s*[::]|발표자\s*[::]|연사\s*[::]|speaker\s*[::]|머리글\s*[::]|running\s*[::]|핵심\s*[::]|요점\s*[::]|결론\s*[::]|\d{1,2}:\d{2}(?::\d{2})?\s+\S|https?:\/\/(www\.)?(youtube\.com|youtu\.be))/i;
    var p=[L];i++;while(i<lines.length&&lines[i].trim()&&!STOP.test(lines[i]))p.push(lines[i++]);
    para(p.join('\n'));
   }
@@ -449,14 +455,19 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
      +(ch.sub?'\n  <p class="chsub">'+inline(ch.sub)+'</p>':'')
      +(ch.img?'\n  <figure class="chimg"><img src="'+esc(ch.img.src)+'" alt="'+esc(ch.img.alt)+'" loading="lazy"></figure>':''),
      foot,String(pages.length+1))); }
+   var rhOn=false, rhCur='';   // 머리글: 장 안에서 이어지고, 장이 바뀌면 사라진다
    ch.secs.forEach(function(sec){
     // parts: 줄 묶음 배열 (null 은 강제 나눔). 블록으로 바꾼 뒤 글자 수로 쪽 나눔
     var groups=[[]];
     sec.parts.forEach(function(p){ if(p===null){groups.push([]);} else { blocks(p).forEach(function(b){groups[groups.length-1].push(b);}); } });
     var chunks=[];
-    groups.forEach(function(g){ var cur=[],len=0; g.forEach(function(b){ if(cur.length&&len+b.len>LIMIT){chunks.push(cur);cur=[];len=0;} cur.push(b);len+=b.len; }); if(cur.length||!chunks.length)chunks.push(cur); });
+    groups.forEach(function(g){ var cur=[],len=0; g.forEach(function(b){ if(b.rh!==undefined)rhOn=!!b.rh; var lim=LIMIT-(rhOn?45:0); if(cur.length&&len+b.len>lim){chunks.push(cur);cur=[];len=0;} cur.push(b);len+=b.len; }); if(cur.length||!chunks.length)chunks.push(cur); });
     chunks.forEach(function(c,k){
-     var h=(sec.title?'  <h3>'+inline(sec.title)+(k?' <span style="color:var(--dim);font-weight:500;font-size:.7em">(계속)</span>':'')+'</h3>\n':'')+c.map(function(b){return '  '+b.html;}).join('\n');
+     var head=rhCur;
+     c.forEach(function(b,j){ if(b.rh!==undefined){ rhCur=b.rh; if(j===0)head=rhCur; } });
+     var h=(head?'  <div class="rh">'+head+'</div>\n':'')
+      +(sec.title?'  <h3>'+inline(sec.title)+(k?' <span style="color:var(--dim);font-weight:500;font-size:.7em">(계속)</span>':'')+'</h3>\n':'')
+      +c.filter(function(b){return b.rh===undefined;}).map(function(b){return '  '+b.html;}).join('\n');
      pages.push(pageHtml('',h,foot.trim()||title,String(pages.length+1)));
     });
    });

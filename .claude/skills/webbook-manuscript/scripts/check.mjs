@@ -49,6 +49,7 @@ function blockLens(body) {
     }
     if (/^:::\s?/.test(s)) { out.push(s.length + 40); i++; continue; }
     if (/^(발표자|연사|speaker)\s*[:：]/i.test(s)) { out.push(70); i++; continue; }
+    if (/^(머리글|running)\s*[:：]/i.test(s)) { out.push(45); i++; continue; }   // 쪽 맨 위 한 줄 (이후 쪽들의 45자 몫은 어림에서 뺀다)
     if (/^qr:\s*\S/i.test(s)) {
       const q = s.replace(/^qr:\s*/i, '').split('|');
       out.push(340 + (q[1] ? q[1].length + 60 : 0) + (q[2] ? q[2].length : 0)); i++; continue;
@@ -89,7 +90,7 @@ function blockLens(body) {
     if (/^youtube:\s*\S/i.test(s) || /^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(s.trim())) {
       out.push(380); i++; continue;
     }
-    const STOP = /^(#|##|---|>|:::|[-*]\s|\d+[.)]\s|\||!\[|```|youtube:|qr:|Q\s*[:：]|A\s*[:：]|발표자\s*[:：]|연사\s*[:：]|speaker\s*[:：]|핵심\s*[:：]|요점\s*[:：]|결론\s*[:：]|\d{1,2}:\d{2}(?::\d{2})?\s+\S|https?:\/\/(www\.)?(youtube\.com|youtu\.be))/i;
+    const STOP = /^(#|##|---|>|:::|[-*]\s|\d+[.)]\s|\||!\[|```|youtube:|qr:|Q\s*[:：]|A\s*[:：]|발표자\s*[:：]|연사\s*[:：]|speaker\s*[:：]|머리글\s*[:：]|running\s*[:：]|핵심\s*[:：]|요점\s*[:：]|결론\s*[:：]|\d{1,2}:\d{2}(?::\d{2})?\s+\S|https?:\/\/(www\.)?(youtube\.com|youtu\.be))/i;
     const p = [s]; i++;
     while (i < L.length && L[i].trim() && !STOP.test(L[i])) p.push(L[i++]);
     out.push(p.join('\n').length);
