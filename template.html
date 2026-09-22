@@ -118,6 +118,8 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
 /* ── 유튜브 (누르면 그때 불러옴) ─────────────────────── */
 .vwrap{position:relative;aspect-ratio:16/9;background:#000;margin:14px 0;overflow:hidden}
 .vwrap iframe,.vframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vlink{display:block;margin:-6px 0 14px;font:600 12px 'Pretendard',sans-serif;color:var(--muted);text-align:right;text-decoration:none}
+.vlink:hover{color:var(--accent)}
 .vframe{background:#111 center/cover no-repeat;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Pretendard',sans-serif;font-weight:800;letter-spacing:.3px}
 .vframe::after{content:'▶  영상 보기';background:rgba(0,0,0,.55);padding:10px 18px;border-radius:999px}
 
@@ -236,7 +238,7 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
  h1{font-size:30pt}h2{font-size:22pt}h3{font-size:17pt}.chnum{font-size:60pt}
  figure img{max-height:150mm;border-color:#bbb}
  .cimg img{max-height:95mm}
- .vwrap{display:none}
+ .vwrap,.vlink{display:none}
  .qr .qbox{border-color:#bbb}
  .tj{color:var(--muted);border-color:var(--line)}
  .tj::before{content:''}
@@ -516,6 +518,8 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
   f.allowFullscreen=true; f.title='강의 영상';
   var old=wrap.querySelector('iframe, .vframe');
   if(old) old.replaceWith(f); else wrap.appendChild(f);
+  // 영상이 못 뜨는 환경(메신저 내장 뷰어 등)을 위해 바깥 링크도 같은 시각으로
+  var ln=wrap.nextElementSibling; if(ln&&ln.classList.contains('vlink')) ln.href='https://www.youtube.com/watch?v='+wrap.dataset.v+(sec?'&t='+sec+'s':'');
  }
  // 같은 쪽의 영상을 찾고, 없으면 앞쪽에서 가장 가까운 영상 쪽으로 이동한다
  function jumpTo(el){

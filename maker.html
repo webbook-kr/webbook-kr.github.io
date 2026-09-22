@@ -373,7 +373,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    var im=L.match(/^!\[([^\]]*)\]\(([^)\s]+)\)/);
    if(im){out.push({html:'<figure><img src="'+esc(im[2])+'" alt="'+esc(im[1])+'" loading="lazy">'+(im[1]?'<figcaption>'+esc(im[1])+'</figcaption>':'')+'</figure>',len:420});i++;continue;}
    var yt=/^youtube:\s*(.+)$/i.test(L)?ytid(L.replace(/^youtube:\s*/i,'').trim()):(/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(L.trim())?ytid(L.trim()):null);
-   if(yt){out.push({html:'<div class="vwrap" data-v="'+yt+'"><div class="vframe" style="background-image:url(https://i.ytimg.com/vi/'+yt+'/hqdefault.jpg)"></div></div>',len:380});i++;continue;}
+   if(yt){out.push({html:'<div class="vwrap" data-v="'+yt+'"><div class="vframe" style="background-image:url(https://i.ytimg.com/vi/'+yt+'/hqdefault.jpg)"></div></div><a class="vlink" href="https://www.youtube.com/watch?v='+yt+'" target="_blank" rel="noopener">여기서 안 나오면 → 유튜브에서 열기 ↗</a>',len:410});i++;continue;}
    var STOP=/^(#|##|---|>|:::|[-*]\s|\d+[.)]\s|\||!\[|```|youtube:|qr:|Q\s*[::]|A\s*[::]|발표자\s*[::]|연사\s*[::]|speaker\s*[::]|핵심\s*[::]|요점\s*[::]|결론\s*[::]|\d{1,2}:\d{2}(?::\d{2})?\s+\S|https?:\/\/(www\.)?(youtube\.com|youtu\.be))/i;
    var p=[L];i++;while(i<lines.length&&lines[i].trim()&&!STOP.test(lines[i]))p.push(lines[i++]);
    para(p.join('\n'));
