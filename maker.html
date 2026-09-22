@@ -96,6 +96,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
     <div><label for="au">글쓴이</label><input id="au" type="text" placeholder="이름 · 채널명"></div>
    </div>
    <div><label for="su">부제 (한 줄)</label><input id="su" type="text" placeholder="표지에 작게 들어가는 한 줄"></div>
+   <div><label for="dt">날짜 (선택)</label><input id="dt" type="text" placeholder="예: 2026.9.21(월) — 글쓴이 대신 표지와 끝 쪽에 들어갑니다"></div>
    <div><label for="ci">표지 그림 주소 (선택)</label><input id="ci" type="text" placeholder="https://… 포스터나 사진 주소. 제목 위에 들어갑니다"></div>
   </details>
   <details>
@@ -176,7 +177,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
 <script>
 (function(){
  var $=function(id){return document.getElementById(id);};
- var ti=$('ti'),au=$('au'),su=$('su'),ci=$('ci'),md=$('md'),lk=$('lk'),lc=$('lc'),pv=$('pv'),stat=$('stat'),toast=$('toast');
+ var ti=$('ti'),au=$('au'),su=$('su'),ci=$('ci'),dt=$('dt'),md=$('md'),lk=$('lk'),lc=$('lc'),pv=$('pv'),stat=$('stat'),toast=$('toast');
  var TPL=null, KEY='ebook_maker_draft', KEYP='ebook_maker_pub';
  var PUBLISH_FN='https://dxhmprqfgigljgbstqrg.supabase.co/functions/v1/webbook-publish';
  var SAMPLE=[
@@ -429,9 +430,12 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  }
  function pageHtml(cls,inner,footL,footR){return '<section class="s'+(cls?' '+cls:'')+'">\n <div class="paper"><div class="pin">\n'+inner+'\n </div><div class="foot"><span>'+esc(footL)+'</span><span class="pno">'+esc(footR)+'</span></div></div>\n</section>\n';}
  function build(){
-  var rawTitle=ti.value.trim()||'제목 없는 책', title=rawTitle.replace(/\s*\|\s*/g,' '), sub=su.value.trim(), author=au.value.trim(), cimg=ci.value.trim();
+  var rawTitle=ti.value.trim()||'제목 없는 책', title=rawTitle.replace(/\s*\|\s*/g,' '), sub=su.value.trim(), author=au.value.trim(), cimg=ci.value.trim(), date=dt.value.trim();
+  // 날짜가 있으면 글쓴이 자리에 날짜를 쓴다 (행사 자료집처럼 글쓴이가 없는 책)
+  var byLine=[author,date||String(new Date().getFullYear())].filter(Boolean).join(' · ');
+  var eyebrow=author||(date?'':'Web Book');
   var chapters=parse(md.value), pages=[], n=0;
-  pages.push(pageHtml('cover',(cimg?'  <figure class="cimg"><img src="'+esc(cimg)+'" alt=""></figure>\n':'')+'  <span class="eyebrow">'+esc(author||'Web Book')+'</span>\n  <h1>'+inline(rawTitle).replace(/\s*\|\s*/g,'<br>')+'</h1>\n'+(sub?'  <p class="kick">'+inline(sub)+'</p>\n':'')+'  <div class="by">'+esc(author)+(author?' · ':'')+new Date().getFullYear()+'</div>',title,'표지'));
+  pages.push(pageHtml('cover',(cimg?'  <figure class="cimg"><img src="'+esc(cimg)+'" alt=""></figure>\n':'')+(eyebrow?'  <span class="eyebrow">'+esc(eyebrow)+'</span>\n':'')+'  <h1>'+inline(rawTitle).replace(/\s*\|\s*/g,'<br>')+'</h1>\n'+(sub?'  <p class="kick">'+inline(sub)+'</p>\n':'')+'  <div class="by">'+esc(byLine)+'</div>',title,'표지'));
   var tocIdx=pages.length;
   var tocPages=tocSplit(chapters.filter(function(c){return c.title;}));
   tocPages.forEach(function(){pages.push('');});   // 차례 자리 (장이 많으면 여러 쪽)
@@ -457,7 +461,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
     });
    });
   });
-  pages.push(pageHtml('cover','  <span class="eyebrow">The End</span>\n  <h2>여기까지입니다</h2>\n  <p class="kick">읽어 주셔서 고맙습니다.</p>\n  <div class="by">© '+new Date().getFullYear()+' '+esc(author)+'</div>',title,'끝'));
+  pages.push(pageHtml('cover','  <span class="eyebrow">The End</span>\n  <h2>여기까지입니다</h2>\n  <p class="kick">읽어 주셔서 고맙습니다.</p>\n  <div class="by">'+esc(date?byLine:'© '+new Date().getFullYear()+' '+author)+'</div>',title,'끝'));
   var tcut=0;
   tocPages.forEach(function(grp,gi){
    var rows=toc.slice(tcut,tcut+grp.length); tcut+=grp.length;
@@ -511,7 +515,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   var b=build();
   pv.srcdoc=assemble(b);
   stat.textContent=b.n+'쪽 · '+md.value.length.toLocaleString()+'자'+(lk.checked?' · 잠금':'');
-  try{localStorage.setItem(KEY,JSON.stringify({ti:ti.value,au:au.value,su:su.value,ci:ci.value,md:md.value}));}catch(e){}
+  try{localStorage.setItem(KEY,JSON.stringify({ti:ti.value,au:au.value,su:su.value,ci:ci.value,dt:dt.value,md:md.value}));}catch(e){}
  }
  function schedule(){clearTimeout(tmr);tmr=setTimeout(preview,350);}
  [ti,au,su,md].forEach(function(el){el.addEventListener('input',schedule);});
@@ -567,12 +571,12 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  // 맨 위에 "책 제목:", "글쓴이:", "부제:" 가 있으면 그 칸까지 채운다.
  function applyText(raw){
   var t=raw.replace(/\r/g,'');
-  var m=t.match(/^((?:(?:책 제목|글쓴이|부제|표지 그림)\s*:.*\n)+)\s*\n/);
+  var m=t.match(/^((?:(?:책 제목|글쓴이|부제|표지 그림|날짜)\s*:.*\n)+)\s*\n/);
   if(m){
    m[1].trim().split('\n').forEach(function(line){
     var i=line.indexOf(':'); if(i<0)return;
     var k=line.slice(0,i).trim(), v=line.slice(i+1).trim();
-    if(k==='책 제목')ti.value=v; else if(k==='글쓴이')au.value=v; else if(k==='부제')su.value=v; else if(k==='표지 그림')ci.value=v;
+    if(k==='책 제목')ti.value=v; else if(k==='글쓴이')au.value=v; else if(k==='부제')su.value=v; else if(k==='표지 그림')ci.value=v; else if(k==='날짜')dt.value=v;
    });
    t=t.slice(m[0].length);
   }
@@ -597,15 +601,15 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  }
  [ti,au,su].forEach(function(el){ el.addEventListener('input',bisum); });
 
- $('reset').onclick=function(){ if(md.value.trim()&&!confirm('지금 원고를 예시로 바꿀까요?'))return; ti.value='웹북 제작기 예시';au.value='작가';su.value='마크다운을 붙여넣으면 책이 됩니다';ci.value='';md.value=SAMPLE;preview();bisum(); };
+ $('reset').onclick=function(){ if(md.value.trim()&&!confirm('지금 원고를 예시로 바꿀까요?'))return; ti.value='웹북 제작기 예시';au.value='작가';su.value='마크다운을 붙여넣으면 책이 됩니다';ci.value='';dt.value='';md.value=SAMPLE;preview();bisum(); };
  $('th').onchange=function(){ preview(); say('책 모양을 바꿨어요.'); };
  $('tabE').onclick=function(){document.body.className='tab-edit';$('tabE').className='pri';$('tabV').className='';};
  $('tabV').onclick=function(){document.body.className='tab-view';$('tabV').className='pri';$('tabE').className='';};
 
  // ── 시작: 템플릿 불러오기 ────────────────────────────
  var saved=null; try{saved=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}
- if(saved&&saved.md){ti.value=saved.ti||'';au.value=saved.au||'';su.value=saved.su||'';ci.value=saved.ci||'';md.value=saved.md;}
- else {ti.value='웹북 제작기 예시';au.value='작가';su.value='마크다운을 붙여넣으면 책이 됩니다';ci.value='';md.value=SAMPLE;}
+ if(saved&&saved.md){ti.value=saved.ti||'';au.value=saved.au||'';su.value=saved.su||'';ci.value=saved.ci||'';dt.value=saved.dt||'';md.value=saved.md;}
+ else {ti.value='웹북 제작기 예시';au.value='작가';su.value='마크다운을 붙여넣으면 책이 됩니다';ci.value='';dt.value='';md.value=SAMPLE;}
  bisum();
  $('dl').disabled=true;$('open').disabled=true;
  fetch('template.html').then(function(r){if(!r.ok)throw 0;return r.text();}).then(function(t){
