@@ -495,7 +495,11 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
   lb.onclick=function(e){ if(e.target===lb||e.target.classList.contains('lbw')||e.target.classList.contains('lbx')) lbClose(); };
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&lb.classList.contains('on')) lbClose(); });
   document.querySelectorAll('.vframe').forEach(function(b){
-   b.onclick=function(){ playVideo(b.closest('.vwrap')); };
+   b.onclick=function(){
+    // 재생 단추를 누르면 그 쪽 시간표의 첫 시각부터. (유튜브가 지난번 보던 자리를 기억해 엉뚱한 데서 시작하는 것을 막는다)
+    var wrap=b.closest('.vwrap'), page=b.closest('.s'), first=page&&page.querySelector('.marks .mrow');
+    playVideo(wrap, first?(+first.dataset.t||0):0);
+   };
   });
   // 시간을 누르면 그 쪽의 영상이 해당 지점부터 재생된다
   document.querySelectorAll('.tj').forEach(function(el){
@@ -513,7 +517,7 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
  function playVideo(wrap, sec){
   if(!wrap) return;
   var f=document.createElement('iframe');
-  f.src='https://www.youtube-nocookie.com/embed/'+wrap.dataset.v+'?autoplay=1&rel=0'+(sec?'&start='+sec:'');
+  f.src='https://www.youtube-nocookie.com/embed/'+wrap.dataset.v+'?autoplay=1&rel=0&start='+(sec||0);
   f.setAttribute('allow','autoplay; encrypted-media; picture-in-picture; web-share');
   f.allowFullscreen=true; f.title='강의 영상';
   var old=wrap.querySelector('iframe, .vframe');
