@@ -122,6 +122,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    <table>
     <tr><td>발표자: 이름 | 소속 | 시간</td><td>발표자 정보칸 (| 로 구분, 뒤는 생략 가능)</td></tr>
     <tr><td>머리글: 세션 2 · 패널 토론</td><td>그 쪽부터 장 끝까지 쪽 맨 위에 작은 표시. 빈 값이면 끔</td></tr>
+    <tr><td>==강조==</td><td>다른 색 글자 (핵심 부분 표시)</td></tr>
     <tr><td>핵심: 한 줄</td><td>눈에 띄는 결론 상자</td></tr>
     <tr><td>Q: 질문<br>A: 답변</td><td>질의응답 카드. 끝에 <code>-- 이름</code> 을 붙이면 말한 사람 표시</td></tr>
     <tr><td>12:30 내용</td><td>시간 목차. 누르면 영상이 그 지점부터 재생</td></tr>
@@ -139,6 +140,11 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
     <option value="soop">숲 — 초록. 건강·자연 주제에</option>
     <option value="note">노트 — 고딕 본문. 요약·실무용</option>
     <option value="bam">밤 — 어두운 바탕. 자기 전에 읽기 좋게</option>
+   </select>
+   <label for="sp" style="margin:0 8px 0 14px;text-transform:none;font-size:13px;color:var(--ink);letter-spacing:0;font-weight:700">글 간격</label>
+   <select id="sp">
+    <option value="">보통</option>
+    <option value="dense">촘촘 — 줄 간격 좁게, 한 쪽에 더 많이</option>
    </select>
   </div>
   <div class="lock">
@@ -221,22 +227,22 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  var THEMES={
   hanji:{sans:false,v:{bg:'#eceae5',paper:'#fdfcfa',wash:'#f5f2ec',box:'#ffffff',
    ink:'#15130f',ink2:'#33302a',muted:'#6b6560',dim:'#a39c93',line:'#e6e1d9',line2:'#d6d0c6',
-   accent:'#c8811f',code:'#16161f',codeink:'#e9e9f2'}},
+   accent:'#c8811f',hl:'#b8422a',code:'#16161f',codeink:'#e9e9f2'}},
   meok:{sans:false,v:{bg:'#e9e7e4',paper:'#fefefe',wash:'#f4f3f1',box:'#ffffff',
    ink:'#121212',ink2:'#2e2e2e',muted:'#656565',dim:'#a0a0a0',line:'#e5e3e0',line2:'#d2d0cc',
-   accent:'#3a3a3a',code:'#16161f',codeink:'#e9e9f2'}},
+   accent:'#3a3a3a',hl:'#b3261e',code:'#16161f',codeink:'#e9e9f2'}},
   jjok:{sans:false,v:{bg:'#e3e8ee',paper:'#fbfcfd',wash:'#f0f4f8',box:'#ffffff',
    ink:'#14202b',ink2:'#2f3d4a',muted:'#5f6e7c',dim:'#95a3b0',line:'#e0e6ec',line2:'#ccd6e0',
-   accent:'#2f5d87',code:'#16161f',codeink:'#e9e9f2'}},
+   accent:'#2f5d87',hl:'#b8471f',code:'#16161f',codeink:'#e9e9f2'}},
   soop:{sans:false,v:{bg:'#e4e9e2',paper:'#fbfcfa',wash:'#f1f5ef',box:'#ffffff',
    ink:'#16201a',ink2:'#2f3d34',muted:'#5f6e5d',dim:'#96a694',line:'#e2e8df',line2:'#cfd9cb',
-   accent:'#4a6b3d',code:'#16161f',codeink:'#e9e9f2'}},
+   accent:'#4a6b3d',hl:'#a8452e',code:'#16161f',codeink:'#e9e9f2'}},
   note:{sans:true,v:{bg:'#ebe8e0',paper:'#fffdf8',wash:'#f7f4ec',box:'#ffffff',
    ink:'#1a1814',ink2:'#35312a',muted:'#6b6560',dim:'#a39c93',line:'#eae5da',line2:'#d8d1c4',
-   accent:'#c8811f',code:'#16161f',codeink:'#e9e9f2'}},
+   accent:'#c8811f',hl:'#b8422a',code:'#16161f',codeink:'#e9e9f2'}},
   bam:{sans:false,v:{bg:'#121110',paper:'#1d1c1a',wash:'#232220',box:'#262523',
    ink:'#f2efe9',ink2:'#ded9d1',muted:'#a49e94',dim:'#8a847a',line:'#322f2b',line2:'#403c36',
-   accent:'#d8a44a',code:'#0e0e12',codeink:'#e9e9f2'}}
+   accent:'#d8a44a',hl:'#f0895a',code:'#0e0e12',codeink:'#e9e9f2'}}
  };
  var SANS="'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif";
  function applyTheme(t, name){
@@ -244,7 +250,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   var root=':root{\n'
    +' --bg:'+v.bg+'; --paper:'+v.paper+'; --wash:'+v.wash+'; --box:'+v.box+';\n'
    +' --ink:'+v.ink+'; --ink2:'+v.ink2+'; --muted:'+v.muted+'; --dim:'+v.dim+';\n'
-   +' --line:'+v.line+'; --line2:'+v.line2+'; --accent:'+v.accent+';\n'
+   +' --line:'+v.line+'; --line2:'+v.line2+'; --accent:'+v.accent+'; --hl:'+(v.hl||v.accent)+';\n'
    +' --code:'+v.code+'; --codeink:'+v.codeink+';\n}';
   t=t.replace(/:root\{[\s\S]*?\n\}/, root);
   if(th.sans) t=t.replace("font-family:'Noto Serif KR',Georgia,serif", 'font-family:'+SANS);
@@ -257,6 +263,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   s=esc(s);
   s=s.replace(/`([^`]+)`/g,'<code>$1</code>');
   s=s.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
+  s=s.replace(/==([^=\n]+)==/g,'<mark>$1</mark>');   // ==강조== 는 다른 색 글자
   s=s.replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
   // 문장 속 (12:30) 또는 (1:02:30) → 그 시점으로 가는 시간 링크
   s=s.replace(/\((\d{1,2}:\d{2}(?::\d{2})?)\)/g,function(_,t){return timeTag(t);});
@@ -386,7 +393,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   }
   return out;
  }
- var LIMIT=900; // 쪽 하나에 넣을 글자 수 (대략)
+ var LIMIT=900; // 쪽 하나에 넣을 글자 수 (대략). 촘촘 간격이면 build() 에서 늘린다
  function parse(text){
   var lines=text.replace(/\r/g,'').split('\n'), chapters=[], ch=null, sec=null;
   function newSec(title){sec={title:title,parts:[]};ch.secs.push(sec);}
@@ -436,6 +443,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  }
  function pageHtml(cls,inner,footL,footR){return '<section class="s'+(cls?' '+cls:'')+'">\n <div class="paper"><div class="pin">\n'+inner+'\n </div><div class="foot"><span>'+esc(footL)+'</span><span class="pno">'+esc(footR)+'</span></div></div>\n</section>\n';}
  function build(){
+  var dense=$('sp').value==='dense'; LIMIT=dense?1250:900;
   var rawTitle=ti.value.trim()||'제목 없는 책', title=rawTitle.replace(/\s*\|\s*/g,' '), sub=su.value.trim(), author=au.value.trim(), cimg=ci.value.trim(), date=dt.value.trim();
   // 날짜가 있으면 글쓴이 자리에 날짜를 쓴다 (행사 자료집처럼 글쓴이가 없는 책)
   var byLine=[author,date||String(new Date().getFullYear())].filter(Boolean).join(' · ');
@@ -464,7 +472,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
     groups.forEach(function(g){ var cur=[],len=0; g.forEach(function(b){ if(b.rh!==undefined)rhOn=!!b.rh; var lim=LIMIT-(rhOn?45:0); if(cur.length&&len+b.len>lim){chunks.push(cur);cur=[];len=0;} cur.push(b);len+=b.len; }); if(cur.length||!chunks.length)chunks.push(cur); });
     chunks.forEach(function(c,k){
      var head=rhCur;
-     c.forEach(function(b,j){ if(b.rh!==undefined){ rhCur=b.rh; if(j===0)head=rhCur; } });
+     c.forEach(function(b){ if(b.rh!==undefined){ rhCur=b.rh; head=rhCur; } });   // 머리글이 있는 쪽부터 붙는다
      var h=(head?'  <div class="rh">'+head+'</div>\n':'')
       +(sec.title?'  <h3>'+inline(sec.title)+(k?' <span style="color:var(--dim);font-weight:500;font-size:.7em">(계속)</span>':'')+'</h3>\n':'')
       +c.filter(function(b){return b.rh===undefined;}).map(function(b){return '  '+b.html;}).join('\n');
@@ -491,6 +499,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  }
  function assemble(b, cipherJson){
   var t=applyTheme(TPL, $('th').value);
+  if($('sp').value==='dense') t=t.replace('<body>','<body class="dense">');
   var full=esc(b.title)+(b.sub?' — '+esc(b.sub):'');
   t=t.replace(/<title>[^<]*<\/title>/,'<title>'+full+'</title>');
   t=t.replace(/(<meta name="description" content=")[^"]*(")/,'$1'+esc(b.sub||b.title)+'$2');
@@ -526,7 +535,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   var b=build();
   pv.srcdoc=assemble(b);
   stat.textContent=b.n+'쪽 · '+md.value.length.toLocaleString()+'자'+(lk.checked?' · 잠금':'');
-  try{localStorage.setItem(KEY,JSON.stringify({ti:ti.value,au:au.value,su:su.value,ci:ci.value,dt:dt.value,md:md.value}));}catch(e){}
+  try{localStorage.setItem(KEY,JSON.stringify({ti:ti.value,au:au.value,su:su.value,ci:ci.value,dt:dt.value,sp:$('sp').value,md:md.value}));}catch(e){}
  }
  function schedule(){clearTimeout(tmr);tmr=setTimeout(preview,350);}
  [ti,au,su,md].forEach(function(el){el.addEventListener('input',schedule);});
@@ -583,12 +592,12 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  // 맨 위에 "책 제목:", "글쓴이:", "부제:" 가 있으면 그 칸까지 채운다.
  function applyText(raw){
   var t=raw.replace(/\r/g,'');
-  var m=t.match(/^((?:(?:책 제목|글쓴이|부제|표지 그림|날짜)\s*:.*\n)+)\s*\n/);
+  var m=t.match(/^((?:(?:책 제목|글쓴이|부제|표지 그림|날짜|간격)\s*:.*\n)+)\s*\n/);
   if(m){
    m[1].trim().split('\n').forEach(function(line){
     var i=line.indexOf(':'); if(i<0)return;
     var k=line.slice(0,i).trim(), v=line.slice(i+1).trim();
-    if(k==='책 제목')ti.value=v; else if(k==='글쓴이')au.value=v; else if(k==='부제')su.value=v; else if(k==='표지 그림')ci.value=v; else if(k==='날짜')dt.value=v;
+    if(k==='책 제목')ti.value=v; else if(k==='글쓴이')au.value=v; else if(k==='부제')su.value=v; else if(k==='표지 그림')ci.value=v; else if(k==='날짜')dt.value=v; else if(k==='간격')$('sp').value=/촘촘|dense/.test(v)?'dense':'';
    });
    t=t.slice(m[0].length);
   }
@@ -615,12 +624,13 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
 
  $('reset').onclick=function(){ if(md.value.trim()&&!confirm('지금 원고를 예시로 바꿀까요?'))return; ti.value='웹북 제작기 예시';au.value='작가';su.value='마크다운을 붙여넣으면 책이 됩니다';ci.value='';dt.value='';md.value=SAMPLE;preview();bisum(); };
  $('th').onchange=function(){ preview(); say('책 모양을 바꿨어요.'); };
+ $('sp').onchange=function(){ preview(); say('글 간격을 바꿨어요.'); };
  $('tabE').onclick=function(){document.body.className='tab-edit';$('tabE').className='pri';$('tabV').className='';};
  $('tabV').onclick=function(){document.body.className='tab-view';$('tabV').className='pri';$('tabE').className='';};
 
  // ── 시작: 템플릿 불러오기 ────────────────────────────
  var saved=null; try{saved=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}
- if(saved&&saved.md){ti.value=saved.ti||'';au.value=saved.au||'';su.value=saved.su||'';ci.value=saved.ci||'';dt.value=saved.dt||'';md.value=saved.md;}
+ if(saved&&saved.md){ti.value=saved.ti||'';au.value=saved.au||'';su.value=saved.su||'';ci.value=saved.ci||'';dt.value=saved.dt||'';$('sp').value=saved.sp||'';md.value=saved.md;}
  else {ti.value='웹북 제작기 예시';au.value='작가';su.value='마크다운을 붙여넣으면 책이 됩니다';ci.value='';dt.value='';md.value=SAMPLE;}
  bisum();
  $('dl').disabled=true;$('open').disabled=true;

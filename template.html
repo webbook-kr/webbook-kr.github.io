@@ -18,6 +18,7 @@
  --ink:#15130f; --ink2:#33302a; --muted:#6b6560; --dim:#a39c93;
  --line:#e6e1d9; --line2:#d6d0c6;
  --accent:#c8811f;  /* 강조색. 채널 색으로 바꾸세요 */
+ --hl:#b8422a;      /* ==강조== 글자색. 강조색과 다른 계열 */
  --box:#fff;       /* 인용·메모·표 상자 배경 */
  --code:#16161f; --codeink:#e9e9f2;
 }
@@ -62,6 +63,22 @@ h3{font-size:clamp(18px,2.9vh,25px);font-weight:900;letter-spacing:-.8px;line-he
 .prose p{font-size:clamp(13.5px,1.94vh,16px);line-height:1.95;margin:0 0 15px;color:var(--ink2);word-break:keep-all}
 .prose p b{color:var(--ink);font-weight:700}
 .prose p:last-child{margin-bottom:0}
+mark{background:none;color:var(--hl);font-weight:700}
+/* 촘촘 간격: 줄 간격을 좁혀 한 쪽에 더 많이 넣는다 (제작기 "글 간격: 촘촘") */
+.dense .pin{padding-top:clamp(18px,3vh,34px)}
+.dense .rh{margin:0 0 8px}
+.dense h3{font-size:clamp(17px,2.6vh,22px);margin:0 0 9px}
+.dense .prose p{font-size:clamp(13px,1.85vh,15px);line-height:1.68;margin:0 0 8px}
+.dense ul.prose,.dense ol.prose{margin:0 0 8px;padding-left:18px}
+.dense .prose li{font-size:clamp(13px,1.85vh,15px);line-height:1.6;margin:0 0 2px}
+.dense .who{margin:0 0 9px;padding:0 0 7px;gap:4px 10px}
+.dense .key{margin:8px 0;padding:8px 11px;gap:8px}
+.dense .key span{font-size:clamp(13px,1.85vh,15px);line-height:1.6}
+.dense blockquote{margin:8px 0;padding:8px 12px;font-size:clamp(13px,1.9vh,15.5px);line-height:1.65}
+.dense .note{margin:8px 0 0;padding:8px 10px;line-height:1.55}
+.dense table{margin:6px 0 8px}
+.dense th,.dense td{padding:4px 6px;line-height:1.45}
+.dense figure{margin:6px 0 8px}
 ul.prose,ol.prose{margin:0 0 15px;padding-left:22px}
 .prose li{font-size:clamp(13.5px,1.94vh,16px);line-height:1.85;color:var(--ink2);margin:0 0 4px;word-break:keep-all}
 .prose a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent)}

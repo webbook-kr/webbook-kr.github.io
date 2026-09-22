@@ -18,7 +18,7 @@ let text = readFileSync(path, 'utf8').replace(/\r/g, '');
 
 // 파일 맨 위에 "책 제목:" 같은 제작기 입력값이 있으면 본문에서 뺀다.
 const meta = {};
-text = text.replace(/^(?:(?:책 제목|글쓴이|부제|표지 그림|날짜)\s*:.*\n)+\s*\n/, (m) => {
+text = text.replace(/^(?:(?:책 제목|글쓴이|부제|표지 그림|날짜|간격)\s*:.*\n)+\s*\n/, (m) => {
   for (const line of m.trim().split('\n')) {
     const [k, ...v] = line.split(':');
     meta[k.trim()] = v.join(':').trim();
