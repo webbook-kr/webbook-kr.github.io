@@ -67,13 +67,16 @@ mark{background:none;color:var(--hl);font-weight:700}
 /* 촘촘 간격: 줄 간격을 좁혀 한 쪽에 더 많이 넣는다 (제작기 "글 간격: 촘촘") */
 .dense .pin{padding-top:clamp(18px,3vh,34px)}
 .dense .rh{margin:0 0 8px}
-.dense h3{font-size:clamp(17px,2.6vh,22px);margin:0 0 9px}
-.dense .prose p{font-size:clamp(13px,1.85vh,15px);line-height:1.68;margin:0 0 8px}
+.dense h3{font-size:clamp(15px,2.6vh,22px);margin:0 0 9px}
+.dense .prose p{font-size:clamp(11.5px,1.85vh,15px);line-height:1.68;margin:0 0 8px}
 .dense ul.prose,.dense ol.prose{margin:0 0 8px;padding-left:18px}
-.dense .prose li{font-size:clamp(13px,1.85vh,15px);line-height:1.6;margin:0 0 2px}
+.dense .prose li{font-size:clamp(11.5px,1.85vh,15px);line-height:1.6;margin:0 0 2px}
 .dense .who{margin:0 0 9px;padding:0 0 7px;gap:4px 10px}
 .dense .key{margin:8px 0;padding:8px 11px;gap:8px}
-.dense .key span{font-size:clamp(13px,1.85vh,15px);line-height:1.6}
+.dense .key span{font-size:clamp(11.5px,1.85vh,15px);line-height:1.6}
+/* 낮은 화면(메신저 안 브라우저 등)에서 종이를 더 크게, 넘치면 바닥글에 알림 */
+@media screen and (max-height:660px){.s{padding:8px 10px 62px}}
+.s.more .foot>span:first-child::after{content:' · 아래로 밀면 더 있음';color:var(--accent);font-weight:700}
 .dense blockquote{margin:8px 0;padding:8px 12px;font-size:clamp(13px,1.9vh,15.5px);line-height:1.65}
 .dense .note{margin:8px 0 0;padding:8px 10px;line-height:1.55}
 .dense table{margin:6px 0 8px}
@@ -560,11 +563,12 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
   if(!N) return;
   n=Math.max(0,Math.min(N-1,n));
   S[i].classList.remove('on'); i=n; S[i].classList.add('on');
-  var pin=S[i].querySelector('.pin'); if(pin) pin.scrollTop=0;
+  var pin=S[i].querySelector('.pin'); if(pin){pin.scrollTop=0; S[i].classList.toggle('more', pin.scrollHeight>pin.clientHeight+2);}
   prog.style.width=((i+1)/N*100)+'%'; jump.value=i;
   try{history.replaceState(null,'','#p'+(i+1));}catch(e){}
   try{localStorage.setItem(KEY,i);}catch(e){}
  }
+ window.addEventListener('resize',function(){ var pin=S[i]&&S[i].querySelector('.pin'); if(pin) S[i].classList.toggle('more', pin.scrollHeight>pin.clientHeight+2); });
  document.getElementById('prev').onclick=function(){go(i-1)};
  document.getElementById('next').onclick=function(){go(i+1)};
  jump.onchange=function(){go(+jump.value)};
