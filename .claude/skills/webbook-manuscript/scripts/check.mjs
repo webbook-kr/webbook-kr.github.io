@@ -68,7 +68,7 @@ function blockLens(body) {
     if (/^(\d{1,2}:\d{2}(?::\d{2})?)\s+\S/.test(s)) {
       let rows = 0;
       while (i < L.length && /^(\d{1,2}:\d{2}(?::\d{2})?)\s+\S/.test(L[i])) { rows++; i++; }
-      out.push(rows * 46 + 30); continue;
+      out.push(rows * 34 + 20); continue;
     }
     if (/^[-*]\s+/.test(s)) {
       let n = 0;

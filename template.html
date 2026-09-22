@@ -43,7 +43,7 @@ h1,h2,h3,.eyebrow,.chnum,.foot,.note,.src,.tocrow,table,pre,code,#bar,.kick{font
  box-shadow:0 8px 34px rgba(0,0,0,.13);border:1px solid var(--line2);
  display:flex;flex-direction:column;overflow:hidden}
 .s.alt .paper{background:var(--wash)}
-.pin{flex:1;overflow-y:auto;padding:clamp(28px,4.4vh,52px) clamp(24px,4vh,48px) 12px;
+.pin{--px:clamp(24px,4vh,48px);flex:1;overflow-y:auto;padding:clamp(28px,4.4vh,52px) var(--px) 12px;
  display:flex;flex-direction:column;justify-content:flex-start}
 .s.cover .pin,.s.open .pin{text-align:center;align-items:center;justify-content:center}
 .foot{flex:none;display:flex;justify-content:space-between;padding:10px clamp(24px,4vh,48px) 14px;
@@ -116,9 +116,9 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
 #lb .lbc{position:fixed;left:0;right:0;bottom:0;z-index:2;padding:10px 14px;background:rgba(0,0,0,.6);color:#ddd;font:500 12.5px/1.5 'Pretendard',sans-serif;text-align:center;word-break:keep-all}
 
 /* ── 유튜브 (누르면 그때 불러옴) ─────────────────────── */
-.vwrap{position:relative;aspect-ratio:16/9;background:#000;margin:14px 0;overflow:hidden}
+.vwrap{position:relative;height:min(40vh,400px);background:#000;margin:10px calc(-1 * var(--px)) 0;overflow:hidden} /* 영상 쪽은 화면 절반쯤을 영상에 준다 */
 .vwrap iframe,.vframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.vlink{display:block;margin:-6px 0 14px;font:600 12px 'Pretendard',sans-serif;color:var(--muted);text-align:right;text-decoration:none}
+.vlink{display:block;margin:4px 0 6px;font:600 12px 'Pretendard',sans-serif;color:var(--muted);text-align:right;text-decoration:none}
 .vlink:hover{color:var(--accent)}
 .vframe{background:#111 center/cover no-repeat;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Pretendard',sans-serif;font-weight:800;letter-spacing:.3px}
 .vframe::after{content:'▶  영상 보기';background:rgba(0,0,0,.55);padding:10px 18px;border-radius:999px}
@@ -151,12 +151,12 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
 .tj:hover{background:var(--wash);border-color:var(--accent)}
 .tj::before{content:'▶';font-size:8px}
 /* 시간 목차 */
-.marks{margin:14px 0;border-top:1px solid var(--line)}
-.marks .mrow{display:flex;gap:12px;align-items:baseline;padding:9px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.marks{margin:8px 0;border-top:1px solid var(--line)}
+.marks .mrow{display:flex;gap:10px;align-items:baseline;padding:4px 2px;border-bottom:1px solid var(--line);cursor:pointer}
 .marks .mrow:hover{background:var(--wash)}
 .marks .mrow:hover .mt{color:var(--accent)}
 .marks .ms{flex:none;font:700 11.5px ui-monospace,Menlo,Consolas,monospace;color:var(--accent);font-variant-numeric:tabular-nums;min-width:46px}
-.marks .mt{flex:1;font-size:clamp(12.5px,1.85vh,14.5px);line-height:1.65;color:var(--ink2);word-break:keep-all}
+.marks .mt{flex:1;font-size:clamp(12.5px,1.85vh,14.5px);line-height:1.5;color:var(--ink2);word-break:keep-all}
 
 /* ── 하단 바 ─────────────────────────────────────────── */
 #bar{position:fixed;left:0;right:0;bottom:0;height:52px;display:flex;justify-content:center;align-items:center;gap:8px;
@@ -196,7 +196,7 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
    종이 한 장의 높이가 화면에 매여 있어서, 화면이 낮으면 글이 넘쳐 잘린다.
    인쇄에는 적용되지 않도록 screen 으로 한정한다. */
 @media screen and (max-height:700px){
- .pin{padding:16px 18px 8px}
+ .pin{--px:18px;padding:16px var(--px) 8px}
  .prose p,.prose li{line-height:1.6;margin-bottom:9px}
  h3{font-size:clamp(16px,2.6vh,22px);margin-bottom:10px}
  table{font-size:12.5px}
@@ -212,7 +212,7 @@ figcaption{font-size:11px;color:var(--dim);margin-top:6px;text-align:center}
 
 /* 더 낮은 화면(앱 안에서 열 때 등)은 한 단계 더 줄인다 */
 @media screen and (max-height:560px){
- .pin{padding:12px 14px 6px}
+ .pin{--px:14px;padding:12px var(--px) 6px}
  .prose p,.prose li{line-height:1.5;margin-bottom:7px}
  h3{font-size:15.5px;margin-bottom:8px}
  table{font-size:11.5px}

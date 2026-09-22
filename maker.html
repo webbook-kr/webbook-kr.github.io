@@ -361,7 +361,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
      rows.push('<div class="mrow" data-t="'+toSec(mm[1])+'"><span class="ms">'+esc(mm[1])+'</span><span class="mt">'+inline(mm[2])+'</span></div>');
      i++;
     }
-    out.push({html:'<div class="marks">'+rows.join('')+'</div>',len:rows.length*46+30});
+    out.push({html:'<div class="marks">'+rows.join('')+'</div>',len:rows.length*34+20});
     continue;
    }
    if(/^[-*]\s+/.test(L)){var li=[];while(i<lines.length&&/^[-*]\s+/.test(lines[i]))li.push('<li>'+inline(lines[i++].replace(/^[-*]\s+/,''))+'</li>');out.push({html:'<ul class="prose">'+li.join('')+'</ul>',len:li.join('').length});continue;}
