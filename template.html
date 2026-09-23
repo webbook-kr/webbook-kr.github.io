@@ -61,6 +61,8 @@ h3{font-size:calc(clamp(18px,2.9vh,25px) * var(--tz,1));font-weight:900;letter-s
 .kick{font-size:calc(clamp(13px,1.9vh,15.5px) * var(--tz,1));color:var(--muted);margin:14px 0 0;line-height:1.7;word-break:keep-all;overflow-wrap:break-word}
 .by{margin-top:26px;font-size:calc(12.5px * var(--tz,1));color:var(--muted);letter-spacing:.3px}
 .prose p{font-size:calc(clamp(13.5px,1.94vh,16px) * var(--tz,1));line-height:1.95;margin:0 0 15px;color:var(--ink2);word-break:keep-all}
+/* 본문은 한글 문서처럼 양쪽 맞춤. 오른쪽 끝이 들쭉날쭉하지 않게 */
+.prose p,.prose li,.key span,blockquote,.qa .q,.qa .a,.kick,.chsub{text-align:justify;text-justify:inter-word;overflow-wrap:anywhere}
 .prose p b{color:var(--ink);font-weight:700}
 .prose p:last-child{margin-bottom:0}
 mark{background:none;color:var(--hl);font-weight:700}
@@ -218,6 +220,13 @@ body.cmt .foot>span:last-child{flex:none;white-space:nowrap}
 #cm .csend:disabled{opacity:.5}
 #cm .cclose{height:40px;padding:0 14px;border:1px solid var(--line2);background:var(--paper);color:var(--muted);font:500 13px 'Pretendard',sans-serif;border-radius:4px;cursor:pointer}
 #cm .cmsg{min-height:16px;font-size:12px;color:var(--muted);margin-top:8px}
+#cprev{max-height:34vh;overflow-y:auto;margin:0 0 10px}
+#cprev .pc{border-left:3px solid var(--line2);padding:4px 10px;margin:0 0 8px;font-size:12.5px;line-height:1.5}
+#cprev .pc .h{color:var(--muted);font-size:11.5px;margin-bottom:2px}#cprev .pc .h b{color:var(--ink)}
+#cprev .pc .t{white-space:pre-wrap;word-break:keep-all}
+#cprev .pc .r{margin-top:3px;font-size:12px;color:var(--muted)}#cprev .pc .r b{padding:0 5px;border-radius:3px;font-size:11px;color:#fff;background:var(--dim)}
+#cprev .pc.done{border-color:#3a7d44}#cprev .pc.done .r b{background:#3a7d44}#cprev .pc.skip .r b{background:#8a8a8a}#cprev .pc.hold .r b{background:#b58a1e}
+#cprev .pn{font-size:12px;color:var(--dim);margin:0 0 8px}
 /* ── 잠금 화면 (잠긴 책에서만 보임) ─────────────────── */
 #gate{display:none;position:fixed;inset:0;z-index:90;background:var(--bg);align-items:center;justify-content:center;padding:16px}
 #gate.on{display:flex}
@@ -309,7 +318,8 @@ body.cmt .foot>span:last-child{flex:none;white-space:nowrap}
  </div>
 </div>
 <div id="cm" role="dialog" aria-modal="true"><div class="cbox">
- <h4>의견 남기기</h4><p class="cwhere" id="cwhere"></p>
+ <h4>의견 남기기 <span id="cround" style="font-size:12px;color:var(--accent);font-weight:700;margin-left:4px"></span></h4><p class="cwhere" id="cwhere"></p>
+ <div id="cprev"></div>
  <input id="cname" maxlength="40" placeholder="이름과 소속 (필수) 예: 홍길동 · 질병관리청" autocomplete="name">
  <textarea id="cbody" maxlength="3000" placeholder="이 쪽에서 고칠 곳, 빠진 내용, 바꿀 표현을 적어 주세요"></textarea>
  <div class="crow"><button class="csend" id="csend" type="button">보내기</button><button class="cclose" id="cclose" type="button">닫기</button></div>
@@ -684,9 +694,22 @@ body.cmt .foot>span:last-child{flex:none;white-space:nowrap}
   document.getElementById('mcmt').style.display='';
   var cm=document.getElementById('cm'), cname=document.getElementById('cname'), cbody=document.getElementById('cbody'), cmsg=document.getElementById('cmsg'), csend=document.getElementById('csend');
   try{cname.value=localStorage.getItem('webbook:cname')||'';}catch(e){}
-  function pageTitle(n){var h=S[n].querySelector('h1,h2,h3');return h?h.textContent.replace(/\s+/g,' ').trim():(S[n].classList.contains('cover')?'표지':'');}
+  function pageTitle(n){var h=S[n].querySelector('h1,h2,h3');return h?h.innerHTML.replace(/<br\s*\/?>/gi,' ').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim():(S[n].classList.contains('cover')?'표지':'');}
+  var STAT={open:'검토 중',done:'반영',skip:'미반영',hold:'보류'};
+  function loadPrev(n){
+   var box=document.getElementById('cprev'), cr=document.getElementById('cround'); box.innerHTML=''; cr.textContent='';
+   fetch(CMT_FN+'?slug='+SLUG+'&page='+(n+1)).then(function(r){return r.json();}).then(function(j){
+    if(j.error)return; cr.textContent=j.round+'차 회람';
+    if(!j.comments||!j.comments.length){return;}
+    box.innerHTML='<div class="pn">이 쪽에 먼저 남긴 의견 '+j.comments.length+'개와 반영 결과</div>'+j.comments.map(function(c){
+     return '<div class="pc '+c.status+'"><div class="h">'+c.round+'차 · <b>'+esc(c.name||'익명')+'</b></div><div class="t">'+esc(c.body)+'</div>'+(c.status!=='open'||c.reply?'<div class="r"><b>'+(STAT[c.status]||c.status)+'</b> '+esc(c.reply||'')+'</div>':'<div class="r"><b>'+STAT.open+'</b></div>')+'</div>';
+    }).join('');
+   }).catch(function(){});
+  }
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function openCmt(){
    document.getElementById('cwhere').textContent=(i+1)+'쪽 · '+pageTitle(i);
+   loadPrev(i);
    cmsg.textContent=''; cm.classList.add('on'); setTimeout(function(){try{cbody.focus();}catch(e){}},50);
   }
   function closeCmt(){cm.classList.remove('on');}
