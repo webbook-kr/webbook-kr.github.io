@@ -75,7 +75,7 @@ mark{background:none;color:var(--hl);font-weight:700}
 .dense .key{margin:8px 0;padding:8px 11px;gap:8px}
 .dense .key span{font-size:calc(clamp(10.5px,calc(0.01649 * min(94vw, (100vh - 90px) * 0.707) + 1.06vh),15.5px) * var(--tz,1));line-height:1.6}
 /* 낮은 화면(메신저 안 브라우저 등)에서 종이를 더 크게, 넘치면 바닥글에 알림 */
-@media screen and (max-height:660px){.s{padding:8px 10px 62px}.dense figure{margin-bottom:14px}}
+@media screen and (max-height:660px){.s{padding:8px 10px 62px}}
 .s.more .foot>span:first-child::after{content:' · 아래로 밀면 더 있음';color:var(--accent);font-weight:700}
 .dense blockquote{margin:8px 0;padding:8px 12px;font-size:calc(clamp(13px,1.9vh,15.5px) * var(--tz,1));line-height:1.65}
 .dense .note{margin:8px 0 0;padding:8px 10px;line-height:1.55}
@@ -307,6 +307,9 @@ body.cmt .foot>span:last-child{flex:none;white-space:nowrap}
 .dense h3{font-size:calc(clamp(15px,2.6svh,22px) * var(--tz,1))}
 .dense .prose p,.dense .prose li,.dense .key span{font-size:calc(clamp(10.5px,calc(0.01649 * min(94vw, (100svh - 90px) * 0.707) + 1.06svh),15.5px) * var(--tz,1))}
 }
+/* 낮은 화면(카톡 등 앱 속 브라우저)에서는 사진을 낮춰 글이 안 잘리게. 사진 규칙보다 뒤에 있어야 이긴다 */
+@media screen and (max-height:660px){.dense figure{margin-bottom:14px}.dense figure img{max-height:150px}}
+@media screen and (max-height:620px){.dense figure{margin-bottom:10px}.dense figure img{max-height:120px}}
 </style>
 </head>
 <body>
