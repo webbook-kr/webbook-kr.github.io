@@ -61,8 +61,6 @@ h3{font-size:calc(clamp(18px,2.9vh,25px) * var(--tz,1));font-weight:900;letter-s
 .kick{font-size:calc(clamp(13px,1.9vh,15.5px) * var(--tz,1));color:var(--muted);margin:14px 0 0;line-height:1.7;word-break:keep-all;overflow-wrap:break-word}
 .by{margin-top:26px;font-size:calc(12.5px * var(--tz,1));color:var(--muted);letter-spacing:.3px}
 .prose p{font-size:calc(clamp(13.5px,1.94vh,16px) * var(--tz,1));line-height:1.95;margin:0 0 15px;color:var(--ink2);word-break:keep-all}
-/* 본문은 한글 문서처럼 양쪽 맞춤. 오른쪽 끝이 들쭉날쭉하지 않게 */
-.prose p,.prose li,.key span,blockquote,.qa .q,.qa .a,.kick,.chsub{text-align:justify;text-justify:inter-word;overflow-wrap:anywhere}
 .prose p b{color:var(--ink);font-weight:700}
 .prose p:last-child{margin-bottom:0}
 mark{background:none;color:var(--hl);font-weight:700}
@@ -207,6 +205,8 @@ figcaption{font-size:calc(11px * var(--tz,1));color:var(--dim);margin-top:6px;te
 .cbtn:hover{color:var(--ink);border-color:var(--ink)}
 body.cmt .cbtn{display:inline-block}
 body.cmt .foot>span:last-child{flex:none;white-space:nowrap}
+.foot>span:first-child{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.s.more .foot>span:first-child{white-space:normal}
 #cm{display:none;position:fixed;inset:0;z-index:92;background:rgba(20,18,14,.45);align-items:flex-end;justify-content:center}
 #cm.on{display:flex}
 #cm .cbox{width:100%;max-width:520px;background:var(--paper);border-radius:12px 12px 0 0;padding:16px 18px calc(16px + env(safe-area-inset-bottom));font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif;box-shadow:0 -8px 30px rgba(0,0,0,.18)}
@@ -304,6 +304,8 @@ body.cmt .foot>span:last-child{flex:none;white-space:nowrap}
 .dense h3{font-size:calc(clamp(15px,2.6svh,22px) * var(--tz,1))}
 .dense .prose p,.dense .prose li,.dense .key span{font-size:calc(clamp(10.5px,calc(0.01649 * min(94vw, (100svh - 90px) * 0.707) + 1.06svh),15.5px) * var(--tz,1))}
 }
+/* 본문은 한글 문서(한글·공문)처럼 양쪽 맞춤 + 글자 단위 줄나눔. 다른 규칙보다 뒤에 두어야 이긴다 */
+.prose p,.prose li,.key span,blockquote,.qa .q,.qa .a,.kick,.chsub{text-align:justify;word-break:normal;overflow-wrap:anywhere}
 </style>
 </head>
 <body>
