@@ -443,7 +443,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  }
  function pageHtml(cls,inner,footL,footR){return '<section class="s'+(cls?' '+cls:'')+'">\n <div class="paper"><div class="pin">\n'+inner+'\n </div><div class="foot"><span>'+esc(footL)+'</span><span class="pno">'+esc(footR)+'</span></div></div>\n</section>\n';}
  function build(){
-  var dense=$('sp').value==='dense'; LIMIT=dense?1250:900;
+  var dense=$('sp').value==='dense'; LIMIT=dense?700:900;   // 촘촘 쪽 실제 용량은 600자 안팎
   var rawTitle=ti.value.trim()||'제목 없는 책', title=rawTitle.replace(/\s*\|\s*/g,' '), sub=su.value.trim(), author=au.value.trim(), cimg=ci.value.trim(), date=dt.value.trim();
   // 날짜가 있으면 글쓴이 자리에 날짜를 쓴다 (행사 자료집처럼 글쓴이가 없는 책)
   var byLine=[author,date||String(new Date().getFullYear())].filter(Boolean).join(' · ');
