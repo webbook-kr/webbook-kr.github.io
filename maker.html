@@ -384,7 +384,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
     var h='<table>'+rows.map(function(r,n){var tag=n?'td':'th';return '<tr>'+r.map(function(c){return '<'+tag+'>'+inline(c)+'</'+tag+'>';}).join('')+'</tr>';}).join('')+'</table>';
     out.push({html:h,len:rows.length*70+40});continue;}
    var im=L.match(/^!\[([^\]]*)\]\(([^)\s]+)\)/);
-   if(im){out.push({html:'<figure><img src="'+esc(im[2])+'" alt="'+esc(im[1])+'" loading="lazy">'+(im[1]?'<figcaption>'+esc(im[1])+'</figcaption>':'')+'</figure>',len:420});i++;continue;}
+   if(im){out.push({html:'<figure><img src="'+esc(im[2])+'" alt="'+esc(im[1])+'" loading="lazy">'+(im[1]?'<figcaption>'+esc(im[1])+'</figcaption>':'')+'</figure>',len:($('sp').value==='dense'?300:420)});i++;continue;}   // 촘촘 모드는 사진이 쪽의 1/3쯤이라 글자 수 환산을 줄임
    var yt=/^youtube:\s*(.+)$/i.test(L)?ytid(L.replace(/^youtube:\s*/i,'').trim()):(/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\//.test(L.trim())?ytid(L.trim()):null);
    if(yt){out.push({html:'<div class="vwrap" data-v="'+yt+'"><div class="vframe" style="background-image:url(https://i.ytimg.com/vi/'+yt+'/hqdefault.jpg)"></div></div><a class="vlink" href="https://www.youtube.com/watch?v='+yt+'" target="_blank" rel="noopener">여기서 안 나오면 → 유튜브에서 열기 ↗</a>',len:410});i++;continue;}
    var STOP=/^(#|##|---|>|:::|[-*]\s|\d+[.)]\s|\||!\[|```|youtube:|qr:|Q\s*[::]|A\s*[::]|발표자\s*[::]|연사\s*[::]|speaker\s*[::]|머리글\s*[::]|running\s*[::]|핵심\s*[::]|요점\s*[::]|결론\s*[::]|\d{1,2}:\d{2}(?::\d{2})?\s+\S|https?:\/\/(www\.)?(youtube\.com|youtu\.be))/i;
