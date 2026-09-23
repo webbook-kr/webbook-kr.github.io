@@ -310,7 +310,7 @@ body.cmt .foot>span:last-child{flex:none;white-space:nowrap}
 </div>
 <div id="cm" role="dialog" aria-modal="true"><div class="cbox">
  <h4>의견 남기기</h4><p class="cwhere" id="cwhere"></p>
- <input id="cname" maxlength="40" placeholder="이름 (선택)" autocomplete="name">
+ <input id="cname" maxlength="40" placeholder="이름과 소속 (필수) 예: 홍길동 · 질병관리청" autocomplete="name">
  <textarea id="cbody" maxlength="3000" placeholder="이 쪽에서 고칠 곳, 빠진 내용, 바꿀 표현을 적어 주세요"></textarea>
  <div class="crow"><button class="csend" id="csend" type="button">보내기</button><button class="cclose" id="cclose" type="button">닫기</button></div>
  <div class="cmsg" id="cmsg"></div>
@@ -696,6 +696,7 @@ body.cmt .foot>span:last-child{flex:none;white-space:nowrap}
   cm.addEventListener('click',function(e){if(e.target===cm)closeCmt();});
   addEventListener('keydown',function(e){if(e.key==='Escape')closeCmt();});
   csend.onclick=function(){
+   var nm=cname.value.trim(); if(nm.length<2){cmsg.textContent='누가 남긴 의견인지 알 수 있게 이름과 소속을 적어 주세요.';cname.focus();return;}
    var body=cbody.value.trim(); if(!body){cmsg.textContent='의견을 적어 주세요.';cbody.focus();return;}
    try{localStorage.setItem('webbook:cname',cname.value.trim());}catch(e){}
    csend.disabled=true; cmsg.textContent='보내는 중…';

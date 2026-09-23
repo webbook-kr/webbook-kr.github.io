@@ -60,6 +60,7 @@ Deno.serve(async (req) => {
   const body = String(b.body ?? "").trim().slice(0, 3000);
   if (!SLUG.test(slug)) return json({ error: "책 주소가 이상합니다" }, 400);
   if (!Number.isInteger(page) || page < 1 || page > 5000) return json({ error: "쪽 번호가 이상합니다" }, 400);
+  if (name.length < 2) return json({ error: "이름과 소속을 적어 주세요" }, 400);
   if (!body) return json({ error: "의견을 적어 주세요" }, 400);
   const { data: book } = await sb.from("webbook_books").select("slug").eq("slug", slug).maybeSingle();
   if (!book) return json({ error: "없는 책입니다" }, 404);
