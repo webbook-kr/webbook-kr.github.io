@@ -75,14 +75,14 @@ mark{background:none;color:var(--hl);font-weight:700}
 .dense .key{margin:8px 0;padding:8px 11px;gap:8px}
 .dense .key span{font-size:calc(clamp(10.5px,calc(0.01649 * min(94vw, (100vh - 90px) * 0.707) + 1.06vh),15.5px) * var(--tz,1));line-height:1.6}
 /* 낮은 화면(메신저 안 브라우저 등)에서 종이를 더 크게, 넘치면 바닥글에 알림 */
-@media screen and (max-height:660px){.s{padding:8px 10px 62px}}
+@media screen and (max-height:660px){.s{padding:8px 10px 62px}.dense figure{margin-bottom:14px}}
 .s.more .foot>span:first-child::after{content:' · 아래로 밀면 더 있음';color:var(--accent);font-weight:700}
 .dense blockquote{margin:8px 0;padding:8px 12px;font-size:calc(clamp(13px,1.9vh,15.5px) * var(--tz,1));line-height:1.65}
 .dense .note{margin:8px 0 0;padding:8px 10px;line-height:1.55}
 .dense table{margin:6px 0 8px}
 .dense th,.dense td{padding:4px 6px;line-height:1.45}
-.dense figure{margin:2px 0 12px}
-.dense figure img{max-height:22vh;border:1px solid var(--line2);border-radius:3px;box-shadow:0 3px 12px rgba(0,0,0,.14)}
+.dense figure{margin:2px 0 22px}
+.dense figure img{width:100%;height:auto;max-height:min(34vh,180px);object-fit:cover;border:1px solid var(--line2);border-radius:3px;box-shadow:0 3px 12px rgba(0,0,0,.14)}
 .dense figcaption{margin-top:6px}
 /* 사진 아래에 오는 목록은 상자에 담아 사진과 글을 나눈다 */
 .dense figure ~ ul.prose,.dense figure ~ ol.prose{background:var(--box);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:3px;padding:8px 10px 6px 26px;margin:0 0 8px}
