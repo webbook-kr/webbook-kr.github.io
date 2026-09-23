@@ -81,9 +81,12 @@ mark{background:none;color:var(--hl);font-weight:700}
 .dense .note{margin:8px 0 0;padding:8px 10px;line-height:1.55}
 .dense table{margin:6px 0 8px}
 .dense th,.dense td{padding:4px 6px;line-height:1.45}
-.dense figure{margin:4px 0 8px}
-.dense figure img{max-height:25vh}
-.dense figcaption{margin-top:4px}
+.dense figure{margin:2px 0 12px}
+.dense figure img{max-height:22vh;border:1px solid var(--line2);border-radius:3px;box-shadow:0 3px 12px rgba(0,0,0,.14)}
+.dense figcaption{margin-top:6px}
+/* 사진 아래에 오는 목록은 상자에 담아 사진과 글을 나눈다 */
+.dense figure ~ ul.prose,.dense figure ~ ol.prose{background:var(--box);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:3px;padding:8px 10px 6px 26px;margin:0 0 8px}
+.dense ul.prose + figure,.dense ol.prose + figure{margin-top:14px}
 ul.prose,ol.prose{margin:0 0 15px;padding-left:22px}
 .prose li{font-size:calc(clamp(13.5px,1.94vh,16px) * var(--tz,1));line-height:1.85;color:var(--ink2);margin:0 0 4px;word-break:keep-all}
 .prose a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent)}
