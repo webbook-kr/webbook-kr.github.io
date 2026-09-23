@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>웹북 화면 점검</title>
+<style>body{margin:0;padding:20px;font:16px/1.6 -apple-system,'Apple SD Gothic Neo',sans-serif;background:#fff;color:#111}
+h1{font-size:18px;margin:0 0 12px}table{border-collapse:collapse;width:100%}td{border-bottom:1px solid #ddd;padding:6px 4px;vertical-align:top}td:first-child{color:#666;width:42%}
+#f{font-size:clamp(10.5px,calc(1.55vw + 1.06vh),15.5px)}#ua{font-size:11px;color:#888;word-break:break-all;margin-top:14px}</style></head>
+<body><h1>웹북 화면 점검 — 이 화면을 캡처해서 보내 주세요</h1>
+<table id="t"></table><div id="ua"></div>
+<span id="f">가</span>
+<script>
+(function(){
+ var a=document.createElement('span'),b=document.createElement('span');
+ a.style.cssText=b.style.cssText='position:absolute;left:-9999px;top:0;display:inline-block;font-size:20px;font-family:sans-serif;white-space:nowrap';
+ a.style.lineHeight='1';b.style.lineHeight='20px';a.textContent=b.textContent='가';
+ document.body.appendChild(a);document.body.appendChild(b);
+ var ha=a.getBoundingClientRect().height,hb=b.getBoundingClientRect().height;
+ var d=document.createElement('div');d.style.cssText='position:absolute;left:-9999px;top:0;height:100vh;width:100vw';document.body.appendChild(d);
+ var vh=d.getBoundingClientRect().height,vw=d.getBoundingClientRect().width;
+ var f=getComputedStyle(document.getElementById('f')).fontSize;
+ var rows=[['화면 폭 × 높이 (innerWidth × innerHeight)',innerWidth+' × '+innerHeight],['100vw × 100vh',Math.round(vw)+' × '+Math.round(vh)],['visualViewport',window.visualViewport?Math.round(visualViewport.width)+' × '+Math.round(visualViewport.height)+' (scale '+visualViewport.scale+')':'-'],['screen',screen.width+' × '+screen.height+' · dpr '+devicePixelRatio],['촘촘 본문 글자 크기(계산값)',f],['글자 확대 비율 (20px 글자 실제 높이 ÷ 20)',(ha/hb).toFixed(3)+' ('+ha.toFixed(1)+' / '+hb.toFixed(1)+')']];
+ document.getElementById('t').innerHTML=rows.map(function(r){return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'}).join('');
+ document.getElementById('ua').textContent=navigator.userAgent;
+})();
+</script></body></html>
