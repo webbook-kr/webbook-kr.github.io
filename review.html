@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>웹북 의견 모아보기</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--bg:#eceae5;--paper:#fdfcfa;--ink:#15130f;--muted:#6b6560;--dim:#a39c93;--line:#e6e1d9;--line2:#d6d0c6;--accent:#c8811f;--box:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif}
+.w{max-width:760px;margin:0 auto;padding:28px 16px 60px}
+h1{font-size:20px;margin:0 0 4px;letter-spacing:-.4px}.sub{color:var(--muted);font-size:13px;margin:0 0 18px}
+.f{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}.f input{flex:1;min-width:160px;height:38px;border:1px solid var(--line2);background:var(--box);padding:0 10px;font:inherit;font-size:14px;border-radius:4px}
+button{height:38px;padding:0 14px;border:1px solid var(--line2);background:var(--paper);font:inherit;font-size:13px;border-radius:4px;cursor:pointer}
+button.p{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:700}
+.hint{font-size:12px;color:var(--muted);margin:0 0 20px}.hint code{background:var(--box);border:1px solid var(--line);padding:1px 5px;border-radius:3px}
+.tools{display:flex;gap:8px;align-items:center;margin:14px 0}.tools .n{color:var(--muted);font-size:13px;margin-left:auto}
+.pg{background:var(--paper);border:1px solid var(--line2);border-radius:6px;padding:12px 14px;margin:0 0 10px}
+.pg h3{margin:0 0 8px;font-size:14px;display:flex;gap:8px;align-items:baseline}.pg h3 a{color:var(--accent);text-decoration:none;font-size:12px;font-weight:600;margin-left:auto;white-space:nowrap}
+.c{border-top:1px solid var(--line);padding:9px 0 4px}.c:first-of-type{border-top:0}
+.c .m{font-size:12px;color:var(--dim);display:flex;gap:8px;align-items:center}.c .m b{color:var(--muted)}.c .m button{height:22px;padding:0 8px;font-size:11px;margin-left:auto;color:var(--dim)}
+.c .b{white-space:pre-wrap;word-break:keep-all;margin:2px 0 0}
+.empty{color:var(--muted);text-align:center;padding:30px 0}.err{color:#b3261e;font-size:13px}
+</style>
+</head>
+<body><div class="w">
+<h1>웹북 의견 모아보기</h1>
+<p class="sub">읽는 분들이 각 쪽의 "의견" 단추로 남긴 내용이 쪽 순서대로 모입니다. 책 주인(발행한 사람)만 볼 수 있어요.</p>
+<div class="f"><input id="slug" placeholder="책 주소 끝부분 (예: 2026-1-gngr)" autocapitalize="off"><input id="token" placeholder="수정 토큰 (발행할 때 받은 값)" autocapitalize="off"><button class="p" id="load">불러오기</button></div>
+<p class="hint">제작기에서 발행하면 결과 칸의 <b>의견 모아보기</b> 링크에 두 값이 채워져 있습니다. 토큰은 이 책을 고칠 수 있는 열쇠이니 다른 사람에게 주지 마세요.</p>
+<div class="tools" id="tools" style="display:none"><button id="copy">전체 복사 (글로)</button><button id="dl">텍스트 파일로 저장</button><span class="n" id="cnt"></span></div>
+<div id="out"></div>
+</div>
+<script>
+(function(){
+ var FN='https://dxhmprqfgigljgbstqrg.supabase.co/functions/v1/webbook-comment', SITE='https://webbook-kr.github.io';
+ var $=function(id){return document.getElementById(id)};
+ var q=new URLSearchParams(location.search);
+ try{$('slug').value=q.get('slug')||localStorage.getItem('webbook:rv:slug')||''; $('token').value=q.get('token')||localStorage.getItem('webbook:rv:token')||'';}catch(e){}
+ if(q.get('token')) history.replaceState(null,'',location.pathname+'?slug='+encodeURIComponent(q.get('slug')||''));   // 토큰은 주소창에 남기지 않는다
+ var data=null;
+ function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]});}
+ function when(t){var d=new Date(t);return d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+ function asText(){
+  var by={}; data.comments.forEach(function(c){(by[c.page]=by[c.page]||[]).push(c);});
+  return Object.keys(by).sort(function(a,b){return a-b}).map(function(p){
+   return '■ '+p+'쪽 · '+(by[p][0].page_title||'')+'\n'+by[p].map(function(c){return '- ['+(c.name||'익명')+' · '+when(c.created_at)+'] '+c.body.replace(/\n/g,'\n  ');}).join('\n');
+  }).join('\n\n');
+ }
+ function render(){
+  var out=$('out'); if(!data.comments.length){out.innerHTML='<div class="empty">아직 남긴 의견이 없어요.</div>';$('tools').style.display='none';return;}
+  var by={}; data.comments.forEach(function(c){(by[c.page]=by[c.page]||[]).push(c);});
+  out.innerHTML=Object.keys(by).sort(function(a,b){return a-b}).map(function(p){
+   return '<div class="pg"><h3><span>'+p+'쪽</span><span style="font-weight:500;color:var(--muted)">'+esc(by[p][0].page_title||'')+'</span><a href="'+SITE+'/b/'+esc(data.slug)+'/#p'+p+'" target="_blank">책에서 보기 ↗</a></h3>'
+    +by[p].map(function(c){return '<div class="c"><div class="m"><b>'+esc(c.name||'익명')+'</b><span>'+when(c.created_at)+'</span><button data-id="'+c.id+'">지우기</button></div><div class="b">'+esc(c.body)+'</div></div>';}).join('')+'</div>';
+  }).join('');
+  $('cnt').textContent='의견 '+data.comments.length+'개 · '+Object.keys(by).length+'쪽'; $('tools').style.display='flex';
+  out.querySelectorAll('button[data-id]').forEach(function(b){b.onclick=function(){
+   if(!confirm('이 의견을 지울까요?'))return;
+   fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete',id:+b.dataset.id,slug:$('slug').value.trim(),token:$('token').value.trim()})})
+   .then(function(r){return r.json()}).then(function(j){if(j.error)throw new Error(j.error);data.comments=data.comments.filter(function(c){return c.id!==+b.dataset.id});render();}).catch(function(e){alert(e.message)});
+  };});
+ }
+ $('load').onclick=function(){
+  var slug=$('slug').value.trim(), token=$('token').value.trim(); if(!slug||!token){alert('책 주소와 토큰을 넣어 주세요.');return;}
+  try{localStorage.setItem('webbook:rv:slug',slug);localStorage.setItem('webbook:rv:token',token);}catch(e){}
+  $('out').innerHTML='<div class="empty">불러오는 중…</div>';
+  fetch(FN+'?slug='+encodeURIComponent(slug)+'&token='+encodeURIComponent(token)).then(function(r){return r.json()})
+  .then(function(j){if(j.error)throw new Error(j.error);data=j;render();})
+  .catch(function(e){$('out').innerHTML='<p class="err">'+esc(e.message)+'</p>';$('tools').style.display='none';});
+ };
+ $('copy').onclick=function(){var t=asText();(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){$('copy').textContent='복사했어요';setTimeout(function(){$('copy').textContent='전체 복사 (글로)'},1500);},function(){prompt('복사하세요',t);});};
+ $('dl').onclick=function(){var b=new Blob([asText()],{type:'text/plain;charset=utf-8'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='의견-'+data.slug+'.txt';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},3000);};
+ if($('slug').value&&$('token').value) $('load').click();
+})();
+</script>
+</body></html>

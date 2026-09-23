@@ -200,6 +200,24 @@ figcaption{font-size:calc(11px * var(--tz,1));color:var(--dim);margin-top:6px;te
  padding:9px 14px;font:500 13px 'Pretendard',sans-serif;color:var(--ink);text-decoration:none}
 #mlist a:hover,#mlist button:hover{background:var(--wash)}
 #mlist small{display:block;font-size:10.5px;color:var(--dim);margin-top:2px}
+/* ── 의견 남기기 (발행된 책에서만 보임) ─────────────────── */
+.cbtn{display:none;flex:none;white-space:nowrap;margin-left:auto;margin-right:10px;border:1px solid var(--line2);background:var(--paper);color:var(--muted);font:700 10px 'Pretendard',sans-serif;letter-spacing:.4px;padding:2px 7px;border-radius:999px;cursor:pointer}
+.cbtn:hover{color:var(--ink);border-color:var(--ink)}
+body.cmt .cbtn{display:inline-block}
+body.cmt .foot>span:last-child{flex:none;white-space:nowrap}
+#cm{display:none;position:fixed;inset:0;z-index:92;background:rgba(20,18,14,.45);align-items:flex-end;justify-content:center}
+#cm.on{display:flex}
+#cm .cbox{width:100%;max-width:520px;background:var(--paper);border-radius:12px 12px 0 0;padding:16px 18px calc(16px + env(safe-area-inset-bottom));font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif;box-shadow:0 -8px 30px rgba(0,0,0,.18)}
+@media (min-width:640px){#cm{align-items:center}#cm .cbox{border-radius:8px}}
+#cm h4{margin:0 0 2px;font-size:15px;letter-spacing:-.3px}
+#cm .cwhere{font-size:12px;color:var(--muted);margin:0 0 12px;word-break:keep-all}
+#cm input,#cm textarea{width:100%;border:1px solid var(--line2);background:var(--box);color:var(--ink);font:500 14px 'Pretendard',sans-serif;padding:9px 10px;border-radius:4px;margin-bottom:8px}
+#cm textarea{min-height:110px;resize:vertical;line-height:1.55}
+#cm .crow{display:flex;gap:8px;align-items:center}
+#cm .csend{flex:1;height:40px;border:0;background:var(--ink);color:#fff;font:700 14px 'Pretendard',sans-serif;border-radius:4px;cursor:pointer}
+#cm .csend:disabled{opacity:.5}
+#cm .cclose{height:40px;padding:0 14px;border:1px solid var(--line2);background:var(--paper);color:var(--muted);font:500 13px 'Pretendard',sans-serif;border-radius:4px;cursor:pointer}
+#cm .cmsg{min-height:16px;font-size:12px;color:var(--muted);margin-top:8px}
 /* ── 잠금 화면 (잠긴 책에서만 보임) ─────────────────── */
 #gate{display:none;position:fixed;inset:0;z-index:90;background:var(--bg);align-items:center;justify-content:center;padding:16px}
 #gate.on{display:flex}
@@ -250,7 +268,7 @@ figcaption{font-size:calc(11px * var(--tz,1));color:var(--dim);margin-top:6px;te
 @page{size:A4;margin:0}
 @media print{
  html,body{height:auto;overflow:visible;background:#fff}
- #prog,#bar,#menu,#toast,#lb{display:none!important}
+ #prog,#bar,#menu,#toast,#lb,#cm,.cbtn{display:none!important}
  #deck{width:210mm;height:auto}
  .s{position:static;display:flex!important;width:210mm;height:297mm;padding:0;animation:none;
     break-after:page;page-break-after:always;overflow:hidden}
@@ -287,8 +305,16 @@ figcaption{font-size:calc(11px * var(--tz,1));color:var(--dim);margin-top:6px;te
   <a id="mpdf" href="#" download>PDF 내려받기<small>미리 만든 파일이 없으면 인쇄 창이 열립니다</small></a>
   <button id="mprint" type="button">인쇄로 PDF 저장<small>Mac ⌘P · Windows Ctrl+P</small></button>
   <button id="mlink" type="button">이 쪽 링크 복사<small>지금 보는 쪽 주소</small></button>
+  <button id="mcmt" type="button" style="display:none">이 쪽에 의견 남기기<small>고칠 곳·바뀐 내용을 지은이에게</small></button>
  </div>
 </div>
+<div id="cm" role="dialog" aria-modal="true"><div class="cbox">
+ <h4>의견 남기기</h4><p class="cwhere" id="cwhere"></p>
+ <input id="cname" maxlength="40" placeholder="이름 (선택)" autocomplete="name">
+ <textarea id="cbody" maxlength="3000" placeholder="이 쪽에서 고칠 곳, 빠진 내용, 바꿀 표현을 적어 주세요"></textarea>
+ <div class="crow"><button class="csend" id="csend" type="button">보내기</button><button class="cclose" id="cclose" type="button">닫기</button></div>
+ <div class="cmsg" id="cmsg"></div>
+</div></div>
 <div id="toast"></div>
 <div id="lb"><button class="lbx" type="button">닫기 ✕</button><div class="lbw"><img alt=""></div><div class="lbc"></div></div>
 <div id="gate"><div class="gbox">
@@ -512,6 +538,7 @@ figcaption{font-size:calc(11px * var(--tz,1));color:var(--dim);margin-top:6px;te
  function start(){
   S=[].slice.call(document.querySelectorAll('#deck > .s')); N=S.length; if(!N) return;
   jump.innerHTML='';
+  if(window.addCmtButtons) addCmtButtons();   // 발행된 책이면 바닥글에 '의견' 단추
   S.forEach(function(s,n){
    var t=s.querySelector('h1,h2,h3'); var o=document.createElement('option');
    var label=t?t.innerHTML.replace(/<br\s*\/?>/gi,' ').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim():'쪽';
@@ -647,6 +674,38 @@ figcaption{font-size:calc(11px * var(--tz,1));color:var(--dim);margin-top:6px;te
   closeMenu(); var u=location.origin+location.pathname+location.search+'#p'+(i+1);
   (navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){say('링크를 복사했어요');},function(){prompt('링크',u);});
  };
+
+ // ── 의견 남기기: 발행된 책(주소에 slug 가 있음)에서만 켜진다 ───────
+ var CMT_FN='https://dxhmprqfgigljgbstqrg.supabase.co/functions/v1/webbook-comment';
+ var slugM=String(window.EBOOK_BASE||'').match(/\/webbook\/([a-z0-9-]+)\/index$/)||location.pathname.match(/^\/b\/([a-z0-9-]+)\/?$/);
+ var SLUG=slugM?slugM[1]:'';
+ if(SLUG){
+  document.body.classList.add('cmt');
+  document.getElementById('mcmt').style.display='';
+  var cm=document.getElementById('cm'), cname=document.getElementById('cname'), cbody=document.getElementById('cbody'), cmsg=document.getElementById('cmsg'), csend=document.getElementById('csend');
+  try{cname.value=localStorage.getItem('webbook:cname')||'';}catch(e){}
+  function pageTitle(n){var h=S[n].querySelector('h1,h2,h3');return h?h.textContent.replace(/\s+/g,' ').trim():(S[n].classList.contains('cover')?'표지':'');}
+  function openCmt(){
+   document.getElementById('cwhere').textContent=(i+1)+'쪽 · '+pageTitle(i);
+   cmsg.textContent=''; cm.classList.add('on'); setTimeout(function(){try{cbody.focus();}catch(e){}},50);
+  }
+  function closeCmt(){cm.classList.remove('on');}
+  window.addCmtButtons=function(){S.forEach(function(sec){var f=sec.querySelector('.foot');if(!f||f.querySelector('.cbtn'))return;var b=document.createElement('button');b.type='button';b.className='cbtn';b.textContent='의견';b.onclick=function(e){e.stopPropagation();openCmt();};f.insertBefore(b,f.lastElementChild);});};
+  document.getElementById('mcmt').onclick=function(){closeMenu();openCmt();};
+  document.getElementById('cclose').onclick=closeCmt;
+  cm.addEventListener('click',function(e){if(e.target===cm)closeCmt();});
+  addEventListener('keydown',function(e){if(e.key==='Escape')closeCmt();});
+  csend.onclick=function(){
+   var body=cbody.value.trim(); if(!body){cmsg.textContent='의견을 적어 주세요.';cbody.focus();return;}
+   try{localStorage.setItem('webbook:cname',cname.value.trim());}catch(e){}
+   csend.disabled=true; cmsg.textContent='보내는 중…';
+   fetch(CMT_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug:SLUG,page:i+1,page_title:pageTitle(i),name:cname.value.trim(),body:body})})
+   .then(function(r){return r.json().then(function(j){if(!r.ok||j.error)throw new Error(j.error||('HTTP '+r.status));});})
+   .then(function(){cbody.value='';closeCmt();say((i+1)+'쪽 의견을 보냈어요. 고맙습니다.');})
+   .catch(function(e){cmsg.textContent='보내지 못했어요: '+e.message;})
+   .then(function(){csend.disabled=false;});
+  };
+ }
 
  // ── 시작 ────────────────────────────────────────────
  if(cipher){
