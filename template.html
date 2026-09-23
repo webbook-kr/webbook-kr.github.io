@@ -68,12 +68,12 @@ mark{background:none;color:var(--hl);font-weight:700}
 .dense .pin{padding-top:clamp(18px,3vh,34px)}
 .dense .rh{margin:0 0 8px}
 .dense h3{font-size:clamp(15px,2.6vh,22px);margin:0 0 9px}
-.dense .prose p{font-size:clamp(11.5px,1.85vh,15px);line-height:1.68;margin:0 0 8px}
+.dense .prose p{font-size:clamp(10.5px,calc(1.55vw + 1.06vh),15.5px);line-height:1.68;margin:0 0 8px}   /* 화면 넓이·높이 곱에 맞춰 한 쪽 글자 수를 비슷하게 */
 .dense ul.prose,.dense ol.prose{margin:0 0 8px;padding-left:18px}
-.dense .prose li{font-size:clamp(11.5px,1.85vh,15px);line-height:1.6;margin:0 0 2px}
+.dense .prose li{font-size:clamp(10.5px,calc(1.55vw + 1.06vh),15.5px);line-height:1.6;margin:0 0 2px}
 .dense .who{margin:0 0 9px;padding:0 0 7px;gap:4px 10px}
 .dense .key{margin:8px 0;padding:8px 11px;gap:8px}
-.dense .key span{font-size:clamp(11.5px,1.85vh,15px);line-height:1.6}
+.dense .key span{font-size:clamp(10.5px,calc(1.55vw + 1.06vh),15.5px);line-height:1.6}
 /* 낮은 화면(메신저 안 브라우저 등)에서 종이를 더 크게, 넘치면 바닥글에 알림 */
 @media screen and (max-height:660px){.s{padding:8px 10px 62px}}
 .s.more .foot>span:first-child::after{content:' · 아래로 밀면 더 있음';color:var(--accent);font-weight:700}
