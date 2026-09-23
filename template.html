@@ -268,6 +268,13 @@ figcaption{font-size:calc(11px * var(--tz,1));color:var(--dim);margin-top:6px;te
  .marks .mrow{cursor:default}
  a{color:inherit;text-decoration:none}
 }
+/* 폰 브라우저의 100vh는 주소창이 숨겨진 큰 높이라 바닥이 잘릴 수 있다. 항상 보이는 높이(svh) 기준으로 */
+@supports (height:100svh){
+#deck{height:100svh}
+.paper{width:min(calc((100svh - 90px) * 0.707), 94vw);height:min(calc(100svh - 90px), 1000px)}
+.dense h3{font-size:calc(clamp(15px,2.6svh,22px) * var(--tz,1))}
+.dense .prose p,.dense .prose li,.dense .key span{font-size:calc(clamp(10.5px,calc(1.55vw + 1.06svh),15.5px) * var(--tz,1))}
+}
 </style>
 </head>
 <body>
