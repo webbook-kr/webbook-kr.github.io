@@ -292,6 +292,11 @@ dialog::backdrop{background:rgba(20,14,8,.45)}
 
 footer{margin-top:26px;font-size:12.5px;color:var(--dim);display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
 footer a{color:var(--accent)}
+/* 제작 크레딧 — 에피브리프 paper.css 의 .site-credit 과 같은 규격입니다.
+   문구와 날짜는 ../site-config.json 의 credit 한 곳에서 관리합니다. */
+.site-credit{margin:28px 0 18px;padding:0 16px;text-align:center;font-size:.76rem;line-height:1.6;
+  color:var(--dim);word-break:keep-all}
+.site-credit a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:9px 18px;border-radius:999px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:.22s;z-index:99}
 .toast.on{opacity:1;transform:translateX(-50%)}
 @media (max-width:640px){
@@ -391,8 +396,20 @@ footer a{color:var(--accent)}
     일정은 각 기관 공고에서 모읍니다. 자세한 내용과 신청은 반드시 원문에서 확인해 주세요.
     <span id="updated"></span>
   </div>
-  <div>지음웍스닷컴 · <a href="http://jieumworks.com" target="_blank" rel="noopener">jieumworks.com</a> · 2026년 9월</div>
 </footer>
+<div class="site-credit" id="siteCredit">기획·제작 지음웍스 · <a href="https://jieumworks.com" target="_blank" rel="noopener">jieumworks.com</a> · 2026년 9월</div>
+<script>
+/* 제작 크레딧 — 문구·날짜는 ../site-config.json 의 credit 한 곳에서 관리합니다.
+   못 읽어도 위에 적어 둔 문구가 그대로 보입니다. */
+fetch('../site-config.json').then((r) => r.json()).then((c) => {
+  const k = c.credit; if (!k) return;
+  const box = document.getElementById('siteCredit');
+  const a = document.createElement('a');
+  a.href = k.url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = k.site;
+  box.textContent = '';
+  box.append(`${k.role} ${k.name} · `, a, ` · ${k.date}`);
+}).catch(() => {});
+</script>
 </div>
 
 <dialog id="dlg-event"><button class="close" data-close aria-label="닫기">✕</button><div class="sheet" id="event-sheet"></div></dialog>
