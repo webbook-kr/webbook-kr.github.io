@@ -31,9 +31,10 @@ button.p{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:70
 </head>
 <body><div class="w">
 <h1>웹북 의견 모아보기</h1>
-<p class="sub">읽는 분들이 각 쪽의 "의견" 단추로 남긴 내용이 쪽 순서대로 모입니다. 의견마다 반영 상태와 한 줄 답변을 적으면 검토자가 책 안 의견 창에서 그대로 봅니다.</p>
+<p class="sub">읽는 분들이 각 쪽의 "의견" 단추로 남긴 내용이 쪽 순서대로 모입니다. 토큰 없이 열면 누구나 읽기 전용으로 볼 수 있고, 책 주인이 토큰을 넣으면 반영 상태와 한 줄 답변을 적을 수 있습니다.</p>
+<div id="ro" style="display:none;background:#fff7d6;border:1px solid #e8d48a;border-radius:6px;padding:10px 14px;margin:0 0 14px;font-size:13px">읽기 전용으로 보는 중입니다. 의견은 책 안 각 쪽의 <b>의견</b> 단추로 남겨 주세요. <a id="rolink" href="#" style="color:var(--accent)">책 열기 ↗</a></div>
 <div class="f"><input id="slug" placeholder="책 주소 끝부분 (예: 2026-1-gngr)" autocapitalize="off"><input id="token" placeholder="수정 토큰 (발행할 때 받은 값)" autocapitalize="off"><button class="p" id="load">불러오기</button></div>
-<p class="hint">제작기에서 발행하면 결과 칸의 <b>의견 모아보기</b> 링크에 두 값이 채워져 있습니다. 토큰은 이 책을 고칠 수 있는 열쇠이니 다른 사람에게 주지 마세요.</p>
+<p class="hint">제작기에서 발행하면 결과 칸의 <b>의견 모아보기</b> 링크에 두 값이 채워져 있습니다. 토큰은 이 책을 고칠 수 있는 열쇠이니 다른 사람에게 주지 마세요. 검토자들과 나눌 때는 토큰 없는 주소(<code>review.html?slug=책주소</code>)를 주면 읽기 전용으로 보입니다.</p>
 <div class="round" id="round" style="display:none"><span class="rn" id="rn"></span><span class="rd" id="rd"></span><button id="next">다음 차수 회람 시작</button></div>
 <div class="tools" id="tools" style="display:none"><button id="copy">전체 복사 (글로)</button><button id="dl">텍스트 파일로 저장</button><button id="mdb">반영 내역 원고 (웹북용)</button><span class="n" id="cnt"></span></div>
 <textarea id="md" readonly></textarea>
@@ -73,6 +74,8 @@ button.p{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:70
   return out.join('\n');
  }
  function render(){
+  var RO=!!data.readonly; $('ro').style.display=RO?'block':'none'; $('rolink').href=SITE+'/b/'+data.slug+'/'; $('next').style.display=RO?'none':'';
+  document.title=(RO?'의견 보기 · ':'의견 모아보기 · ')+data.slug;
   $('rn').textContent=data.round+'차 회람 중'; $('rd').textContent=data.round_at?('시작 '+when(data.round_at)):'(발행 때부터)'; $('round').style.display='flex';
   var list=filter==='all'?data.comments:data.comments.filter(function(c){return c.status===filter});
   var out=$('out');
@@ -83,9 +86,11 @@ button.p{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:70
   var by=group(list);
   out.innerHTML=Object.keys(by).sort(function(a,b){return a-b}).map(function(p){
    return '<div class="pg"><h3><span>'+p+'쪽</span><span style="font-weight:500;color:var(--muted)">'+esc(by[p][0].page_title||'')+'</span><a href="'+SITE+'/b/'+esc(data.slug)+'/#p'+p+'" target="_blank">책에서 보기 ↗</a></h3>'
-    +by[p].map(function(c){return '<div class="c '+c.status+'" data-id="'+c.id+'"><div class="m"><span class="rb">'+c.round+'차</span><b>'+esc(c.name||'익명')+'</b><span>'+when(c.created_at)+'</span><button class="del">지우기</button></div><div class="b">'+esc(c.body)+'</div>'
-     +'<div class="st"><select>'+Object.keys(STAT).map(function(k){return '<option value="'+k+'"'+(k===c.status?' selected':'')+'>'+STAT[k]+'</option>'}).join('')+'</select><input placeholder="한 줄 답변 (예: 숫자 수정함 / 원문 그대로 둠)" value="'+esc(c.reply||'')+'" maxlength="1000"><button class="save">저장</button>'+(c.replied_at?'<span style="font-size:11px;color:var(--dim)">'+when(c.replied_at)+'</span>':'')+'</div></div>';}).join('')+'</div>';
+    +by[p].map(function(c){return '<div class="c '+c.status+'" data-id="'+(c.id||'')+'"><div class="m"><span class="rb">'+c.round+'차</span><b>'+esc(c.name||'익명')+'</b><span>'+when(c.created_at)+'</span>'+(RO?'':'<button class="del">지우기</button>')+'</div><div class="b">'+esc(c.body)+'</div>'
+     +(RO?'<div class="st" style="font-size:12.5px;color:var(--muted)"><b style="color:'+(c.status==='done'?'var(--ok)':c.status==='hold'?'var(--hold)':c.status==='skip'?'var(--skip)':'var(--muted)')+'">'+STAT[c.status]+'</b>'+(c.reply?' · '+esc(c.reply):'')+'</div></div>'
+       :'<div class="st"><select>'+Object.keys(STAT).map(function(k){return '<option value="'+k+'"'+(k===c.status?' selected':'')+'>'+STAT[k]+'</option>'}).join('')+'</select><input placeholder="한 줄 답변 (예: 숫자 수정함 / 원문 그대로 둠)" value="'+esc(c.reply||'')+'" maxlength="1000"><button class="save">저장</button>'+(c.replied_at?'<span style="font-size:11px;color:var(--dim)">'+when(c.replied_at)+'</span>':'')+'</div></div>');}).join('')+'</div>';
   }).join('');
+  if(RO) return;
   out.querySelectorAll('.c').forEach(function(el){
    var id=+el.dataset.id, c=data.comments.find(function(x){return x.id===id});
    el.querySelector('.del').onclick=function(){ if(!confirm('이 의견을 지울까요?'))return; call({action:'delete',id:id}).then(function(){data.comments=data.comments.filter(function(x){return x.id!==id});render();}).catch(function(e){alert(e.message)}); };
@@ -95,10 +100,10 @@ button.p{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:70
   });
  }
  $('load').onclick=function(){
-  var c=cred(); if(!c.slug||!c.token){alert('책 주소와 토큰을 넣어 주세요.');return;}
-  try{localStorage.setItem('webbook:rv:slug',c.slug);localStorage.setItem('webbook:rv:token',c.token);}catch(e){}
+  var c=cred(); if(!c.slug){alert('책 주소를 넣어 주세요.');return;}
+  try{localStorage.setItem('webbook:rv:slug',c.slug);if(c.token)localStorage.setItem('webbook:rv:token',c.token);}catch(e){}
   $('out').innerHTML='<div class="empty">불러오는 중…</div>';
-  fetch(FN+'?slug='+encodeURIComponent(c.slug)+'&token='+encodeURIComponent(c.token)).then(function(r){return r.json()})
+  fetch(FN+'?slug='+encodeURIComponent(c.slug)+(c.token?'&token='+encodeURIComponent(c.token):'')).then(function(r){return r.json()})
   .then(function(j){if(j.error)throw new Error(j.error);data=j;render();})
   .catch(function(e){$('out').innerHTML='<p class="err">'+esc(e.message)+'</p>';$('tools').style.display='none';$('round').style.display='none';});
  };
@@ -111,7 +116,8 @@ button.p{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:70
  $('copy').onclick=function(){var t=asText();(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){$('copy').textContent='복사했어요';setTimeout(function(){$('copy').textContent='전체 복사 (글로)'},1500);},function(){prompt('복사하세요',t);});};
  $('dl').onclick=function(){var b=new Blob([asText()],{type:'text/plain;charset=utf-8'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='의견-'+data.slug+'.txt';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},3000);};
  $('mdb').onclick=function(){var t=$('md');t.value=asMd();t.style.display=t.style.display==='block'?'none':'block';if(t.style.display==='block'){t.focus();t.select();}};
- if($('slug').value&&$('token').value) $('load').click();
+ if(q.get('slug')&&!q.get('token')){ try{$('token').value=localStorage.getItem('webbook:rv:token')||'';}catch(e){} }
+ if($('slug').value) $('load').click();
 })();
 </script>
 </body></html>

@@ -1,7 +1,8 @@
 // 웹북 의견 함수. 읽는 사람이 쪽마다 남기는 의견을 저장하고, 회람 차수와 반영 상태를 관리한다.
 //  POST {slug, page, page_title, name, body}                 → 의견 저장 (누구나). 책의 현재 차수(round)가 붙는다
 //  GET  ?slug=…&page=N                                       → 그 쪽의 의견과 반영 결과 (누구나, 책 안에서 보여 줌)
-//  GET  ?slug=…&token=…                                      → 전체 목록 + 책 차수 (책 주인만)
+//  GET  ?slug=…&token=…                                      → 전체 목록 + 책 차수 (책 주인만, 편집 가능)
+//  GET  ?slug=…                                               → 전체 목록 읽기 전용 (누구나, 검토자 공유용)
 //  POST {action:"status", id, slug, token, status, reply}    → 반영 상태(open 검토중·done 반영·skip 미반영·hold 보류)와 답변 (책 주인만)
 //  POST {action:"round", slug, token, round}                 → 회람 차수 바꾸기 (책 주인만)
 //  POST {action:"delete", id, slug, token}                   → 의견 지우기 (책 주인만)
@@ -52,8 +53,16 @@ Deno.serve(async (req) => {
       if (error) return json({ error: error.message }, 500);
       return json({ round: b.round, comments: data });
     }
+    if (!token) {   // 토큰 없이: 누구나 보는 읽기 전용 전체 목록 (검토자들끼리 공유용)
+      const bk = await book(slug);
+      if (!bk) return json({ error: "없는 책입니다" }, 404);
+      const { data, error } = await sb.from("webbook_comments").select("round,page,page_title,name,body,status,reply,replied_at,created_at")
+        .eq("slug", slug).order("page").order("created_at");
+      if (error) return json({ error: error.message }, 500);
+      return json({ slug, round: bk.round, round_at: bk.round_at, readonly: true, comments: data });
+    }
     const b = await owner(slug, token);
-    if (!b) return json({ error: "이 책의 주인만 볼 수 있습니다" }, 403);
+    if (!b) return json({ error: "수정 토큰이 맞지 않습니다. 토큰 없이 열면 읽기 전용으로 볼 수 있어요" }, 403);
     const { data, error } = await sb.from("webbook_comments").select("id,round,page,page_title,name,body,status,reply,replied_at,created_at")
       .eq("slug", slug).order("page").order("created_at");
     if (error) return json({ error: error.message }, 500);

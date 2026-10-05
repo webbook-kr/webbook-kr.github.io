@@ -709,7 +709,7 @@ body.cmt .foot>span:last-child{flex:none;white-space:nowrap}
    fetch(CMT_FN+'?slug='+SLUG+'&page='+(n+1)).then(function(r){return r.json();}).then(function(j){
     if(j.error)return; cr.textContent=j.round+'차 회람';
     if(!j.comments||!j.comments.length){return;}
-    box.innerHTML='<div class="pn">이 쪽에 먼저 남긴 의견 '+j.comments.length+'개와 반영 결과</div>'+j.comments.map(function(c){
+    box.innerHTML='<div class="pn">이 쪽에 먼저 남긴 의견 '+j.comments.length+'개와 반영 결과 · <a href="https://webbook-kr.github.io/review.html?slug='+SLUG+'" target="_blank" style="color:var(--accent)">전체 의견 보기 ↗</a></div>'+j.comments.map(function(c){
      return '<div class="pc '+c.status+'"><div class="h">'+c.round+'차 · <b>'+esc(c.name||'익명')+'</b></div><div class="t">'+esc(c.body)+'</div>'+(c.status!=='open'||c.reply?'<div class="r"><b>'+(STAT[c.status]||c.status)+'</b> '+esc(c.reply||'')+'</div>':'<div class="r"><b>'+STAT.open+'</b></div>')+'</div>';
     }).join('');
    }).catch(function(){});
