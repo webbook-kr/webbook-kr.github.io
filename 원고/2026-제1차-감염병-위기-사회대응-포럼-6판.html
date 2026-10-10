@@ -317,6 +317,7 @@ body.cmt .foot>span:last-child{flex:none;white-space:nowrap}
 /* 2차 회람에서 바뀐 부분: 초록 바탕 */
 .chg2{background:#d8f3dc;box-shadow:0 0 0 2px #d8f3dc;border-radius:2px;color:var(--ink)}
 .chg2 mark{background:none}
+body.inapp .vframe::after{content:'▶  유튜브 앱에서 보기'}
 </style>
 </head>
 <body class="dense">
@@ -1171,8 +1172,17 @@ body.cmt .foot>span:last-child{flex:none;white-space:nowrap}
   go(m?(+m[1]-1):(saved!==null?+saved:0));
  }
  // 영상 틀기. sec 를 주면 그 시점부터.
+ // 카톡·네이버·인스타 등 앱 속 브라우저는 유튜브 끼워넣기 재생이 자주 막힌다 → 유튜브 앱(또는 새 창)으로 바로 연다
+ var INAPP=/KAKAOTALK|NAVER\(|Instagram|FBAN|FBAV|Line\/|DaumApps|; wv\)/i.test(navigator.userAgent);
+ if(INAPP) document.body.classList.add('inapp');
  function playVideo(wrap, sec){
   if(!wrap) return;
+  if(INAPP){
+   var u='https://www.youtube.com/watch?v='+wrap.dataset.v+(sec?'&t='+sec+'s':'');
+   var w=null; try{w=window.open(u,'_blank');}catch(e){}
+   if(!w) location.href=u;
+   return;
+  }
   var f=document.createElement('iframe');
   f.src='https://www.youtube-nocookie.com/embed/'+wrap.dataset.v+'?autoplay=1&rel=0&start='+(sec||0);
   f.setAttribute('allow','autoplay; encrypted-media; picture-in-picture; web-share');
