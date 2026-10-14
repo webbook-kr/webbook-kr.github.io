@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>웹북 실무 매뉴얼</title>
+<style>
+@page{size:A4;margin:13mm 13mm 12mm}
+body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#15130f;font-size:11.6px;line-height:1.6;margin:0}
+h1{font-size:19px;margin:0 0 2px;letter-spacing:-.4px} .sub{color:#6b6560;font-size:11px;margin:0 0 12px}
+h2{font-size:13.5px;margin:16px 0 6px;padding:4px 9px;background:#e9eef5;border-left:4px solid #2b4f81;break-after:avoid}
+ul{margin:4px 0 6px;padding-left:18px} li{margin:2px 0} b{color:#0f1f3a}
+table{width:100%;border-collapse:collapse;margin:4px 0 8px;font-size:11.2px} th,td{border:1px solid #d6d0c6;padding:4px 7px;text-align:left;vertical-align:top} th{background:#f1eee8}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f3f1ec;padding:0 4px;border-radius:3px;font-size:10.6px}
+.flow{display:flex;gap:4px;align-items:stretch;margin:6px 0 4px}
+.flow div{flex:1;border:1.5px solid #2b4f81;border-radius:6px;padding:6px 6px;text-align:center;font-size:10.6px;line-height:1.35;background:#f7f9fc}
+.flow div b{display:block;font-size:11.6px;margin-bottom:2px}
+.flow span{align-self:center;color:#2b4f81;font-weight:800}
+.note{background:#fff7d6;border:1px solid #e8d48a;border-radius:5px;padding:6px 10px;margin:6px 0;font-size:11px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.k{white-space:nowrap}
+</style></head><body>
+<h1>웹북 실무 매뉴얼 — 만들기 · 회람 · 고치기 · 최종본</h1>
+<p class="sub">대상: 과 실무자 · 2026.10.14 · 예시: 2026년 제1차 감염병 위기 사회대응 포럼 결과 자료집</p>
+
+<h2>1. 한눈에 보는 업무 흐름</h2>
+<div class="flow">
+ <div><b>① 원고</b>자료(녹취·발표자료)<br>→ 마크다운 원고</div><span>›</span>
+ <div><b>② 제작</b>제작기에 붙여넣고<br>미리보기·쪽 확인</div><span>›</span>
+ <div><b>③ 발행</b>발행 코드 입력<br>→ 책 주소</div><span>›</span>
+ <div><b>④ 회람</b>책 주소 공유<br>쪽마다 "의견"</div><span>›</span>
+ <div><b>⑤ 반영</b>원고 수정<br>상태·답변 기록 → 재발행</div><span>›</span>
+ <div><b>⑥ 최종본</b>표시 정리<br>PDF·반영표 배포</div>
+</div>
+<ul><li>④~⑤는 회람 차수(1차·2차·…)마다 되풀이. 의견이 더 없으면 ⑥으로</li></ul>
+
+<h2>2. 준비물과 주소</h2>
+<table>
+<tr><th style="width:24%">항목</th><th>내용</th></tr>
+<tr><td>제작기</td><td><code>webbook-kr.github.io/maker.html</code> · 설치 없음, 크롬·엣지·사파리</td></tr>
+<tr><td>발행 코드</td><td>과 공용 코드 (담당자에게 별도로 받음, 문서·카톡방에 적지 않음)</td></tr>
+<tr><td>책 주소</td><td>발행하면 생김. 예) <code>webbook-kr.github.io/b/2026-1-gngr/</code> → 카톡·메일로 공유</td></tr>
+<tr><td>수정 열쇠</td><td>발행할 때 생기는 그 책 전용 열쇠. 제작기 "수정 열쇠 보기"에서 확인. <b>담당자끼리만</b> 공유</td></tr>
+<tr><td>의견 보기</td><td>검토자 공유용(읽기 전용) <code>webbook-kr.github.io/review.html?slug=책주소끝</code></td></tr>
+</table>
+
+<h2>3. 원고 만들기 (①)</h2>
+<ul>
+<li><b>권장</b> 녹취록·발표자료·메모를 Claude에 올리고 "웹북 원고로 만들어 줘" → 장·쪽으로 나뉜 원고(.md)를 받음</li>
+<li><b>직접 작성</b> 메모장에 아래 기호만 지켜 쓰면 됨. 원고 파일은 과 공유폴더에 <code>책이름-날짜.md</code>로 보관</li>
+</ul>
+<table>
+<tr><th style="width:30%">쓰는 법</th><th>결과</th><th style="width:30%">쓰는 법</th><th>결과</th></tr>
+<tr><td><code># 장 제목 | 부제</code></td><td>새 장(표지·차례 자동)</td><td><code>==강조==</code></td><td>색 글자(핵심)</td></tr>
+<tr><td><code>## 쪽 제목</code></td><td>새 쪽</td><td><code>**굵게**</code></td><td>굵은 글자</td></tr>
+<tr><td><code>---</code></td><td>같은 제목으로 쪽 나눔</td><td><code>핵심: 한 줄</code></td><td>결론 상자</td></tr>
+<tr><td><code>- 항목</code></td><td>목록(개조식)</td><td><code>![설명](사진 주소)</code></td><td>사진</td></tr>
+<tr><td><code>발표자: 이름 | 소속 | 0:18:14</code></td><td>발표자 칸·영상 시간</td><td><code>youtube: 영상주소</code></td><td>영상</td></tr>
+<tr><td><code>머리글: 세션 2 · 이재림</code></td><td>쪽 맨 위 작은 표시</td><td><code>[글자](주소)</code></td><td>링크(발표자료 등)</td></tr>
+</table>
+
+<h2>4. 제작과 발행 (②③)</h2>
+<ul>
+<li><b>원고 넣기</b> "원고 파일 불러오기"로 .md 열기 또는 원고 칸에 붙여넣기 → 오른쪽 미리보기에 바로 반영</li>
+<li><b>책 정보</b> 제목(줄바꿈은 <code>|</code>), 부제, 날짜, 표지 그림 주소 · <b>책 모양</b> 업무 자료는 "쪽빛", <b>글 간격</b> 자료집은 "촘촘"</li>
+<li><b>쪽 확인</b> 미리보기를 폰 크기로 넘겨 보며 글이 잘리는 쪽("아래로 밀면 더 있음")이 없게 문장을 줄이거나 <code>---</code>로 나눔</li>
+<li><b>발행</b> 발행 코드 입력 → "발행하기" → 나온 주소 복사. 카톡 미리보기 제목·표지는 1분쯤 뒤부터 보임</li>
+<li>원고는 그 브라우저에 자동 저장되지만, <b>원본 .md 파일을 공유폴더에도 꼭 저장</b></li>
+</ul>
+
+<h2>5. 회람과 의견 반영 (④⑤)</h2>
+<ul>
+<li><b>회람</b> 책 주소를 검토자에게 공유. 검토자는 쪽마다 "의견" 단추 → 이름·소속(필수)과 의견 입력</li>
+<li><b>확인</b> 제작기 발행 결과의 "의견 모아보기"(담당자용) → 쪽 순서로 전체 의견. 검토자끼리는 읽기 전용 주소로 공유</li>
+<li><b>반영</b> 원고(.md)를 고치고 제작기에서 "다시 발행 (같은 주소)" → 주소는 그대로, 내용만 바뀜</li>
+<li><b>기록</b> 모아보기에서 의견마다 상태(반영·보류·미반영)와 한 줄 답변 저장 → 검토자가 책 안 의견 창에서 바로 확인</li>
+<li><b>다음 차수</b> 반영을 마치면 "다음 차수 회람 시작" → 이후 의견은 2차·3차로 구분됨</li>
+<li><b>다른 PC에서 고칠 때</b> 제작기 "이미 발행한 책을 이 PC에서 이어서 고치기"에 책 주소 끝부분과 수정 열쇠 입력 → "연결하기"</li>
+</ul>
+<div class="note">바뀐 곳 색 표시(노란·초록 바탕)와 반영표 PDF는 Claude에 "의견 반영해 줘 / 반영표 만들어 줘"로 요청하면 같은 형식으로 만들어 줌</div>
+
+<h2>6. 최종본과 배포 (⑥)</h2>
+<ul>
+<li>"표시 지우고 최종본" 요청 → 같은 주소가 최종본으로 바뀜. 수정 이력 쪽에 최종본 날짜 기록</li>
+<li><b>PDF</b> 책 오른쪽 위 "PDF ▾" → "인쇄로 PDF 저장" · <b>오프라인 파일</b>은 인터넷 없이 열리는 HTML(메일 첨부용)</li>
+<li>보관: 최종 원고(.md 또는 .html) · PDF · 검토 의견 반영표를 공유폴더 한 곳에</li>
+</ul>
+
+<div class="two">
+<div>
+<h2>7. 윈도우 · 맥 단축키</h2>
+<table>
+<tr><th>할 일</th><th>윈도우</th><th>맥</th></tr>
+<tr><td>PDF로 저장</td><td class="k">Ctrl + P</td><td class="k">⌘ + P</td></tr>
+<tr><td>새로고침(새 판 보기)</td><td class="k">F5 / Ctrl + R</td><td class="k">⌘ + R</td></tr>
+<tr><td>확대 원래대로</td><td class="k">Ctrl + 0</td><td class="k">⌘ + 0</td></tr>
+<tr><td>원고 파일 편집</td><td>메모장 (UTF-8 저장)</td><td>텍스트편집기 → 포맷 → 일반 텍스트</td></tr>
+</table>
+</div>
+<div>
+<h2>8. 자주 생기는 일</h2>
+<ul>
+<li><b>새 내용이 안 보임</b> 새로고침. 카톡은 오른쪽 아래 ↻</li>
+<li><b>사진이 깨짐</b> 올린 직후 1~2분 기다린 뒤 새로고침</li>
+<li><b>카톡에서 영상 안 나옴</b> 누르면 유튜브 앱으로 열림(정상)</li>
+<li><b>"수정 권한이 없습니다"</b> 수정 열쇠가 다름 → 처음 발행한 담당자에게 확인</li>
+<li><b>글자가 너무 큼</b> 카톡 "가가" 버튼 또는 폰 글자 크기 설정</li>
+</ul>
+</div>
+</div>
+<div class="note"><b>주의</b> 포럼 결과 자료집은 10.14 최종본으로 확정됨. 이 책을 다시 고칠 일이 생기면 제작기로 덮어쓰지 말고 담당자(대표)에게 먼저 알릴 것 — 4판 이후 수정분은 원고(.md)가 아니라 최종본 파일에 들어 있음</div>
+</body></html>
