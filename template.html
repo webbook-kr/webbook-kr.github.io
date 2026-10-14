@@ -318,6 +318,12 @@ body.inapp .vframe::after{content:'▶  유튜브 앱에서 보기'}
 .chg2{background:#d8f3dc;box-shadow:0 0 0 2px #d8f3dc;border-radius:2px;color:var(--ink)}
 .chg mark,.chg2 mark{background:none}
 @media print{.chg,.chg2{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+/* 복사 금지 책: 글자 끌어 고르기·길게 눌러 복사·그림 끌기·인쇄를 막는다 (화면 캡처는 못 막음) */
+.nocopy #deck{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.nocopy #deck img{-webkit-user-drag:none}
+.nocopy #mpdf,.nocopy #mprint{display:none}
+.cpr{margin-top:18px;font-size:11.5px;line-height:1.7;color:var(--muted);word-break:keep-all}
+@media print{.nocopy *{display:none!important}}
 </style>
 </head>
 <body>
@@ -766,6 +772,18 @@ body.inapp .vframe::after{content:'▶  유튜브 앱에서 보기'}
  } else {
   start();
  }
+})();
+</script>
+<script>
+// 복사 금지 책: 복사·잘라내기·오른쪽 단추·인쇄·저장 단축키를 막는다. 의견 칸 입력은 그대로 둔다.
+(function(){
+ if(!document.body.classList.contains('nocopy')) return;
+ var mb=document.getElementById('mbtn'); if(mb) mb.textContent='메뉴 ▾';
+ var t=document.getElementById('toast');
+ function no(e){ if(e.target&&e.target.closest&&e.target.closest('input,textarea')) return; e.preventDefault(); if(t){t.textContent='복사가 금지된 책입니다';t.classList.add('on');clearTimeout(no.t);no.t=setTimeout(function(){t.classList.remove('on');},1600);} }
+ ['copy','cut','contextmenu','dragstart','selectstart'].forEach(function(ev){ document.addEventListener(ev,no); });
+ document.addEventListener('keydown',function(e){ if((e.ctrlKey||e.metaKey)&&/^[cpsaxu]$/i.test(e.key)&&!(e.target.closest&&e.target.closest('input,textarea'))) no(e); });
+ window.addEventListener('beforeprint',function(){ no({preventDefault:function(){},target:document.body}); });
 })();
 </script>
 </body>
