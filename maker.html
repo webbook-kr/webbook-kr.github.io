@@ -18,8 +18,8 @@ header a{color:var(--muted);font-size:12px;text-decoration:none}
 main{display:grid;grid-template-columns:minmax(360px,520px) 1fr;height:calc(100% - 49px)}
 #edit{display:flex;flex-direction:column;gap:10px;padding:14px 16px;overflow-y:auto;border-right:1px solid var(--line2);background:var(--wash)}
 label{display:block;font-size:11px;font-weight:800;letter-spacing:.6px;color:var(--dim);text-transform:uppercase;margin-bottom:4px}
-input[type=text],textarea{width:100%;border:1px solid var(--line2);background:#fff;font:500 14px 'Pretendard',sans-serif;padding:9px 10px;border-radius:2px;color:var(--ink)}
-input[type=text]:focus,textarea:focus{outline:none;border-color:var(--ink)}
+input[type=text],input[type=email],input[type=password],textarea{width:100%;border:1px solid var(--line2);background:#fff;font:500 14px 'Pretendard',sans-serif;padding:9px 10px;border-radius:2px;color:var(--ink)}
+input[type=text]:focus,input[type=email]:focus,input[type=password]:focus,textarea:focus{outline:none;border-color:var(--ink)}
 textarea{flex:1;min-height:320px;resize:vertical;font:13.5px/1.7 ui-monospace,Menlo,Consolas,monospace;tab-size:2}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .lock{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#fff;border:1px solid var(--line2);border-radius:2px;font-size:13px}
@@ -46,7 +46,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
 .pub{background:#fff;border:1px solid var(--line2);border-radius:2px;padding:12px}
 .pub h3{margin:0 0 6px;font-size:13px;font-weight:800}
 .pub .row2{display:flex;gap:8px}
-.pub .row2 input[type=text]{flex:1}
+.pub .row2 input{flex:1;min-width:0}
 .pub .res{display:none;margin-top:10px;padding:10px;background:var(--wash);border:1px solid var(--line);font-size:12.5px;line-height:1.7;word-break:break-all}
 .pub .res.on{display:block}
 .pub .res a{color:var(--accent);font-weight:700}
@@ -167,16 +167,29 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   </div>
   <div class="pub">
    <h3>인터넷 주소 만들기 (발행)</h3>
+   <div id="pubin">
+   <input id="pem" type="email" placeholder="내 이메일" autocomplete="email" autocapitalize="off" style="width:100%;margin-bottom:6px">
    <div class="row2">
-    <input id="pc" type="text" placeholder="발행 코드" autocomplete="off">
+    <input id="pc" type="password" placeholder="발행 코드 (처음엔 1339)" autocomplete="off">
     <button id="pubb" class="pri" type="button">발행하기</button>
    </div>
-   <p class="hint" style="margin-top:6px">발행 코드를 넣고 누르면 인터넷 주소가 나옵니다. 그 주소를 카톡이나 유튜브 설명란에 붙이면 끝입니다.</p>
+   </div>
+   <p class="hint" style="margin-top:6px">처음엔 <b>내 이메일 + 기본 코드 1339</b>로 발행합니다. 나오는 인터넷 주소를 카톡이나 유튜브 설명란에 붙이면 끝입니다.</p>
+   <details id="mycode" style="margin-top:8px;font-size:13px">
+    <summary style="cursor:pointer;color:var(--muted)">내 발행 코드 만들기 · 바꾸기 · 잊었을 때</summary>
+    <p class="hint" style="margin:6px 0">내 코드로 바꾸면 이 이메일로 낸 책은 <b>다른 PC에서도 이메일·코드만으로</b> 고칠 수 있습니다.</p>
+    <div class="row2"><input id="cold" type="password" placeholder="지금 코드 (처음이면 1339)" autocomplete="off"><input id="cnew" type="password" placeholder="새 코드 (4자 이상)" autocomplete="new-password"></div>
+    <button id="cchg" type="button" style="margin-top:6px">내 코드로 바꾸기</button>
+    <p class="hint" style="margin:12px 0 6px"><b>코드를 잊었을 때</b> 위 이메일로 확인 번호를 받아 새 코드를 정합니다.</p>
+    <button id="csend" type="button">이메일로 확인 번호 받기</button>
+    <div class="row2" style="margin-top:6px"><input id="cnum" type="text" inputmode="numeric" placeholder="확인 번호 6자리" autocomplete="one-time-code"><input id="cnew2" type="password" placeholder="새 코드 (4자 이상)" autocomplete="new-password"></div>
+    <button id="cset" type="button" style="margin-top:6px">새 코드로 정하기</button>
+   </details>
    <div class="res" id="pres"></div>
    <details id="attach" style="margin-top:10px;font-size:13px">
     <summary style="cursor:pointer;color:var(--muted)">이미 발행한 책을 이 PC에서 이어서 고치기</summary>
-    <p class="hint" style="margin:6px 0">책을 처음 발행한 사람에게 <b>책 주소 끝부분</b>과 <b>수정 열쇠</b>를 받아 넣으세요. 연결하면 "다시 발행"이 그 책 주소로 올라갑니다.</p>
-    <div class="row2"><input id="aslug" type="text" placeholder="책 주소 끝부분 (예: 2026-1-gngr)" autocomplete="off" autocapitalize="off"><input id="atok" type="text" placeholder="수정 열쇠" autocomplete="off" autocapitalize="off"></div>
+    <p class="hint" style="margin:6px 0"><b>책 주소 끝부분</b>과 <b>수정 열쇠</b>를 넣으세요. 내 코드로 발행한 내 책이면 열쇠 없이 책 주소 끝부분만 넣고, 위 칸에 내 이메일·코드를 넣으면 됩니다. 연결하면 "다시 발행"이 그 책 주소로 올라갑니다.</p>
+    <div class="row2"><input id="aslug" type="text" placeholder="책 주소 끝부분 (예: 2026-1-gngr)" autocomplete="off" autocapitalize="off"><input id="atok" type="text" placeholder="수정 열쇠 (내 책이면 비워 두기)" autocomplete="off" autocapitalize="off"></div>
     <button id="ago" type="button" style="margin-top:6px">연결하기</button>
    </details>
   </div>
@@ -201,6 +214,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  var ti=$('ti'),au=$('au'),su=$('su'),ci=$('ci'),dt=$('dt'),md=$('md'),lk=$('lk'),lc=$('lc'),pv=$('pv'),stat=$('stat'),toast=$('toast');
  var TPL=null, KEY='ebook_maker_draft', KEYP='ebook_maker_pub';
  var PUBLISH_FN='https://dxhmprqfgigljgbstqrg.supabase.co/functions/v1/webbook-publish';
+ var ACCOUNT_FN='https://dxhmprqfgigljgbstqrg.supabase.co/functions/v1/webbook-account', KEYE='ebook_maker_email', DEF_CODE='1339';
  var SAMPLE=[
   '# 시작하기 전에',
   '## 이 책은 무엇인가',
@@ -590,10 +604,30 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   var sk=$('showkey'); if(sk) sk.onclick=function(e){e.preventDefault();var b=$('keybox');b.style.display=b.style.display==='none'?'block':'none';};
  }
  showPub();
+ // ── 내 발행 코드: 기본 코드(1339)에서 내 코드로 바꾸기, 잊었을 때 이메일 확인 번호 ──
+ var pem=$('pem'); try{pem.value=localStorage.getItem(KEYE)||'';}catch(e){}
+ function acct(btn,data,done){
+  var email=pem.value.trim(); if(!email){say('위 칸에 내 이메일을 먼저 넣어 주세요.');pem.focus();return;}
+  data.email=email; btn.disabled=true;
+  fetch(ACCOUNT_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+  .then(function(r){return r.json().then(function(j){if(!r.ok||j.error)throw new Error(j.error||'실패했어요');return j;});})
+  .then(function(j){try{localStorage.setItem(KEYE,email);}catch(e){}done(j);})
+  .catch(function(e){say(e.message||'연결이 안 됐어요.');})
+  .then(function(){btn.disabled=false;});
+ }
+ function setDone(v){ pc.value=v; ['cold','cnew','cnum','cnew2'].forEach(function(i){$(i).value='';}); $('mycode').open=false; say('내 코드로 바꿨어요. 이제 이 이메일과 새 코드로 발행하세요. 기본 코드 1339는 이 이메일에서 더 이상 안 됩니다.'); }
+ $('cchg').onclick=function(){ var n=$('cnew').value.trim(); if(n.length<4){say('새 코드는 4자 이상으로 정해 주세요.');return;} acct(this,{action:'change',old:$('cold').value.trim(),code:n},function(){setDone(n);}); };
+ $('csend').onclick=function(){ acct(this,{action:'send'},function(){say('확인 번호를 메일로 보냈어요. 15분 안에 넣어 주세요 (스팸함도 확인).');$('cnum').focus();}); };
+ $('cset').onclick=function(){ var n=$('cnew2').value.trim(); if(n.length<4){say('새 코드는 4자 이상으로 정해 주세요.');return;} acct(this,{action:'set',num:$('cnum').value.trim(),code:n},function(){setDone(n);}); };
  // 다른 PC에서 발행한 책을 이 브라우저에 연결한다 (책 주소 끝부분 + 수정 열쇠)
  $('ago').onclick=function(){
   var sl=$('aslug').value.trim().replace(/^.*\/b\/(\?)?/,'').replace(/[\/#?].*$/,''), tk=$('atok').value.trim();
-  if(!sl||!tk){say('책 주소 끝부분과 수정 열쇠를 넣어 주세요.');return;}
+  if(!sl){say('책 주소 끝부분을 넣어 주세요.');return;}
+  if(!tk){ // 내 책: 열쇠 없이 연결하고, 다시 발행할 때 이메일·코드로 확인한다
+   if(!pem.value.trim()||!pc.value.trim()){say('내 책이면 위 칸에 내 이메일과 내 코드를 넣어 주세요. 아니면 수정 열쇠를 넣으세요.');return;}
+   pub={url:'https://webbook-kr.github.io/b/'+sl+'/',slug:sl,token:'',title:''};try{localStorage.setItem(KEYP,JSON.stringify(pub));}catch(e){}showPub();$('attach').open=false;
+   say('연결했어요. "다시 발행"을 누르면 내 이메일·코드로 확인한 뒤 이 책이 바뀝니다.');return;
+  }
   $('ago').disabled=true;
   fetch('https://dxhmprqfgigljgbstqrg.supabase.co/functions/v1/webbook-comment?slug='+encodeURIComponent(sl)+'&token='+encodeURIComponent(tk))
   .then(function(r){return r.json().then(function(j){if(!r.ok||j.error)throw new Error(j.error||'확인 실패');});})
@@ -602,16 +636,19 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   .then(function(){$('ago').disabled=false;});
  };
  pubb.onclick=async function(){
-  var code=pc.value.trim(); if(!code){say('발행 코드를 넣어 주세요.');pc.focus();return;}
+  var code=pc.value.trim(), email=pem.value.trim();
+  if(!email){say('내 이메일을 넣어 주세요.');pem.focus();return;}
+  if(!code){say('발행 코드를 넣어 주세요. 처음이면 1339 입니다.');pc.focus();return;}
+  try{localStorage.setItem(KEYE,email);}catch(e){}
   var o=await output(); if(!o)return;
   pubb.disabled=true; var old=pubb.textContent; pubb.textContent='올리는 중…';
-  var body={code:code,title:o.b.title,html:o.html,locked:o.locked};
-  if(pub&&pub.slug&&pub.token){body.slug=pub.slug;body.token=pub.token;}
+  var body={email:email,code:code,title:o.b.title,html:o.html,locked:o.locked};
+  if(pub&&pub.slug){body.slug=pub.slug;body.token=pub.token||'';}
   try{
    var r=await fetch(PUBLISH_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
    var j=await r.json();
    if(!r.ok||j.error){ say(j.error||'발행에 실패했어요.'); if(r.status===403&&pub&&/수정 권한/.test(j.error||'')){pub=null;try{localStorage.removeItem(KEYP);}catch(e){}showPub();} }
-   else { pub={url:j.url,slug:j.slug,token:j.token,title:o.b.title}; try{localStorage.setItem(KEYP,JSON.stringify(pub));}catch(e){} showPub(); say(j.warn?'발행됐어요 (예비 주소로): '+j.warn:'발행됐어요!'); }
+   else { pub={url:j.url,slug:j.slug,token:j.token||(pub&&pub.token)||'',title:o.b.title}; try{localStorage.setItem(KEYP,JSON.stringify(pub));}catch(e){} showPub(); say(j.warn?'발행됐어요 (예비 주소로): '+j.warn:(code===DEF_CODE?'발행됐어요! 기본 코드 대신 내 코드를 만들어 두면 좋아요 (아래 "내 발행 코드 만들기").':'발행됐어요!')); }
   }catch(e){ say('연결이 안 됐어요. 잠시 후 다시 시도해 주세요.'); }
   pubb.disabled=false; if(pubb.textContent==='올리는 중…')pubb.textContent=old;
  };

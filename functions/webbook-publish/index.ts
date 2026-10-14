@@ -1,5 +1,6 @@
 // 웹북 발행 함수. 발행 코드가 맞으면 책 HTML(과 잠긴 PDF)을 공개 버킷에 올리고 읽기 주소를 돌려준다.
-// 인증: 발행 코드(webbook_codes) + 수정 토큰(webbook_books.token_hash). JWT 불필요.
+// 인증: 이메일 + 발행 코드(내 코드 webbook_users, 아직 없으면 기본 코드) 또는 관리 코드(webbook_codes, 이메일 없이)
+//       + 수정 토큰(webbook_books.token_hash). 책 주인(owner_email)은 토큰 없이도 같은 이메일·코드로 다시 발행할 수 있다. JWT 불필요.
 // 수파베이스 저장소는 HTML 을 text/plain 으로 내보내므로, 읽기는 READER 페이지가 받아서 보여준다.
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -87,16 +88,30 @@ Deno.serve(async (req) => {
 
   const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
-  const { data: ok } = await sb.from("webbook_codes").select("code").eq("code", code).eq("active", true).maybeSingle();
-  if (!ok) return json({ error: "발행 코드가 맞지 않습니다" }, 403);
+  const email = String(body.email ?? "").trim().toLowerCase().slice(0, 254);
+  const { data: cr } = await sb.from("webbook_codes").select("label").eq("code", code).eq("active", true).maybeSingle();
+  let owner = "";   // 내 코드로 확인된 발행자 (기본 코드로 낸 책은 주인을 남기지 않는다)
+  if (email) {
+    const { data: u } = await sb.from("webbook_users").select("code_hash").eq("email", email).maybeSingle();
+    const good = u?.code_hash ? u.code_hash === await sha("webbook:" + email + ":" + code) : !!cr;
+    if (!good) return json({ error: u?.code_hash ? "내 발행 코드가 맞지 않습니다. 잊었으면 '코드 찾기'를 누르세요" : "발행 코드가 맞지 않습니다" }, 403);
+    if (u?.code_hash) owner = email;
+  } else if (!cr || cr.label === "default") {
+    return json({ error: cr ? "이메일을 함께 넣어 주세요" : "발행 코드가 맞지 않습니다" }, 403);
+  }
 
   // 기존 책 덮어쓰기(slug+token) 또는 새 책
   let slug = String(body.slug ?? "").trim();
   let token = String(body.token ?? "").trim();
-  if (slug && token) {
+  let keepHash = "", setOwner = !!owner;   // 주인이 토큰 없이 다시 발행할 때는 기존 수정 열쇠를 그대로 둔다
+  if (slug) {   // 주소를 지정했으면 그 책을 고칠 권한이 있어야 한다 (모르는 새 책이 생기지 않게)
     if (!/^[a-z0-9-]{1,60}$/.test(slug)) return json({ error: "주소 형식이 틀렸습니다" }, 400);
-    const { data: row } = await sb.from("webbook_books").select("token_hash").eq("slug", slug).maybeSingle();
-    if (!row || row.token_hash !== await sha(token)) return json({ error: "이 책의 수정 권한이 없습니다. 새 책으로 발행하세요." }, 403);
+    const { data: row } = await sb.from("webbook_books").select("token_hash,owner_email").eq("slug", slug).maybeSingle();
+    const byToken = !!row && !!token && row.token_hash === await sha(token);
+    const byOwner = !!row && !!owner && row.owner_email === owner;
+    if (!byToken && !byOwner) return json({ error: "이 책의 수정 권한이 없습니다. 새 책으로 발행하세요." }, 403);
+    if (!byToken) { keepHash = row!.token_hash; token = ""; }
+    setOwner = !!owner && !row!.owner_email;   // 이미 주인이 있는 책은 주인을 바꾸지 않는다
   } else {
     const base = slugify(title);
     slug = `${base}-${rand(base === "book" ? 6 : 4)}`;
@@ -111,11 +126,11 @@ Deno.serve(async (req) => {
   }
 
   const { error: dbErr } = await sb.from("webbook_books").upsert({
-    slug, title, token_hash: await sha(token), locked, size_bytes: html.length + (pdfEnc?.length ?? 0), updated_at: new Date().toISOString(),
+    slug, title, token_hash: keepHash || await sha(token), locked, ...(setOwner ? { owner_email: owner } : {}), size_bytes: html.length + (pdfEnc?.length ?? 0), updated_at: new Date().toISOString(),
   });
   if (dbErr) return json({ error: "기록 실패: " + dbErr.message }, 500);
 
   const { data: pub } = sb.storage.from("webbook").getPublicUrl(`${slug}/index.html`);
   const page = await pushBookPage(slug, title, html);
-  return json({ url: page.url, raw: pub.publicUrl, slug, token, ...(page.warn ? { warn: page.warn } : {}) });
+  return json({ url: page.url, raw: pub.publicUrl, slug, ...(token ? { token } : {}), ...(page.warn ? { warn: page.warn } : {}) });
 });

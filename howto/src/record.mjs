@@ -80,11 +80,16 @@ await pvGo(5); await m.waitForTimeout(600);
 await shot(2, m, '#open', "'새 창에서 보기'로 크게 확인 — 넘치는 쪽은 문장을 줄이거나 --- 로 나눕니다");
 
 // 3. 발행
-await m.fill('#pc', 'DEMO-CODE');
-await shot(3, m, '#pc', '과 공용 발행 코드를 넣습니다 (담당자에게 따로 받기)');
+await m.evaluate(() => document.querySelector('.pub').scrollIntoView({ block: 'center' }));
+await m.fill('#pem', 'hong@example.go.kr'); await m.fill('#pc', '1339');
+await shot(3, m, '#pubin', '내 이메일과 기본 코드 1339를 넣습니다 (처음엔 누구나 같은 코드)', { click: false });
 await m.click('#pubb'); await m.waitForTimeout(800);
 await shot(3, m, '#pres', "'발행하기'를 누르면 책 주소가 나옵니다", { click: false });
 await shot(3, m, '#cp', "'주소 복사' → 카톡·메일로 공유. 제목과 표지가 미리보기에 뜹니다");
+await m.evaluate(() => { const d = document.getElementById('mycode'); d.open = true; d.scrollIntoView({ block: 'center' }); });
+await m.fill('#cold', '1339'); await m.fill('#cnew', 'my-code-77');
+await shot(3, m, '#mycode', "'내 발행 코드 만들기'에서 1339를 나만의 코드로 바꿉니다. 잊으면 이메일로 확인 번호를 받아 새로 정합니다", { click: false });
+await m.evaluate(() => { document.getElementById('mycode').open = false; document.querySelector('.pub').scrollIntoView({ block: 'center' }); });
 await m.click('#showkey'); await m.waitForTimeout(300);
 await shot(3, m, '#keybox', "'수정 열쇠 보기' — 다른 PC에서 고칠 동료에게만 알려 줍니다", { click: false });
 // 다른 PC 상황: 새 창에서 연결
@@ -92,7 +97,7 @@ const m2ctx = await b.newContext({ viewport: { width: 1280, height: 720 } }); aw
 const m2 = await m2ctx.newPage(); await m2.goto('http://localhost:8931/maker.html', { waitUntil: 'domcontentloaded' }); await m2.waitForTimeout(1200);
 await m2.evaluate(() => { const d = document.getElementById('attach'); d.open = true; d.scrollIntoView({ block: 'center' }); });
 await m2.fill('#aslug', SLUG); await m2.fill('#atok', KEY);
-await shot(3, m2, '#attach', "다른 PC에서는 '이어서 고치기'에 책 주소 끝부분과 열쇠를 넣고 '연결하기'", { click: false });
+await shot(3, m2, '#attach', "다른 PC에서는 '이어서 고치기'에 책 주소 끝부분과 열쇠를 넣고 '연결하기' (내 책이면 열쇠 대신 내 이메일·코드)", { click: false });
 await m2ctx.close();
 
 // 4. 회람·의견 (검토자, 폰)
