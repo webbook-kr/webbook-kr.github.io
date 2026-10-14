@@ -16,7 +16,7 @@ code{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f3f1ec;paddin
 .k{white-space:nowrap}
 </style></head><body>
 <h1>웹북 실무 매뉴얼 — 만들기 · 회람 · 고치기 · 최종본</h1>
-<p class="sub">대상: 과 실무자 · 2026.10.14 · 예시: 2026년 제1차 감염병 위기 사회대응 포럼 결과 자료집</p>
+<p class="sub">대상: 과 실무자 · 2026.10.14 · 단계별 영상: <b>webbook-kr.github.io/howto.html</b> (제작기 오른쪽 위 "사용법 영상")</p>
 
 <h2>1. 한눈에 보는 업무 흐름</h2>
 <div class="flow">
@@ -37,11 +37,12 @@ code{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f3f1ec;paddin
 <tr><td>책 주소</td><td>발행하면 생김. 예) <code>webbook-kr.github.io/b/2026-1-gngr/</code> → 카톡·메일로 공유</td></tr>
 <tr><td>수정 열쇠</td><td>발행할 때 생기는 그 책 전용 열쇠. 제작기 "수정 열쇠 보기"에서 확인. <b>담당자끼리만</b> 공유</td></tr>
 <tr><td>의견 보기</td><td>검토자 공유용(읽기 전용) <code>webbook-kr.github.io/review.html?slug=책주소끝</code></td></tr>
+<tr><td>사용법 영상</td><td><code>webbook-kr.github.io/howto.html</code> · 원고·제작·발행·회람·반영·최종본 6편, 각 30초 안팎</td></tr>
 </table>
 
 <h2>3. 원고 만들기 (①)</h2>
 <ul>
-<li><b>권장</b> 녹취록·발표자료·메모를 Claude에 올리고 "웹북 원고로 만들어 줘" → 장·쪽으로 나뉜 원고(.md)를 받음</li>
+<li><b>권장</b> 제작기 "AI 요청문 복사" → 챗GPT·클로드 등 AI 대화창에 붙여넣고 [자료] 아래에 녹취·메모 붙여넣기 → 받은 답을 메모장에 <code>.md</code>로 저장</li>
 <li><b>직접 작성</b> 메모장에 아래 기호만 지켜 쓰면 됨. 원고 파일은 과 공유폴더에 <code>책이름-날짜.md</code>로 보관</li>
 </ul>
 <table>
@@ -52,6 +53,7 @@ code{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f3f1ec;paddin
 <tr><td><code>- 항목</code></td><td>목록(개조식)</td><td><code>![설명](사진 주소)</code></td><td>사진</td></tr>
 <tr><td><code>발표자: 이름 | 소속 | 0:18:14</code></td><td>발표자 칸·영상 시간</td><td><code>youtube: 영상주소</code></td><td>영상</td></tr>
 <tr><td><code>머리글: 세션 2 · 이재림</code></td><td>쪽 맨 위 작은 표시</td><td><code>[글자](주소)</code></td><td>링크(발표자료 등)</td></tr>
+<tr><td><code>++바뀐 글++</code></td><td>회람 중 고친 곳 노란 바탕</td><td><code>+++바뀐 글+++</code></td><td>다음 차수 고친 곳 초록 바탕</td></tr>
 </table>
 
 <h2>4. 제작과 발행 (②③)</h2>
@@ -67,16 +69,16 @@ code{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f3f1ec;paddin
 <ul>
 <li><b>회람</b> 책 주소를 검토자에게 공유. 검토자는 쪽마다 "의견" 단추 → 이름·소속(필수)과 의견 입력</li>
 <li><b>확인</b> 제작기 발행 결과의 "의견 모아보기"(담당자용) → 쪽 순서로 전체 의견. 검토자끼리는 읽기 전용 주소로 공유</li>
-<li><b>반영</b> 원고(.md)를 고치고 제작기에서 "다시 발행 (같은 주소)" → 주소는 그대로, 내용만 바뀜</li>
+<li><b>반영</b> 원고(.md)를 고치고 고친 곳을 <code>++ ++</code>로 감싸기(다음 차수는 <code>+++ +++</code>) → 제작기 "다시 발행 (같은 주소)" → 주소는 그대로, 내용만 바뀜</li>
 <li><b>기록</b> 모아보기에서 의견마다 상태(반영·보류·미반영)와 한 줄 답변 저장 → 검토자가 책 안 의견 창에서 바로 확인</li>
 <li><b>다음 차수</b> 반영을 마치면 "다음 차수 회람 시작" → 이후 의견은 2차·3차로 구분됨</li>
 <li><b>다른 PC에서 고칠 때</b> 제작기 "이미 발행한 책을 이 PC에서 이어서 고치기"에 책 주소 끝부분과 수정 열쇠 입력 → "연결하기"</li>
 </ul>
-<div class="note">바뀐 곳 색 표시(노란·초록 바탕)와 반영표 PDF는 Claude에 "의견 반영해 줘 / 반영표 만들어 줘"로 요청하면 같은 형식으로 만들어 줌</div>
+<div class="note"><b>반영표</b> 의견 모아보기 "반영표 인쇄 (PDF)" → 쪽·검토자·의견·반영 여부·반영 내용 표가 새 창에 열림 → 인쇄 창에서 "PDF로 저장"</div>
 
 <h2>6. 최종본과 배포 (⑥)</h2>
 <ul>
-<li>"표시 지우고 최종본" 요청 → 같은 주소가 최종본으로 바뀜. 수정 이력 쪽에 최종본 날짜 기록</li>
+<li>제작기 <b>"최종본"</b> 체크 → 바뀐 곳 표시만 사라짐(글은 그대로) → "다시 발행" → 같은 주소가 최종본으로 바뀜</li>
 <li><b>PDF</b> 책 오른쪽 위 "PDF ▾" → "인쇄로 PDF 저장" · <b>오프라인 파일</b>은 인터넷 없이 열리는 HTML(메일 첨부용)</li>
 <li>보관: 최종 원고(.md 또는 .html) · PDF · 검토 의견 반영표를 공유폴더 한 곳에</li>
 </ul>
