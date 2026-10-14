@@ -165,6 +165,12 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    </div>
    <p class="hint" style="margin-top:6px">발행 코드를 넣고 누르면 인터넷 주소가 나옵니다. 그 주소를 카톡이나 유튜브 설명란에 붙이면 끝입니다.</p>
    <div class="res" id="pres"></div>
+   <details id="attach" style="margin-top:10px;font-size:13px">
+    <summary style="cursor:pointer;color:var(--muted)">이미 발행한 책을 이 PC에서 이어서 고치기</summary>
+    <p class="hint" style="margin:6px 0">책을 처음 발행한 사람에게 <b>책 주소 끝부분</b>과 <b>수정 열쇠</b>를 받아 넣으세요. 연결하면 "다시 발행"이 그 책 주소로 올라갑니다.</p>
+    <div class="row2"><input id="aslug" type="text" placeholder="책 주소 끝부분 (예: 2026-1-gngr)" autocomplete="off" autocapitalize="off"><input id="atok" type="text" placeholder="수정 열쇠" autocomplete="off" autocapitalize="off"></div>
+    <button id="ago" type="button" style="margin-top:6px">연결하기</button>
+   </details>
   </div>
   <div class="share">
    <b>카톡으로 나눌 때</b><br>
@@ -563,13 +569,26 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    +'<a href="'+esc(pub.url)+'" target="_blank" style="margin-left:6px">열어 보기 ›</a> '
    +'<a href="#" id="newpub" style="margin-left:10px;color:var(--muted);font-weight:500">새 주소로 발행</a>'
    +(pub.slug&&pub.token?' <a href="review.html?slug='+encodeURIComponent(pub.slug)+'&token='+encodeURIComponent(pub.token)+'" target="_blank" style="margin-left:10px">의견 모아보기 ›</a>':'')
-   +'<div class="hint" style="margin-top:6px">원고를 고치고 다시 "발행하기"를 누르면 같은 주소가 새 내용으로 바뀝니다. 이 브라우저에서만 수정할 수 있어요. 읽는 분이 쪽마다 "의견" 단추로 남긴 내용은 "의견 모아보기"에서 확인해요.'
+   +(pub.slug&&pub.token?' <a href="#" id="showkey" style="margin-left:10px;color:var(--muted);font-weight:500">수정 열쇠 보기</a><div id="keybox" class="hint" style="display:none;margin-top:6px">책 주소 끝부분 <b>'+esc(pub.slug)+'</b> · 수정 열쇠 <b>'+esc(pub.token)+'</b><br>다른 PC에서 이어서 고칠 동료에게만 알려 주세요. 이 둘이 있으면 책을 고칠 수 있습니다.</div>':'')
+   +'<div class="hint" style="margin-top:6px">원고를 고치고 다시 "발행하기"를 누르면 같은 주소가 새 내용으로 바뀝니다. 다른 PC에서 고치려면 "수정 열쇠 보기"의 두 값을 그 PC에서 연결하세요. 읽는 분이 쪽마다 "의견" 단추로 남긴 내용은 "의견 모아보기"에서 확인해요.'
    +(/\/b\/[a-z0-9-]+\/$/.test(pub.url)?' 카톡·문자 미리보기에 제목과 표지가 뜨는 건 발행 1분쯤 뒤부터예요.':'')+'</div>';
   pres.classList.add('on'); pubb.textContent='다시 발행 (같은 주소)';
   $('cp').onclick=function(){(navigator.clipboard?navigator.clipboard.writeText(pub.url):Promise.reject()).then(function(){say('주소를 복사했어요');},function(){prompt('주소',pub.url);});};
   $('newpub').onclick=function(e){e.preventDefault();if(confirm('새 주소로 발행할까요? 기존 주소는 그대로 남습니다.')){pub=null;try{localStorage.removeItem(KEYP);}catch(e2){}showPub();}};
+  var sk=$('showkey'); if(sk) sk.onclick=function(e){e.preventDefault();var b=$('keybox');b.style.display=b.style.display==='none'?'block':'none';};
  }
  showPub();
+ // 다른 PC에서 발행한 책을 이 브라우저에 연결한다 (책 주소 끝부분 + 수정 열쇠)
+ $('ago').onclick=function(){
+  var sl=$('aslug').value.trim().replace(/^.*\/b\/(\?)?/,'').replace(/[\/#?].*$/,''), tk=$('atok').value.trim();
+  if(!sl||!tk){say('책 주소 끝부분과 수정 열쇠를 넣어 주세요.');return;}
+  $('ago').disabled=true;
+  fetch('https://dxhmprqfgigljgbstqrg.supabase.co/functions/v1/webbook-comment?slug='+encodeURIComponent(sl)+'&token='+encodeURIComponent(tk))
+  .then(function(r){return r.json().then(function(j){if(!r.ok||j.error)throw new Error(j.error||'확인 실패');});})
+  .then(function(){pub={url:'https://webbook-kr.github.io/b/'+sl+'/',slug:sl,token:tk,title:''};try{localStorage.setItem(KEYP,JSON.stringify(pub));}catch(e){}showPub();$('attach').open=false;say('연결했어요. 원고를 고치고 "다시 발행"을 누르면 이 책이 바뀝니다.');})
+  .catch(function(){say('책 주소 끝부분이나 수정 열쇠가 맞지 않아요.');})
+  .then(function(){$('ago').disabled=false;});
+ };
  pubb.onclick=async function(){
   var code=pc.value.trim(); if(!code){say('발행 코드를 넣어 주세요.');pc.focus();return;}
   var o=await output(); if(!o)return;
