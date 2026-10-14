@@ -4,6 +4,8 @@
 //  POST {action:"set",    email, num, code}    → 확인 번호가 맞으면 내 코드로 정한다
 //  POST {action:"change", email, old, code}    → 지금 코드(아직 안 만들었으면 기본 코드)를 알면 바로 바꾼다
 //  POST {action:"check",  email, code}         → 이 이메일·코드로 발행할 수 있는지 (제작기 '확인' 단추)
+//  POST {action:"admin_list",  email, code}            → 관리자: 발행 계정 목록 (admin.html)
+//  POST {action:"admin_reset", email, code, target}    → 관리자: 코드를 잊은 사람에게 임시 코드를 새로 정해 준다
 // 메일: WEBBOOK_MAIL_KEY(xkeysib-… Brevo / re_… Resend), WEBBOOK_MAIL_FROM(보내는 주소) 비밀값. 다른 함수의 메일 설정과 섞이지 않게 따로 둔다.
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -69,6 +71,24 @@ Deno.serve(async (req) => {
     return error ? json({ error: error.message }, 500) : json({ ok: true });
   };
 
+  if (b.action === "admin_list" || b.action === "admin_reset") {
+    if (!u?.is_admin || !u.code_hash || u.code_hash !== await codeHash(email, code)) return json({ error: "관리자 이메일·코드가 맞지 않습니다" }, 403);
+    if (b.action === "admin_list") {
+      const { data: us } = await sb.from("webbook_users").select("email,code_hash,is_admin,updated_at").order("updated_at", { ascending: false }).limit(500);
+      const { data: bk } = await sb.from("webbook_books").select("owner_email").not("owner_email", "is", null);
+      const n: Record<string, number> = {};
+      (bk ?? []).forEach((x: any) => { n[x.owner_email] = (n[x.owner_email] ?? 0) + 1; });
+      return json({ users: (us ?? []).map((x: any) => ({ email: x.email, own: !!x.code_hash, admin: x.is_admin, updated_at: x.updated_at, books: n[x.email] ?? 0 })) });
+    }
+    const target = String(b.target ?? "").trim().toLowerCase();
+    if (!EMAIL.test(target)) return json({ error: "초기화할 이메일을 확인해 주세요" }, 400);
+    const a = "abcdefghjkmnpqrstuvwxyz23456789", r = crypto.getRandomValues(new Uint8Array(8));
+    const temp = Array.from(r).map((x) => a[x % a.length]).join("");
+    const { error } = await sb.from("webbook_users").upsert({ email: target, code_hash: await codeHash(target, temp), reset_hash: null, reset_exp: null, reset_tries: 0, updated_at: new Date().toISOString() });
+    if (error) return json({ error: error.message }, 500);
+    return json({ ok: true, target, temp });
+  }
+
   if (b.action === "check") {
     if (u?.code_hash) return json({ ok: u.code_hash === await codeHash(email, code), own: true });
     return json({ ok: !!def && code === def.code, own: false });
@@ -77,7 +97,7 @@ Deno.serve(async (req) => {
   if (b.action === "change") {
     const old = String(b.old ?? "").trim().normalize("NFC");
     const good = u?.code_hash ? u.code_hash === await codeHash(email, old) : (!!def && old === def.code);
-    if (!good) return json({ error: "지금 코드가 맞지 않습니다. 잊었으면 '이메일로 확인 번호 받기'를 쓰세요" }, 403);
+    if (!good) return json({ error: "지금 코드가 맞지 않습니다. 잊었으면 관리자에게 초기화를 요청하세요" }, 403);
     if (!okCode(code)) return json({ error: "새 코드는 4~30자, 기본 코드와 달라야 합니다" }, 400);
     return save(code);
   }

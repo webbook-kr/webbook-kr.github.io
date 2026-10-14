@@ -88,7 +88,7 @@ await shot(3, m, '#pres', "'발행하기'를 누르면 책 주소가 나옵니�
 await shot(3, m, '#cp', "'주소 복사' → 카톡·메일로 공유. 제목과 표지가 미리보기에 뜹니다");
 await m.evaluate(() => { const d = document.getElementById('mycode'); d.open = true; d.scrollIntoView({ block: 'center' }); });
 await m.fill('#cold', '1339'); await m.fill('#cnew', 'my-code-77');
-await shot(3, m, '#mycode', "'내 발행 코드 만들기'에서 1339를 나만의 코드로 바꿉니다. 잊으면 이메일로 확인 번호를 받아 새로 정합니다", { click: false });
+await shot(3, m, '#mycode', "'내 발행 코드 만들기'에서 1339를 나만의 코드로 바꿉니다. 잊으면 관리자에게 임시 코드를 받습니다", { click: false });
 await m.evaluate(() => { document.getElementById('mycode').open = false; document.querySelector('.pub').scrollIntoView({ block: 'center' }); });
 await m.click('#showkey'); await m.waitForTimeout(300);
 await shot(3, m, '#keybox', "'수정 열쇠 보기' — 다른 PC에서 고칠 동료에게만 알려 줍니다", { click: false });

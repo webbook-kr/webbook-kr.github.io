@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>웹북 발행 계정 관리</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--bg:#eceae5;--paper:#fdfcfa;--ink:#15130f;--muted:#6b6560;--dim:#a39c93;--line:#e6e1d9;--line2:#d6d0c6;--accent:#c8811f;--box:#fff;--ok:#3a7d44}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif}
+.w{max-width:760px;margin:0 auto;padding:28px 16px 60px}
+h1{font-size:20px;margin:0 0 4px;letter-spacing:-.4px}.sub{color:var(--muted);font-size:13px;margin:0 0 18px}
+h2{font-size:15px;margin:22px 0 8px}
+.f{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}.f input{flex:1;min-width:160px;height:38px;border:1px solid var(--line2);background:var(--box);padding:0 10px;font:inherit;font-size:14px;border-radius:4px}
+button{height:38px;padding:0 14px;border:1px solid var(--line2);background:var(--paper);font:inherit;font-size:13px;border-radius:4px;cursor:pointer}
+button.p{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:700}
+.hint{font-size:12px;color:var(--muted);margin:0 0 12px}
+.err{color:#b3261e;font-size:13px;min-height:18px}
+.card{background:var(--paper);border:1px solid var(--line2);border-radius:6px;padding:14px}
+.temp{display:none;margin-top:10px;background:#fff7d6;border:1px solid #e8d48a;border-radius:6px;padding:12px 14px;font-size:14px}
+.temp b.code{font-size:22px;letter-spacing:2px;font-family:ui-monospace,Menlo,Consolas,monospace;margin:0 6px}
+table{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--line2);font-size:13.5px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:middle}
+th{background:#f4f1eb;font-size:12.5px;color:var(--muted);white-space:nowrap}td:nth-child(3){white-space:nowrap}
+td.e{word-break:break-all}td button{height:28px;font-size:12px;padding:0 10px;white-space:nowrap}
+.tag{display:inline-block;font-size:11px;padding:0 6px;border-radius:3px;background:var(--line);color:var(--muted);margin-left:4px}
+.tag.ok{background:#e3f1e5;color:var(--ok)}
+#main{display:none}
+</style>
+</head>
+<body><div class="w">
+<h1>웹북 발행 계정 관리</h1>
+<p class="sub">발행 코드를 잊은 사람에게 임시 코드를 새로 정해 줍니다. 관리자만 쓸 수 있습니다.</p>
+
+<div id="login" class="card">
+ <div class="f"><input id="em" type="email" placeholder="관리자 이메일" autocomplete="email" autocapitalize="off"><input id="cd" type="password" placeholder="관리자 코드" autocomplete="current-password"></div>
+ <button id="go" class="p" type="button">들어가기</button>
+ <div class="err" id="lerr"></div>
+</div>
+
+<div id="main">
+ <h2>코드 초기화</h2>
+ <div class="card">
+  <p class="hint">코드를 잊은 사람의 이메일을 넣고 누르면 임시 코드가 나옵니다. 그 사람에게 카톡·전화로 알려 주세요. 제작기 "내 발행 코드 만들기"의 "지금 코드"에 임시 코드를 넣고 자기 코드로 바꾸면 됩니다.</p>
+  <div class="f"><input id="tg" type="email" placeholder="코드를 잊은 사람의 이메일" autocapitalize="off"><button id="rs" class="p" type="button">임시 코드 만들기</button></div>
+  <div class="err" id="rerr"></div>
+  <div class="temp" id="temp"></div>
+ </div>
+ <h2>발행 계정 <span id="cnt" style="color:var(--muted);font-weight:500;font-size:13px"></span></h2>
+ <p class="hint">기본 코드(1339)만 쓰는 사람은 목록에 없습니다. 내 코드를 만든 사람만 보입니다.</p>
+ <table><thead><tr><th>이메일</th><th>내 책</th><th>마지막 변경</th><th></th></tr></thead><tbody id="tb"></tbody></table>
+</div>
+</div>
+<script>
+(function(){
+ var FN='https://dxhmprqfgigljgbstqrg.supabase.co/functions/v1/webbook-account', KEYE='ebook_admin_email';
+ var $=function(i){return document.getElementById(i);};
+ var esc=function(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+ try{$('em').value=localStorage.getItem(KEYE)||'';}catch(e){}
+ function call(data){
+  data.email=$('em').value.trim(); data.code=$('cd').value.trim();
+  return fetch(FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+   .then(function(r){return r.json().then(function(j){if(!r.ok||j.error)throw new Error(j.error||'실패했습니다');return j;});});
+ }
+ function load(){
+  return call({action:'admin_list'}).then(function(j){
+   $('cnt').textContent=j.users.length+'명';
+   $('tb').innerHTML=j.users.map(function(u){
+    return '<tr><td class="e">'+esc(u.email)+(u.admin?'<span class="tag">관리자</span>':'')+(u.own?'':'<span class="tag">코드 없음</span>')+'</td><td>'+u.books+'</td><td>'+(u.updated_at?esc(u.updated_at.slice(0,10)):'')+'</td><td>'+(u.admin?'':'<button type="button" data-e="'+esc(u.email)+'">초기화</button>')+'</td></tr>';
+   }).join('')||'<tr><td colspan="4" style="color:var(--muted)">아직 없습니다</td></tr>';
+  });
+ }
+ $('go').onclick=function(){
+  $('lerr').textContent=''; this.disabled=true; var b=this;
+  load().then(function(){ try{localStorage.setItem(KEYE,$('em').value.trim());}catch(e){} $('login').style.display='none'; $('main').style.display='block'; })
+  .catch(function(e){ $('lerr').textContent=e.message; }).then(function(){ b.disabled=false; });
+ };
+ $('cd').addEventListener('keydown',function(e){ if(e.key==='Enter') $('go').click(); });
+ function reset(target){
+  if(!target){ $('rerr').textContent='이메일을 넣어 주세요'; return; }
+  if(!confirm(target+' 의 코드를 임시 코드로 바꿀까요? 지금 코드는 더 이상 안 됩니다.')) return;
+  $('rerr').textContent=''; $('temp').style.display='none';
+  call({action:'admin_reset',target:target}).then(function(j){
+   $('temp').innerHTML=esc(j.target)+' 의 임시 코드<b class="code">'+esc(j.temp)+'</b><button type="button" id="cp" style="height:30px">복사</button><div class="hint" style="margin:6px 0 0">이 화면을 닫으면 다시 볼 수 없습니다. 본인에게만 알려 주세요.</div>';
+   $('temp').style.display='block';
+   $('cp').onclick=function(){ (navigator.clipboard?navigator.clipboard.writeText(j.temp):Promise.reject()).catch(function(){prompt('임시 코드',j.temp);}); };
+   $('tg').value=''; load();
+  }).catch(function(e){ $('rerr').textContent=e.message; });
+ }
+ $('rs').onclick=function(){ reset($('tg').value.trim()); };
+ $('tb').onclick=function(e){ var b=e.target.closest('button[data-e]'); if(b){ $('tg').value=b.getAttribute('data-e'); reset(b.getAttribute('data-e')); } };
+})();
+</script>
+</body>
+</html>

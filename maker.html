@@ -182,12 +182,9 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    <details id="mycode" style="margin-top:8px;font-size:13px">
     <summary style="cursor:pointer;color:var(--muted)">내 발행 코드 만들기 · 바꾸기 · 잊었을 때</summary>
     <p class="hint" style="margin:6px 0">내 코드로 바꾸면 이 이메일로 낸 책은 <b>다른 PC에서도 이메일·코드만으로</b> 고칠 수 있습니다.</p>
-    <div class="row2"><input id="cold" type="password" placeholder="지금 코드 (처음이면 1339)" autocomplete="off"><input id="cnew" type="password" placeholder="새 코드 (4자 이상)" autocomplete="new-password"></div>
+    <div class="row2"><input id="cold" type="password" placeholder="지금 코드 (처음이면 1339, 임시 코드)" autocomplete="off"><input id="cnew" type="password" placeholder="새 코드 (4자 이상)" autocomplete="new-password"></div>
     <button id="cchg" type="button" style="margin-top:6px">내 코드로 바꾸기</button>
-    <p class="hint" style="margin:12px 0 6px"><b>코드를 잊었을 때</b> 위 이메일로 확인 번호를 받아 새 코드를 정합니다.</p>
-    <button id="csend" type="button">이메일로 확인 번호 받기</button>
-    <div class="row2" style="margin-top:6px"><input id="cnum" type="text" inputmode="numeric" placeholder="확인 번호 6자리" autocomplete="one-time-code"><input id="cnew2" type="password" placeholder="새 코드 (4자 이상)" autocomplete="new-password"></div>
-    <button id="cset" type="button" style="margin-top:6px">새 코드로 정하기</button>
+    <p class="hint" style="margin:12px 0 0"><b>코드를 잊었을 때</b> 관리자(대표)에게 이메일을 알려 주면 <b>임시 코드</b>를 받습니다. 임시 코드를 "지금 코드"에 넣고 새 코드로 바꾸세요.</p>
    </details>
    <div class="res" id="pres"></div>
    <details id="attach" style="margin-top:10px;font-size:13px">
@@ -610,7 +607,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   var sk=$('showkey'); if(sk) sk.onclick=function(e){e.preventDefault();var b=$('keybox');b.style.display=b.style.display==='none'?'block':'none';};
  }
  showPub();
- // ── 내 발행 코드: 기본 코드(1339)에서 내 코드로 바꾸기, 잊었을 때 이메일 확인 번호 ──
+ // ── 내 발행 코드: 기본 코드(1339)에서 내 코드로 바꾸기, 잊었을 때는 관리자가 임시 코드 (admin.html) ──
  var pem=$('pem'); try{pem.value=localStorage.getItem(KEYE)||'';}catch(e){}
  function acct(btn,data,done){
   var email=pem.value.trim(); if(!email){say('위 칸에 내 이메일을 먼저 넣어 주세요.');pem.focus();return;}
@@ -621,10 +618,8 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   .catch(function(e){say(e.message||'연결이 안 됐어요.');})
   .then(function(){btn.disabled=false;});
  }
- function setDone(v){ pc.value=v; ['cold','cnew','cnum','cnew2'].forEach(function(i){$(i).value='';}); $('mycode').open=false; say('내 코드로 바꿨어요. 이제 이 이메일과 새 코드로 발행하세요. 기본 코드 1339는 이 이메일에서 더 이상 안 됩니다.'); }
+ function setDone(v){ pc.value=v; ['cold','cnew'].forEach(function(i){$(i).value='';}); $('mycode').open=false; say('내 코드로 바꿨어요. 이제 이 이메일과 새 코드로 발행하세요. 기본 코드 1339는 이 이메일에서 더 이상 안 됩니다.'); }
  $('cchg').onclick=function(){ var n=$('cnew').value.trim(); if(n.length<4){say('새 코드는 4자 이상으로 정해 주세요.');return;} acct(this,{action:'change',old:$('cold').value.trim(),code:n},function(){setDone(n);}); };
- $('csend').onclick=function(){ acct(this,{action:'send'},function(){say('확인 번호를 메일로 보냈어요. 15분 안에 넣어 주세요 (스팸함도 확인).');$('cnum').focus();}); };
- $('cset').onclick=function(){ var n=$('cnew2').value.trim(); if(n.length<4){say('새 코드는 4자 이상으로 정해 주세요.');return;} acct(this,{action:'set',num:$('cnum').value.trim(),code:n},function(){setDone(n);}); };
  // 다른 PC에서 발행한 책을 이 브라우저에 연결한다 (책 주소 끝부분 + 수정 열쇠)
  $('ago').onclick=function(){
   var sl=$('aslug').value.trim().replace(/^.*\/b\/(\?)?/,'').replace(/[\/#?].*$/,''), tk=$('atok').value.trim();

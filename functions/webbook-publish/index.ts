@@ -94,7 +94,7 @@ Deno.serve(async (req) => {
   if (email) {
     const { data: u } = await sb.from("webbook_users").select("code_hash").eq("email", email).maybeSingle();
     const good = u?.code_hash ? u.code_hash === await sha("webbook:" + email + ":" + code) : !!cr;
-    if (!good) return json({ error: u?.code_hash ? "내 발행 코드가 맞지 않습니다. 잊었으면 '코드 찾기'를 누르세요" : "발행 코드가 맞지 않습니다" }, 403);
+    if (!good) return json({ error: u?.code_hash ? "내 발행 코드가 맞지 않습니다. 잊었으면 관리자에게 초기화를 요청하세요" : "발행 코드가 맞지 않습니다" }, 403);
     if (u?.code_hash) owner = email;
   } else if (!cr || cr.label === "default") {
     return json({ error: cr ? "이메일을 함께 넣어 주세요" : "발행 코드가 맞지 않습니다" }, 403);
