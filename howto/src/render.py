@@ -1,8 +1,9 @@
-# 단계 화면(steps.json) → 자막·강조·커서를 입힌 WebM 영상 6편 + 포스터
+# 단계 화면(steps.json) + 음성(tts/, tts_all.py) → 자막·강조·커서·AI 음성을 입힌 MP4 영상 6편 + 포스터
 import json, math, subprocess, sys, io, os
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 H='/tmp/claude-0/-home-user-webbook-kr-github-io/60c9817b-999b-59c1-8dab-115f1ed67ca7/scratchpad/howto'
-FF='/opt/pw-browsers/ffmpeg-1011/ffmpeg-linux'
+import imageio_ffmpeg; FF=imageio_ffmpeg.get_ffmpeg_exe()   # pip install imageio-ffmpeg (H.264·AAC 포함 ffmpeg)
+SR=24000
 FONT='/root/.local/share/fonts/'
 W,Hh,FPS=1280,720,15
 BAR=96
@@ -72,6 +73,12 @@ def cursor(img,pt,click_t):
     pts=[(x+a,y+b) for a,b in ARROW]; d.polygon([(px+2,py+2) for px,py in pts],fill=(0,0,0,90)); d.polygon(pts,fill=(255,255,255,255),outline=(20,20,20,255))
     return img
 
+def pcm(name):   # 음성 mp3 → 24kHz 모노 16비트 바이트 (없으면 빈 값)
+    f=f'{H}/tts/{name}.mp3'
+    if not os.path.exists(f): return b''
+    return subprocess.run([FF,'-loglevel','error','-i',f,'-f','s16le','-ac','1','-ar',str(SR),'-'],capture_output=True,check=True).stdout
+def dur(b): return len(b)/2/SR
+
 def ease(t): return t*t*(3-2*t)
 
 def title_card(clip,t):
@@ -95,18 +102,24 @@ def end_card(clip,t):
 
 def render(clip):
     S=st[clip]; n=len(S)
-    out=f'{H}/out/howto-{clip}.webm'
+    out=f'{H}/out/howto-{clip}.mp4'
     mj=open(f'{H}/out/_tmp.mjpeg','wb')   # 이 ffmpeg 는 파이프 입력이 없어 JPEG 를 이어 붙인 파일로 넘긴다
     def emit(im):
         im.convert('RGB').save(mj,'JPEG',quality=93)
-    nfr=0
-    for f in range(int(FPS*2.4)): emit(title_card(clip,f/FPS)); nfr+=1
+    nfr=0; aud=bytearray()
+    def put(b,at):   # 음성을 at 초 위치에 얹는다
+        o=int(at*SR)*2; need=o+len(b)
+        if len(aud)<need: aud.extend(b'\0'*(need-len(aud)))
+        aud[o:o+len(b)]=b
+    a=pcm(f'{clip}-t'); put(a,0.3)
+    for f in range(int(FPS*max(2.4,0.3+dur(a)+0.6))): emit(title_card(clip,f/FPS)); nfr+=1
     prev=None; prev_pt=(W*0.5,Hh*0.42)
     for i,s in enumerate(S,1):
         base,rect=base_of(s)
         tgt=(rect[0]+rect[2]*0.62, rect[1]+rect[3]*0.62) if rect else prev_pt
         if rect and not s['click']: tgt=(rect[0]+rect[2]-18, rect[1]+rect[3]-10)
-        hold=max(3.4,1.8+len(s['cap'])*0.08)
+        a=pcm(f'{clip}-{i}'); put(a,nfr/FPS+0.5)
+        hold=max(3.4,0.5+dur(a)+0.7)
         frames=int(FPS*hold)
         for f in range(frames):
             t=f/FPS
@@ -123,11 +136,16 @@ def render(clip):
             emit(img); nfr+=1
         img.convert('RGB').resize((960,540),Image.LANCZOS).save(f'{H}/out/howto-{clip}-{i}.jpg',quality=82)   # 단계 사진 (영상이 안 나오는 기기용)
         prev=base; prev_pt=tgt
-    for f in range(int(FPS*1.6)): emit(end_card(clip,f/FPS)); nfr+=1
+    a=pcm(f'{clip}-e'); put(a,nfr/FPS+0.2)
+    for f in range(int(FPS*max(1.8,0.2+dur(a)+0.8))): emit(end_card(clip,f/FPS)); nfr+=1
     mj.close()
+    put(b'',nfr/FPS)   # 음성 길이를 영상 길이에 맞춘다
+    open(f'{H}/out/_tmp.pcm','wb').write(bytes(aud[:int(nfr/FPS*SR)*2]))
     p=subprocess.run([FF,'-y','-loglevel','error','-f','image2pipe','-framerate',str(FPS),'-c:v','mjpeg','-i',f'{H}/out/_tmp.mjpeg',
-        '-c:v','libvpx','-b:v','2200k','-crf','8','-qmin','2','-qmax','30','-auto-alt-ref','0','-g','60',out])
-    os.remove(f'{H}/out/_tmp.mjpeg')
+        '-f','s16le','-ar',str(SR),'-ac','1','-i',f'{H}/out/_tmp.pcm',
+        '-c:v','libx264','-preset','slow','-crf','24','-tune','stillimage','-pix_fmt','yuv420p','-g','60',
+        '-c:a','aac','-b:a','96k','-ar','48000','-movflags','+faststart','-shortest',out])
+    os.remove(f'{H}/out/_tmp.mjpeg'); os.remove(f'{H}/out/_tmp.pcm')
     title_card(clip,2).save(f'{H}/out/howto-{clip}.jpg',quality=88)
     print(clip, n, 'steps', round(nfr/FPS,1),'s', p.returncode)
 
