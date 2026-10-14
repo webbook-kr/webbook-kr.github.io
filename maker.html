@@ -82,8 +82,9 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   <div class="tabs"><button id="tabE" class="pri" type="button">원고</button><button id="tabV" type="button">미리보기</button></div>
   <div class="load">
    <button id="loadb" class="pri" type="button">원고 파일 불러오기</button>
+   <button id="aiprompt" type="button">AI 요청문 복사</button>
    <input id="loadf" type="file" hidden>
-   <p class="hint">받으신 <b>.md 파일</b>을 고르면 제목·글쓴이·부제까지 한 번에 채워집니다. 붙여넣지 않아도 됩니다.</p>
+   <p class="hint">받으신 <b>.md 파일</b>을 고르면 제목·글쓴이·부제까지 한 번에 채워집니다. 붙여넣지 않아도 됩니다. 원고가 없으면 <b>AI 요청문 복사</b>를 눌러 챗GPT·클로드 등에 녹취·자료와 함께 붙여넣으세요.</p>
   </div>
   <div style="display:flex;flex-direction:column;flex:1;min-height:340px">
    <label for="md">원고 (마크다운)</label>
@@ -123,6 +124,8 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
     <tr><td>발표자: 이름 | 소속 | 시간</td><td>발표자 정보칸 (| 로 구분, 뒤는 생략 가능)</td></tr>
     <tr><td>머리글: 세션 2 · 패널 토론</td><td>그 쪽부터 장 끝까지 쪽 맨 위에 작은 표시. 빈 값이면 끔</td></tr>
     <tr><td>==강조==</td><td>다른 색 글자 (핵심 부분 표시)</td></tr>
+    <tr><td>++바뀐 글++</td><td>회람 중 고친 곳을 노란 바탕으로 표시</td></tr>
+    <tr><td>+++바뀐 글+++</td><td>다음 차수에 고친 곳을 초록 바탕으로 (차수 구분)</td></tr>
     <tr><td>핵심: 한 줄</td><td>눈에 띄는 결론 상자</td></tr>
     <tr><td>Q: 질문<br>A: 답변</td><td>질의응답 카드. 끝에 <code>-- 이름</code> 을 붙이면 말한 사람 표시</td></tr>
     <tr><td>12:30 내용</td><td>시간 목차. 누르면 영상이 그 지점부터 재생</td></tr>
@@ -146,6 +149,8 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
     <option value="">보통</option>
     <option value="dense">촘촘 — 줄 간격 좁게, 한 쪽에 더 많이</option>
    </select>
+   <label style="margin:0 0 0 14px;text-transform:none;font-size:13px;color:var(--ink);letter-spacing:0;font-weight:700;display:inline-flex;align-items:center;gap:5px"><input id="fin" type="checkbox" style="margin:0"> 최종본</label>
+   <span class="hint" style="margin-left:6px">켜면 ++바뀐 글++ 표시가 사라짐</span>
   </div>
   <div class="lock">
    <input id="lk" type="checkbox"><label for="lk" style="margin:0;text-transform:none;font-size:13px;color:var(--ink);letter-spacing:0">코드로 잠그기</label>
@@ -270,6 +275,10 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   s=s.replace(/`([^`]+)`/g,'<code>$1</code>');
   s=s.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
   s=s.replace(/==([^=\n]+)==/g,'<mark>$1</mark>');   // ==강조== 는 다른 색 글자
+  // 회람 중 바뀐 곳: ++글++ 노란 바탕, +++글+++ 초록 바탕. "최종본"을 켜면 표시만 지우고 글은 남긴다
+  var fin=$('fin')&&$('fin').checked;
+  s=s.replace(/\+\+\+([^\n]+?)\+\+\+/g,fin?'$1':'<span class="chg2">$1</span>');
+  s=s.replace(/\+\+([^\n]+?)\+\+/g,fin?'$1':'<span class="chg">$1</span>');
   s=s.replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
   // 문장 속 (12:30) 또는 (1:02:30) → 그 시점으로 가는 시간 링크
   s=s.replace(/\((\d{1,2}:\d{2}(?::\d{2})?)\)/g,function(_,t){return timeTag(t);});
@@ -541,7 +550,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   var b=build();
   pv.srcdoc=assemble(b);
   stat.textContent=b.n+'쪽 · '+md.value.length.toLocaleString()+'자'+(lk.checked?' · 잠금':'');
-  try{localStorage.setItem(KEY,JSON.stringify({ti:ti.value,au:au.value,su:su.value,ci:ci.value,dt:dt.value,sp:$('sp').value,md:md.value}));}catch(e){}
+  try{localStorage.setItem(KEY,JSON.stringify({ti:ti.value,au:au.value,su:su.value,ci:ci.value,dt:dt.value,sp:$('sp').value,fin:$('fin').checked,md:md.value}));}catch(e){}
  }
  function schedule(){clearTimeout(tmr);tmr=setTimeout(preview,350);}
  [ti,au,su,md].forEach(function(el){el.addEventListener('input',schedule);});
@@ -645,12 +654,16 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  $('reset').onclick=function(){ if(md.value.trim()&&!confirm('지금 원고를 예시로 바꿀까요?'))return; ti.value='웹북 제작기 예시';au.value='작가';su.value='마크다운을 붙여넣으면 책이 됩니다';ci.value='';dt.value='';md.value=SAMPLE;preview();bisum(); };
  $('th').onchange=function(){ preview(); say('책 모양을 바꿨어요.'); };
  $('sp').onchange=function(){ preview(); say('글 간격을 바꿨어요.'); };
+ $('fin').onchange=function(){ preview(); say(this.checked?'최종본: 바뀐 곳 표시를 지웠어요.':'바뀐 곳 표시를 다시 켰어요.'); };
+ // 원고가 없을 때: 녹취·자료와 함께 AI(챗GPT·클로드 등)에 붙여넣을 요청문
+ var AI_PROMPT="아래 자료를 '웹북 제작기'에 붙여넣을 마크다운 원고로 정리해 주세요.\n\n[형식]\n- 첫 줄들에 책 정보: 책 제목: …(줄바꿈은 |) / 부제: … / 날짜: … / 간격: 촘촘\n- # 장 제목 | 부제  → 장 (세션·주제 단위)\n- ## 쪽 제목  → 한 쪽. 한 쪽에 개조식 항목 4~6개, 넘치면 --- 로 다음 쪽\n- - 항목  → 개조식 (명사형 종결: ~함, ~필요, ~임)\n- **굵게**는 항목 앞 짧은 꼬리표, ==강조==는 핵심 구절에만 (쪽당 1~2곳)\n- 핵심: 한 줄  → 그 발표·쪽의 결론\n- 발표자: 이름 직함 | 소속 | 영상시각(h:mm:ss)  → 발표자 칸\n- 머리글: 세션 1 · 이름  → 쪽 맨 위 작은 표시\n- 링크는 [글자](주소), 사진은 ![설명](주소)\n\n[원칙]\n- 인사말·소개·잡담은 빼고 주장·근거·숫자·제언만\n- 숫자·연도·기관명은 원문 그대로, 추측해서 채우지 말 것\n- 원문에 없는 내용을 더하지 말 것\n\n[자료]\n(여기에 녹취록·발표자료·메모를 붙여넣기)";
+ $('aiprompt').onclick=function(){ (navigator.clipboard?navigator.clipboard.writeText(AI_PROMPT):Promise.reject()).then(function(){say('요청문을 복사했어요. AI 대화창에 붙여넣고 [자료] 아래에 녹취·자료를 넣으세요.');},function(){prompt('아래 글을 복사하세요',AI_PROMPT);}); };
  $('tabE').onclick=function(){document.body.className='tab-edit';$('tabE').className='pri';$('tabV').className='';};
  $('tabV').onclick=function(){document.body.className='tab-view';$('tabV').className='pri';$('tabE').className='';};
 
  // ── 시작: 템플릿 불러오기 ────────────────────────────
  var saved=null; try{saved=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}
- if(saved&&saved.md){ti.value=saved.ti||'';au.value=saved.au||'';su.value=saved.su||'';ci.value=saved.ci||'';dt.value=saved.dt||'';$('sp').value=saved.sp||'';md.value=saved.md;}
+ if(saved&&saved.md){ti.value=saved.ti||'';au.value=saved.au||'';su.value=saved.su||'';ci.value=saved.ci||'';dt.value=saved.dt||'';$('sp').value=saved.sp||'';$('fin').checked=!!saved.fin;md.value=saved.md;}
  else {ti.value='웹북 제작기 예시';au.value='작가';su.value='마크다운을 붙여넣으면 책이 됩니다';ci.value='';dt.value='';md.value=SAMPLE;}
  bisum();
  $('dl').disabled=true;$('open').disabled=true;

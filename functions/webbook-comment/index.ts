@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
 
   async function book(slug: string) {
     if (!SLUG.test(slug)) return null;
-    const { data } = await sb.from("webbook_books").select("slug,token_hash,round,round_at").eq("slug", slug).maybeSingle();
+    const { data } = await sb.from("webbook_books").select("slug,title,token_hash,round,round_at").eq("slug", slug).maybeSingle();
     return data;
   }
   async function owner(slug: string, token: string) {
@@ -59,14 +59,14 @@ Deno.serve(async (req) => {
       const { data, error } = await sb.from("webbook_comments").select("round,page,page_title,name,body,status,reply,replied_at,created_at")
         .eq("slug", slug).order("page").order("created_at");
       if (error) return json({ error: error.message }, 500);
-      return json({ slug, round: bk.round, round_at: bk.round_at, readonly: true, comments: data });
+      return json({ slug, title: bk.title, round: bk.round, round_at: bk.round_at, readonly: true, comments: data });
     }
     const b = await owner(slug, token);
     if (!b) return json({ error: "수정 토큰이 맞지 않습니다. 토큰 없이 열면 읽기 전용으로 볼 수 있어요" }, 403);
     const { data, error } = await sb.from("webbook_comments").select("id,round,page,page_title,name,body,status,reply,replied_at,created_at")
       .eq("slug", slug).order("page").order("created_at");
     if (error) return json({ error: error.message }, 500);
-    return json({ slug, round: b.round, round_at: b.round_at, comments: data });
+    return json({ slug, title: b.title, round: b.round, round_at: b.round_at, comments: data });
   }
 
   if (req.method !== "POST") return json({ error: "GET/POST only" }, 405);
