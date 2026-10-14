@@ -4,7 +4,7 @@
 //  POST {action:"set",    email, num, code}    → 확인 번호가 맞으면 내 코드로 정한다
 //  POST {action:"change", email, old, code}    → 지금 코드(아직 안 만들었으면 기본 코드)를 알면 바로 바꾼다
 //  POST {action:"check",  email, code}         → 이 이메일·코드로 발행할 수 있는지 (제작기 '확인' 단추)
-// 메일: MAIL_API_KEY(re_… Resend / xkeysib-… Brevo), MAIL_FROM 비밀값을 epibrief-mail 과 같이 쓴다.
+// 메일: WEBBOOK_MAIL_KEY(xkeysib-… Brevo / re_… Resend), WEBBOOK_MAIL_FROM(보내는 주소) 비밀값. 다른 함수의 메일 설정과 섞이지 않게 따로 둔다.
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
@@ -25,8 +25,8 @@ const codeHash = (email: string, code: string) => sha("webbook:" + email + ":" +
 const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/;
 
 async function sendMail(to: string, subject: string, html: string, text: string) {
-  const key = Deno.env.get("MAIL_API_KEY") ?? "";
-  const raw = Deno.env.get("MAIL_FROM") ?? "";
+  const key = Deno.env.get("WEBBOOK_MAIL_KEY") ?? "";
+  const raw = Deno.env.get("WEBBOOK_MAIL_FROM") ?? "";
   const m = raw.match(/<\s*([^>]+)\s*>/);
   const from = (m ? m[1] : raw).trim();
   if (!key || !from) return { sent: false, why: "NOT_CONFIGURED" };
