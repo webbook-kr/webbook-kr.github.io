@@ -7,7 +7,7 @@ await p.route(/^https:\/\/(cdn|fonts)/,r=>r.abort()); await p.goto('file://'+pro
 const res=await p.evaluate(()=>{
   const S=[...document.querySelectorAll('#deck > section.s')], out={};
   S.forEach(s=>{ S.forEach(x=>x.classList.remove('on')); s.classList.add('on');
-    const pin=s.querySelector('.pin'); if(!pin||s.querySelector('.vwrap')||!s.querySelector('h3')||/집회 안내|닷새/.test(s.querySelector('h3').textContent)) return;
+    const pin=s.querySelector('.pin'); if(!pin||s.querySelector('.vwrap')||!s.querySelector('h3')||/특새 안내|날짜별 일정|엿새/.test(s.querySelector('h3').textContent)) return;
     const cs=getComputedStyle(pin), avail=pin.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
     const kids=[...pin.children]; let fixed=0; const blocks=[];
     kids.forEach(k=>{ const r=k.getBoundingClientRect(), m=getComputedStyle(k); const h=r.height+parseFloat(m.marginTop)+parseFloat(m.marginBottom);
