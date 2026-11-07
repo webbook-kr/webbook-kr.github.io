@@ -351,7 +351,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
     var qp=L.replace(/^qr:\s*/i,'').split('|').map(function(x){return x.trim();});
     var url=qp[0], svg=qrSvg(url);
     var h='<div class="qr">'
-     +(qp[1]?'<span class="eyebrow">영상으로 보기</span><h4>'+inline(qp[1])+'</h4>':'')
+     +(qp[1]?'<span class="eyebrow">'+(/youtu\.?be/i.test(url)?'영상으로 보기':'바로 가기')+'</span><h4>'+inline(qp[1])+'</h4>':'')
      +(qp[2]?'<p class="qm">'+inline(qp[2])+'</p>':'')
      +'<div class="qbox">'+(svg?'<div class="qimg">'+svg+'</div>':'')
      +'<div class="qtxt"><a href="'+esc(url)+'" target="_blank" rel="noopener">'+esc(shortUrl(url))+'</a>'
