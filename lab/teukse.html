@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>웹북 만들기 실습</title>
+<meta name="description" content="클로드와 웹북 메이커로 특새 설교 웹북 만들기: 단계별 안내와 프롬프트 복사">
+<style>
+:root{--bg:#fdf8ec;--card:#fff;--ink:#2b2a4c;--muted:#6b6880;--line:#ece5d3;--acc:#f06292;--yel:#ffd66b;--mint:#2f9e8f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 'Pretendard',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif}
+.w{max-width:720px;margin:0 auto;padding:22px 16px 50px}
+header small{display:inline-block;background:var(--ink);color:#fff;border-radius:99px;padding:3px 12px;font-size:13px;font-weight:700}
+h1{font-size:27px;margin:10px 0 4px;letter-spacing:-.6px}h1 span{background:linear-gradient(transparent 55%,var(--yel) 55%)}
+.lead{color:var(--muted);margin:0 0 16px}
+h2.sec{font-size:19px;margin:24px 0 10px}
+.box{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:12px 16px;margin:0 0 14px}
+.box ol,.box ul{margin:4px 0 0;padding-left:22px}.box li{margin:4px 0}
+.box b{background:linear-gradient(transparent 60%,var(--yel) 60%)}
+.warn{background:#fff4f7;border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px;box-shadow:0 2px 0 var(--line)}
+.hd{display:flex;gap:12px;align-items:center;margin-bottom:10px}.n{flex:none;width:40px;height:40px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-weight:800;font-size:19px}
+.hd h2{margin:0;font-size:20px}.hd p{margin:0;color:var(--muted);font-size:14px}
+pre{white-space:pre-wrap;word-break:keep-all;background:#faf7ef;border:1px solid var(--line);border-radius:8px;padding:12px;font:14.5px/1.65 inherit;margin:0 0 10px}
+button{width:100%;min-height:52px;border:2px solid var(--ink);background:#fff;color:var(--ink);font:800 17px inherit;border-radius:12px;cursor:pointer}
+button.p{background:var(--acc);border-color:var(--acc);color:#fff}
+a{color:var(--mint);font-weight:700}
+.go{display:block;text-align:center;background:var(--ink);color:#fff!important;text-decoration:none;font-weight:800;border-radius:12px;padding:14px;margin:0 0 10px;font-size:18px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:99px;padding:10px 18px;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none}#toast.on{opacity:1}
+footer{text-align:center;color:var(--muted);font-size:13px;margin-top:24px}
+</style>
+</head><body><div class="w">
+<header><small>AI미션 그룹 · 웹북 만들기 실습</small><h1><span>특새 설교 웹북 같이 만들기</span></h1>
+<p class="lead">클로드에게 원고를 부탁하고, 웹북 메이커에 붙여 발행합니다.</p></header>
+<a class="go" href="../b/book-dsp59y/">강의 책 열기 (단계별 안내) ›</a>
+<p style="text-align:center;margin:-2px 0 16px"><a href="../b/24-uutn/">오늘 만들 완성본 보기 ›</a></p>
+<h2 class="sec">순서</h2>
+<div class="box"><ol>
+<li><a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> 로그인 (구글 계정 또는 이메일)</li>
+<li>자료 모으기: 유튜브 <b>…더보기 → 스크립트 표시</b>로 설교 스크립트 복사, 기도 제목·찬양 목록, 표지 그림 주소</li>
+<li>아래 <b>① 책 머리</b>로 앞부분, <b>② 하루치</b>로 날마다 원고 (하루에 새 대화 하나)</li>
+<li>받은 답을 메모장에 차례로 이어 붙이기</li>
+<li><a href="../maker.html">웹북 메이커</a> 원고 칸에 붙여넣기 → 책 모양 쪽빛 · 글 간격 촘촘</li>
+<li>‹ ›로 넘기며 점검. '아래로 밀면 더 있음'이 보이면 나눌 곳에 <b>---</b> 한 줄</li>
+<li>내 이메일 + 발행 코드 <b>1339</b> → 발행하기 → 주소 복사해 단톡방에</li></ol></div>
+<div class="box"><b>단축키</b><ul>
+<li>복사 · 붙여넣기 — 윈도우 <b>Ctrl+C · Ctrl+V</b> / 맥 <b>⌘+C · ⌘+V</b></li>
+<li>전체 선택 — 윈도우 <b>Ctrl+A</b> / 맥 <b>⌘+A</b></li>
+<li>이미지 주소 복사 — 윈도우 그림에서 <b>마우스 오른쪽</b> / 맥 <b>control+클릭</b></li>
+<li>유튜브 썸네일을 표지로: <code>https://i.ytimg.com/vi/영상ID/maxresdefault.jpg</code></li></ul></div>
+<h2 class="sec">프롬프트</h2>
+<section class="card"><div class="hd"><span class="n">1</span><div><h2>책 머리 만들기</h2><p>표지·안내·일정 (한 번만)</p></div></div>
+<pre>아래 정보로 &#x27;웹북 제작기&#x27;에 붙여넣을 마크다운 원고의 맨 앞부분을 만들어 줘. 코드 상자 없이 원고만 출력해.
+
+[형식]
+- 첫 줄들: 책 제목: (줄바꿈은 |) / 글쓴이: (비워 둠) / 날짜: / 부제: / 표지 그림: (주소) / 간격: 촘촘
+- 빈 줄 하나 뒤에 ## 특새 안내 쪽: **주제**, &gt; 주제 말씀(성경 구절 그대로), - 일정 / - 장소 / - 강사 항목
+- 그다음 ## 날짜별 일정 쪽: | 날짜 | 말씀 · 설교자 | 표. 설교 제목은 **굵게**, 설교자는 &lt;br&gt; 뒤에
+- 맨 끝에 ::: 이 책은 공개된 설교 영상과 자료를 바탕으로 AI로 정리한 비공식 묵상 자료입니다
+
+[정보]
+(여기에 특새 이름, 주제, 주제 말씀, 날짜·시간, 장소, 날짜별 설교자와 제목, 표지 그림 주소를 붙여넣기)</pre><button class="p" data-k="p1">프롬프트 복사</button></section>
+<section class="card"><div class="hd"><span class="n">2</span><div><h2>하루치 원고 만들기</h2><p>날마다 반복 (설교 1편 + 기도 + 찬양)</p></div></div>
+<pre>아래 자료로 &#x27;웹북 제작기&#x27;에 붙여넣을 하루치 마크다운 원고를 만들어 줘. 코드 상자 없이 원고만 출력해.
+
+[형식]
+# 날짜 · 몇째 날 | 설교 제목 — 설교자
+
+## 오늘의 기도 제목 · 몇째 날
+머리글: 날짜 · 기도 제목
+핵심: 기도 주제 한 줄
+1. 기도 제목 (빈 줄 없이 이어서 번호 목록)
+
+## 영상으로 보기 · 설교자
+youtube: 영상 주소
+(빈 줄 뒤) 0:01:02 소제목  ← 스크립트의 시간을 그대로 써서 6줄
+
+## 설교 제목
+발표자: 설교자 | 교회 · 성경 본문 | (설교 시작 시간)
+머리글: 날짜 · 설교자
+**소제목** (시간)
+- 개조식 항목. 명사형 종결(~함, ~임). 핵심 구절만 ==강조==
+&gt; 설교에 나온 성경 구절
+핵심: 그 부분의 결론 한 줄
+(설교 길이에 따라 ## 쪽을 4~5개로 나누고, 한 쪽에는 소제목 1개, 항목 4~5개, 성경 인용 1개까지만. 휴대폰 한 화면에 들어가야 함)
+
+## 오늘의 찬양 · 몇째 날
+머리글: 날짜 · 찬양
+1. 찬양 제목 (빈 줄 없이 번호 목록)
+
+[원칙]
+- 인사말, 광고, 농담은 빼고 본문 해설·예화·적용만
+- 이름·숫자·성경 장절은 스크립트 그대로. 자막이 잘못 들린 단어는 문맥에 맞게 고치되 지어내지 말 것
+- 원문에 없는 내용을 더하지 말 것
+
+[자료]
+날짜:
+영상 주소:
+기도 주제와 기도 제목:
+찬양 목록:
+설교 스크립트(시간 포함):
+(여기에 붙여넣기)</pre><button class="p" data-k="p2">프롬프트 복사</button></section>
+<section class="card"><div class="hd"><span class="n">3</span><div><h2>고치기</h2><p>바꾼 곳 표시해서 다시 받기</p></div></div>
+<pre>아래 원고에서 [고칠 내용]대로 고쳐 줘. 고친 문장은 ++ 와 ++ 로 감싸 줘. 나머지는 한 글자도 바꾸지 말고 원고 전체를 다시 출력해.
+
+[고칠 내용]
+(예: 둘째 날 기도 제목 2번의 강사 이름을 고쳐 줘)
+
+[원고]
+(여기에 붙여넣기)</pre><button class="p" data-k="p3">프롬프트 복사</button></section>
+
+<footer><a href="../maker.html">웹북 메이커</a> · <a href="../howto.html">사용법 영상</a></footer>
+</div><div id="toast"></div>
+<script>
+var D={"p1": "아래 정보로 '웹북 제작기'에 붙여넣을 마크다운 원고의 맨 앞부분을 만들어 줘. 코드 상자 없이 원고만 출력해.\n\n[형식]\n- 첫 줄들: 책 제목: (줄바꿈은 |) / 글쓴이: (비워 둠) / 날짜: / 부제: / 표지 그림: (주소) / 간격: 촘촘\n- 빈 줄 하나 뒤에 ## 특새 안내 쪽: **주제**, > 주제 말씀(성경 구절 그대로), - 일정 / - 장소 / - 강사 항목\n- 그다음 ## 날짜별 일정 쪽: | 날짜 | 말씀 · 설교자 | 표. 설교 제목은 **굵게**, 설교자는 <br> 뒤에\n- 맨 끝에 ::: 이 책은 공개된 설교 영상과 자료를 바탕으로 AI로 정리한 비공식 묵상 자료입니다\n\n[정보]\n(여기에 특새 이름, 주제, 주제 말씀, 날짜·시간, 장소, 날짜별 설교자와 제목, 표지 그림 주소를 붙여넣기)", "p2": "아래 자료로 '웹북 제작기'에 붙여넣을 하루치 마크다운 원고를 만들어 줘. 코드 상자 없이 원고만 출력해.\n\n[형식]\n# 날짜 · 몇째 날 | 설교 제목 — 설교자\n\n## 오늘의 기도 제목 · 몇째 날\n머리글: 날짜 · 기도 제목\n핵심: 기도 주제 한 줄\n1. 기도 제목 (빈 줄 없이 이어서 번호 목록)\n\n## 영상으로 보기 · 설교자\nyoutube: 영상 주소\n(빈 줄 뒤) 0:01:02 소제목  ← 스크립트의 시간을 그대로 써서 6줄\n\n## 설교 제목\n발표자: 설교자 | 교회 · 성경 본문 | (설교 시작 시간)\n머리글: 날짜 · 설교자\n**소제목** (시간)\n- 개조식 항목. 명사형 종결(~함, ~임). 핵심 구절만 ==강조==\n> 설교에 나온 성경 구절\n핵심: 그 부분의 결론 한 줄\n(설교 길이에 따라 ## 쪽을 4~5개로 나누고, 한 쪽에는 소제목 1개, 항목 4~5개, 성경 인용 1개까지만. 휴대폰 한 화면에 들어가야 함)\n\n## 오늘의 찬양 · 몇째 날\n머리글: 날짜 · 찬양\n1. 찬양 제목 (빈 줄 없이 번호 목록)\n\n[원칙]\n- 인사말, 광고, 농담은 빼고 본문 해설·예화·적용만\n- 이름·숫자·성경 장절은 스크립트 그대로. 자막이 잘못 들린 단어는 문맥에 맞게 고치되 지어내지 말 것\n- 원문에 없는 내용을 더하지 말 것\n\n[자료]\n날짜:\n영상 주소:\n기도 주제와 기도 제목:\n찬양 목록:\n설교 스크립트(시간 포함):\n(여기에 붙여넣기)", "p3": "아래 원고에서 [고칠 내용]대로 고쳐 줘. 고친 문장은 ++ 와 ++ 로 감싸 줘. 나머지는 한 글자도 바꾸지 말고 원고 전체를 다시 출력해.\n\n[고칠 내용]\n(예: 둘째 날 기도 제목 2번의 강사 이름을 고쳐 줘)\n\n[원고]\n(여기에 붙여넣기)"};
+var t=document.getElementById('toast');
+function say(s){t.textContent=s;t.classList.add('on');clearTimeout(say.x);say.x=setTimeout(function(){t.classList.remove('on');},1800);}
+document.addEventListener('click',function(e){var b=e.target.closest('button[data-k]');if(!b)return;var v=D[b.getAttribute('data-k')];
+ (navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(function(){say('복사했어요! 클로드에 붙여넣으세요');},function(){prompt('아래 글을 길게 눌러 복사하세요',v);});});
+</script></body></html>
