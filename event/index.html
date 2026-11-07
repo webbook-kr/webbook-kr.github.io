@@ -37,6 +37,9 @@
   input[type=text],input[type=tel],select,textarea{
     width:100%;font-size:1.05rem;padding:14px;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-family:inherit}
   input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
+  input.invalid,input.invalid:focus{border-color:#b00020;background:#fff5f5}
+  .fe{display:none;color:#b00020;font-size:.95rem;margin-top:6px}
+  .fe.show{display:block}
   textarea{min-height:110px;resize:vertical}
   .choices{display:grid;gap:10px}
   .choices label{display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--line);border-radius:12px;background:#fff;cursor:pointer}
@@ -81,13 +84,16 @@
     <h2>참가 신청</h2>
     <form id="f" novalidate>
       <label class="f" for="name">이름</label>
-      <input type="text" id="name" autocomplete="name">
+      <input type="text" id="name" aria-describedby="name-err" autocomplete="name">
+      <div class="fe" id="name-err">이름을 적어 주세요.</div>
 
       <label class="f" for="phone">연락처</label>
-      <input type="tel" id="phone" inputmode="tel" placeholder="010-1234-5678" autocomplete="tel">
+      <input type="tel" id="phone" aria-describedby="phone-err" inputmode="tel" placeholder="010-1234-5678" autocomplete="tel">
+      <div class="fe" id="phone-err">연락처를 적어 주세요.</div>
 
       <label class="f" for="area">구역</label>
-      <input type="text" id="area" placeholder="예: 3구역">
+      <input type="text" id="area" aria-describedby="area-err" placeholder="예: 3구역">
+      <div class="fe" id="area-err">구역을 적어 주세요.</div>
 
       <span class="f" style="display:block;font-weight:700;margin:18px 0 6px">참석 일정</span>
       <div class="choices">
@@ -135,11 +141,25 @@
     var m = $('msg'); m.textContent = text; m.className = 'msg show' + (isErr ? ' err' : '');
   }
 
+  function mark(id, bad){
+    $(id).classList.toggle('invalid', bad);
+    $(id).setAttribute('aria-invalid', bad ? 'true' : 'false');
+    $(id+'-err').classList.toggle('show', bad);
+  }
+  ['name','phone','area'].forEach(function(id){
+    $(id).addEventListener('input', function(){ if($(id).value.trim()) mark(id, false); });
+  });
+
   function build(){
     var name = $('name').value.trim(), phone = $('phone').value.trim(), area = $('area').value.trim();
-    if(!name){ show('이름을 적어 주세요.', true); $('name').focus(); return null; }
-    if(!phone){ show('연락처를 적어 주세요.', true); $('phone').focus(); return null; }
-    if(!area){ show('구역을 적어 주세요.', true); $('area').focus(); return null; }
+    var fields = [['name','이름',name],['phone','연락처',phone],['area','구역',area]];
+    var missing = [];
+    fields.forEach(function(f){ mark(f[0], !f[2]); if(!f[2]) missing.push(f); });
+    if(missing.length){
+      show('빠진 칸이 있어요: ' + missing.map(function(f){ return f[1]; }).join(', ') + '. 빨갛게 표시된 칸을 채워 주세요.', true);
+      $(missing[0][0]).focus();
+      return null;
+    }
     var lines = [
       '[가을 수련회 신청]',
       '이름: ' + name,
