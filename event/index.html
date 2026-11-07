@@ -6,8 +6,9 @@
 <title>가을 수련회 신청</title>
 <style>
   :root{
-    --bg:#faf6ef; --card:#ffffff; --ink:#2b2420; --sub:#5c5048;
-    --accent:#a0522d; --accent-ink:#fff; --line:#e3d8c8; --soft:#f3ebdf;
+    --bg:#fbf1e4; --card:#fffaf3; --ink:#3b2416; --sub:#6b4a35;
+    --accent:#c2541a; --accent-ink:#fff; --line:#ead2b8; --soft:#fbe6cf;
+    --brown:#6b3e26;
   }
   *{box-sizing:border-box}
   html{font-size:20px}
@@ -15,6 +16,10 @@
     font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
     line-height:1.6;word-break:keep-all}
   .wrap{max-width:640px;margin:0 auto;padding:20px 16px 60px}
+  .dday{text-align:center;background:linear-gradient(135deg,#c2541a,#6b3e26);color:#fff;border-radius:18px;padding:22px 12px;margin-top:8px}
+  .dday .lbl{margin:0;font-size:1rem;opacity:.9}
+  .dday .num{margin:2px 0 0;font-size:3.2rem;font-weight:800;line-height:1.1;letter-spacing:.02em}
+  .dday .date{margin:4px 0 0;font-size:.95rem;opacity:.9}
   header{text-align:center;padding:28px 12px 20px}
   header .small{font-size:1rem;color:var(--sub);margin:0}
   header h1{font-size:1.9rem;margin:6px 0 4px;color:var(--accent)}
@@ -40,7 +45,7 @@
   .row2{grid-template-columns:1fr 1fr}
   .btn{display:block;width:100%;font-size:1.2rem;font-weight:700;padding:18px;border-radius:14px;border:0;margin-top:14px;cursor:pointer;font-family:inherit}
   .primary{background:var(--accent);color:var(--accent-ink);margin-top:26px}
-  .secondary{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+  .secondary{background:var(--card);color:var(--accent);border:2px solid var(--accent)}
   .msg{margin-top:14px;padding:14px;border-radius:12px;background:var(--soft);font-size:1rem;display:none}
   .msg.show{display:block}
   .err{color:#b00020}
@@ -50,6 +55,12 @@
 </head>
 <body>
 <div class="wrap">
+  <div class="dday" aria-live="polite">
+    <p class="lbl">수련회까지</p>
+    <p class="num" id="dday">D-</p>
+    <p class="date">11월 22일(토) 출발</p>
+  </div>
+
   <header>
     <p class="small">2026 교회 가을 수련회</p>
     <h1>함께 걷는 길</h1>
@@ -106,6 +117,16 @@
 </div>
 
 <script>
+  (function(){
+    var start = new Date(2026, 10, 22), end = new Date(2026, 10, 23);
+    var now = new Date(); var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var diff = Math.round((start - today) / 86400000);
+    var el = document.getElementById('dday');
+    if(diff > 0) el.textContent = 'D-' + diff;
+    else if(today <= end) el.textContent = 'D-DAY';
+    else el.textContent = '은혜롭게 마쳤어요';
+  })();
+
   var PHONE = '01000000000';
   var $ = function(id){ return document.getElementById(id); };
   function val(n){ var el = document.querySelector('input[name="'+n+'"]:checked'); return el ? el.value : ''; }
