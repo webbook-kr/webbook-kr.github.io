@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>클로드 코드 같이 개발</title>
+<meta name="description" content="클로드 코드로 교회 수련회 신청 페이지 만들기: 준비, 프롬프트 4개, 인터넷에 올리기">
+<style>
+:root{--bg:#fdf8ec;--card:#fff;--ink:#2b2a4c;--muted:#6b6880;--line:#ece5d3;--acc:#f06292;--yel:#ffd66b;--mint:#2f9e8f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 'Pretendard',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif}
+.w{max-width:720px;margin:0 auto;padding:22px 16px 50px}
+header small{display:inline-block;background:var(--ink);color:#fff;border-radius:99px;padding:3px 12px;font-size:13px;font-weight:700}
+h1{font-size:27px;margin:10px 0 4px;letter-spacing:-.6px}h1 span{background:linear-gradient(transparent 55%,var(--yel) 55%)}
+.lead{color:var(--muted);margin:0 0 16px}
+h2.sec{font-size:19px;margin:24px 0 10px}
+.box{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:12px 16px;margin:0 0 14px}
+.box ol,.box ul{margin:4px 0 0;padding-left:22px}.box li{margin:4px 0}
+.box b{background:linear-gradient(transparent 60%,var(--yel) 60%)}
+.warn{background:#fff4f7;border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px;box-shadow:0 2px 0 var(--line)}
+.hd{display:flex;gap:12px;align-items:center;margin-bottom:10px}.n{flex:none;width:40px;height:40px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-weight:800;font-size:19px}
+.hd h2{margin:0;font-size:20px}.hd p{margin:0;color:var(--muted);font-size:14px}
+pre{white-space:pre-wrap;word-break:keep-all;background:#faf7ef;border:1px solid var(--line);border-radius:8px;padding:12px;font:14.5px/1.65 inherit;margin:0 0 10px}
+button{width:100%;min-height:52px;border:2px solid var(--ink);background:#fff;color:var(--ink);font:800 17px inherit;border-radius:12px;cursor:pointer}
+button.p{background:var(--acc);border-color:var(--acc);color:#fff}
+a{color:var(--mint);font-weight:700}
+.go{display:block;text-align:center;background:var(--ink);color:#fff!important;text-decoration:none;font-weight:800;border-radius:12px;padding:14px;margin:0 0 10px;font-size:18px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:99px;padding:10px 18px;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none}#toast.on{opacity:1}
+footer{text-align:center;color:var(--muted);font-size:13px;margin-top:24px}
+</style></head><body><div class="w">
+<header><small>AI미션 그룹 · 같이 개발하기</small><h1><span>클로드 코드로 신청 페이지 만들기</span></h1>
+<p class="lead">말로 부탁하면 AI가 코드를 짜고, 인터넷 주소까지 만들어 줍니다.</p></header>
+
+<a class="go" href="https://webbook-kr.github.io/event/">완성 예시 먼저 보기 ›</a>
+
+<h2 class="sec">0. 준비 (처음 한 번)</h2>
+<div class="box warn"><b>필요한 것</b><ul>
+<li>클로드 <b>Pro 이상</b> 유료 요금제 (무료는 클로드 코드를 못 씁니다)</li>
+<li><b>깃허브(GitHub) 계정</b> — github.com에서 무료 가입</li></ul>
+<p style="margin:8px 0 0;font-size:15px">둘 중 하나라도 없으면 오늘은 화면을 보면서 따라오시고, 완성된 페이지를 폰으로 써 보세요.</p></div>
+<div class="box"><b>깃허브에 빈 저장소 만들기</b><ol>
+<li>github.com 오른쪽 위 <b>+</b> → <b>New repository</b></li>
+<li>이름: <code>retreat</code> (영어로 아무거나)</li>
+<li><b>Public</b> 선택, <b>Add README</b> 체크</li>
+<li><b>Create repository</b></li></ol></div>
+<div class="box"><b>클로드 코드 시작</b><ol>
+<li><a href="https://claude.ai/code" target="_blank" rel="noopener">claude.ai/code</a> 접속 (휴대폰은 클로드 앱의 <b>Code</b> 탭)</li>
+<li>처음이면 <b>깃허브로 로그인</b> → 승인</li>
+<li>입력창 아래 저장소 선택에서 방금 만든 <b>retreat</b> 고르기</li>
+<li>아래 ① 프롬프트를 붙여넣고 <b>Enter</b></li></ol></div>
+
+<h2 class="sec">1~4. 프롬프트 (복사해서 붙여넣기)</h2>
+<section class="card"><div class="hd"><span class="n">1</span><div><h2>만들기</h2><p>새 대화에 그대로 붙여넣기</p></div></div>
+<pre>교회 가을 수련회 신청 페이지를 만들어 줘.
+
+- index.html 파일 하나로, 휴대폰에서 보기 좋게
+- 위쪽: 수련회 안내
+  주제 &quot;함께 걷는 길&quot;, 11월 22일(토)~23일(주일), ○○ 수양관
+  준비물: 성경, 필기도구, 세면도구, 편한 운동화
+  회비: 어른 5만원, 학생 3만원
+- 아래쪽: 신청 칸
+  이름, 연락처, 구역, 참석 일정(1박 2일 / 첫날만 / 둘째 날만), 차량 필요 여부, 하고 싶은 말
+- &quot;신청하기&quot;를 누르면 담당자 번호(010-0000-0000)로 신청 내용이 적힌 문자 창이 열리게
+- 문자가 안 되는 사람을 위해 &quot;신청 내용 복사&quot; 단추도
+- 글씨는 크게, 50대 이상도 보기 편하게</pre><button class="p" data-k="p1">프롬프트 복사</button></section>
+<section class="card"><div class="hd"><span class="n">2</span><div><h2>고치기</h2><p>결과를 보고 이어서 부탁</p></div></div>
+<pre>색을 가을 느낌(주황·갈색)으로 바꾸고, 맨 위에 수련회까지 남은 날짜(D-몇 일)를 크게 보여 줘.</pre><button class="p" data-k="p2">프롬프트 복사</button></section>
+<section class="card"><div class="hd"><span class="n">3</span><div><h2>다듬기</h2><p>실수를 막는 장치</p></div></div>
+<pre>이름이나 연락처를 비워 두고 &quot;신청하기&quot;를 누르면, 빠진 칸을 빨갛게 표시하고 무엇이 빠졌는지 알려 줘.</pre><button class="p" data-k="p3">프롬프트 복사</button></section>
+<section class="card"><div class="hd"><span class="n">4</span><div><h2>올리기</h2><p>인터넷 주소로 만들기</p></div></div>
+<pre>지금까지 만든 것을 main 브랜치에 합쳐 줘. 그리고 GitHub Pages로 인터넷에 올리려면 내가 화면에서 무엇을 눌러야 하는지 순서대로 알려 줘.</pre><button class="p" data-k="p4">프롬프트 복사</button></section>
+
+<h2 class="sec">5. 인터넷 주소 만들기</h2>
+<div class="box"><ol>
+<li>④를 보낸 뒤 화면에 <b>Create PR</b>이 보이면 누르고, 깃허브에서 <b>Merge pull request</b> → <b>Confirm</b></li>
+<li>깃허브 저장소 → <b>Settings</b> → 왼쪽 <b>Pages</b></li>
+<li>Branch를 <b>main</b>, 폴더 <b>/ (root)</b>로 두고 <b>Save</b></li>
+<li>1~3분 뒤 위쪽에 나오는 주소가 내 페이지 → 단톡방에 공유!</li></ol>
+<p style="margin:8px 0 0;font-size:14px;color:var(--muted)">주소 모양: https://내아이디.github.io/retreat/</p></div>
+<div class="box"><b>막혔을 때</b><ul>
+<li>결과가 마음에 안 들면 → 고칠 점을 그냥 말로 다시 부탁</li>
+<li>오류가 났다 → 오류 화면을 그대로 복사해 붙이고 "고쳐 줘"</li>
+<li>Pages에 주소가 안 뜬다 → 저장소가 Public인지 확인, 몇 분 더 기다리기</li></ul></div>
+<footer><a href="./">웹북 실습 메모</a> · <a href="../b/ai-n4g3/">오늘 강의 책</a></footer>
+</div><div id="toast"></div>
+<script>
+var D={"p1": "교회 가을 수련회 신청 페이지를 만들어 줘.\n\n- index.html 파일 하나로, 휴대폰에서 보기 좋게\n- 위쪽: 수련회 안내\n  주제 \"함께 걷는 길\", 11월 22일(토)~23일(주일), ○○ 수양관\n  준비물: 성경, 필기도구, 세면도구, 편한 운동화\n  회비: 어른 5만원, 학생 3만원\n- 아래쪽: 신청 칸\n  이름, 연락처, 구역, 참석 일정(1박 2일 / 첫날만 / 둘째 날만), 차량 필요 여부, 하고 싶은 말\n- \"신청하기\"를 누르면 담당자 번호(010-0000-0000)로 신청 내용이 적힌 문자 창이 열리게\n- 문자가 안 되는 사람을 위해 \"신청 내용 복사\" 단추도\n- 글씨는 크게, 50대 이상도 보기 편하게", "p2": "색을 가을 느낌(주황·갈색)으로 바꾸고, 맨 위에 수련회까지 남은 날짜(D-몇 일)를 크게 보여 줘.", "p3": "이름이나 연락처를 비워 두고 \"신청하기\"를 누르면, 빠진 칸을 빨갛게 표시하고 무엇이 빠졌는지 알려 줘.", "p4": "지금까지 만든 것을 main 브랜치에 합쳐 줘. 그리고 GitHub Pages로 인터넷에 올리려면 내가 화면에서 무엇을 눌러야 하는지 순서대로 알려 줘."};
+var t=document.getElementById('toast');
+function say(s){t.textContent=s;t.classList.add('on');clearTimeout(say.x);say.x=setTimeout(function(){t.classList.remove('on');},1800);}
+document.addEventListener('click',function(e){var b=e.target.closest('button[data-k]');if(!b)return;var v=D[b.getAttribute('data-k')];
+ (navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(function(){say('복사했어요! 클로드 코드에 붙여넣으세요');},function(){prompt('아래 글을 길게 눌러 복사하세요',v);});});
+</script></body></html>
