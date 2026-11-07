@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>가을 수련회 신청</title>
+<style>
+  :root{
+    --bg:#faf6ef; --card:#ffffff; --ink:#2b2420; --sub:#5c5048;
+    --accent:#a0522d; --accent-ink:#fff; --line:#e3d8c8; --soft:#f3ebdf;
+  }
+  *{box-sizing:border-box}
+  html{font-size:20px}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+    line-height:1.6;word-break:keep-all}
+  .wrap{max-width:640px;margin:0 auto;padding:20px 16px 60px}
+  header{text-align:center;padding:28px 12px 20px}
+  header .small{font-size:1rem;color:var(--sub);margin:0}
+  header h1{font-size:1.9rem;margin:6px 0 4px;color:var(--accent)}
+  header .theme{font-size:1.25rem;margin:0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;margin:16px 0}
+  h2{font-size:1.35rem;margin:0 0 12px}
+  dl{margin:0}
+  dl div{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+  dl div:last-child{border-bottom:0}
+  dt{flex:0 0 4.2em;font-weight:700;color:var(--sub)}
+  dd{margin:0}
+  ul{margin:0;padding-left:1.2em}
+  label.f{display:block;font-weight:700;margin:18px 0 6px}
+  label.f .opt{font-weight:400;color:var(--sub);font-size:.9rem}
+  input[type=text],input[type=tel],select,textarea{
+    width:100%;font-size:1.05rem;padding:14px;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-family:inherit}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
+  textarea{min-height:110px;resize:vertical}
+  .choices{display:grid;gap:10px}
+  .choices label{display:flex;align-items:center;gap:12px;padding:14px;border:2px solid var(--line);border-radius:12px;background:#fff;cursor:pointer}
+  .choices input{width:26px;height:26px;accent-color:var(--accent);flex:0 0 auto}
+  .choices label:has(input:checked){border-color:var(--accent);background:var(--soft)}
+  .row2{grid-template-columns:1fr 1fr}
+  .btn{display:block;width:100%;font-size:1.2rem;font-weight:700;padding:18px;border-radius:14px;border:0;margin-top:14px;cursor:pointer;font-family:inherit}
+  .primary{background:var(--accent);color:var(--accent-ink);margin-top:26px}
+  .secondary{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+  .msg{margin-top:14px;padding:14px;border-radius:12px;background:var(--soft);font-size:1rem;display:none}
+  .msg.show{display:block}
+  .err{color:#b00020}
+  footer{text-align:center;color:var(--sub);font-size:.95rem;margin-top:24px}
+  footer a{color:var(--accent);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="small">2026 교회 가을 수련회</p>
+    <h1>함께 걷는 길</h1>
+    <p class="theme">함께 오셔서 은혜 나누어요</p>
+  </header>
+
+  <section class="card">
+    <h2>수련회 안내</h2>
+    <dl>
+      <div><dt>일정</dt><dd>11월 22일(토) ~ 23일(주일)<br>1박 2일</dd></div>
+      <div><dt>장소</dt><dd>○○ 수양관</dd></div>
+      <div><dt>회비</dt><dd>어른 5만원<br>학생 3만원</dd></div>
+      <div><dt>준비물</dt><dd><ul><li>성경</li><li>필기도구</li><li>세면도구</li><li>편한 운동화</li></ul></dd></div>
+    </dl>
+  </section>
+
+  <section class="card">
+    <h2>참가 신청</h2>
+    <form id="f" novalidate>
+      <label class="f" for="name">이름</label>
+      <input type="text" id="name" autocomplete="name">
+
+      <label class="f" for="phone">연락처</label>
+      <input type="tel" id="phone" inputmode="tel" placeholder="010-1234-5678" autocomplete="tel">
+
+      <label class="f" for="area">구역</label>
+      <input type="text" id="area" placeholder="예: 3구역">
+
+      <span class="f" style="display:block;font-weight:700;margin:18px 0 6px">참석 일정</span>
+      <div class="choices">
+        <label><input type="radio" name="sched" value="1박 2일" checked> 1박 2일 (전체)</label>
+        <label><input type="radio" name="sched" value="첫날만 (22일 토)"> 첫날만 (22일 토)</label>
+        <label><input type="radio" name="sched" value="둘째 날만 (23일 주일)"> 둘째 날만 (23일 주일)</label>
+      </div>
+
+      <span class="f" style="display:block;font-weight:700;margin:18px 0 6px">차량 필요 여부</span>
+      <div class="choices row2">
+        <label><input type="radio" name="car" value="필요해요"> 필요해요</label>
+        <label><input type="radio" name="car" value="필요 없어요" checked> 필요 없어요</label>
+      </div>
+
+      <label class="f" for="note">하고 싶은 말 <span class="opt">(선택)</span></label>
+      <textarea id="note" placeholder="기도 제목, 문의 사항 등 자유롭게 적어 주세요"></textarea>
+
+      <button type="submit" class="btn primary">신청하기 (문자 보내기)</button>
+      <button type="button" class="btn secondary" id="copy">신청 내용 복사</button>
+      <div class="msg" id="msg" role="status" aria-live="polite"></div>
+    </form>
+  </section>
+
+  <footer>
+    문의: 수련회 담당자 <a href="tel:01000000000">010-0000-0000</a>
+  </footer>
+</div>
+
+<script>
+  var PHONE = '01000000000';
+  var $ = function(id){ return document.getElementById(id); };
+  function val(n){ var el = document.querySelector('input[name="'+n+'"]:checked'); return el ? el.value : ''; }
+
+  function show(text, isErr){
+    var m = $('msg'); m.textContent = text; m.className = 'msg show' + (isErr ? ' err' : '');
+  }
+
+  function build(){
+    var name = $('name').value.trim(), phone = $('phone').value.trim(), area = $('area').value.trim();
+    if(!name){ show('이름을 적어 주세요.', true); $('name').focus(); return null; }
+    if(!phone){ show('연락처를 적어 주세요.', true); $('phone').focus(); return null; }
+    if(!area){ show('구역을 적어 주세요.', true); $('area').focus(); return null; }
+    var lines = [
+      '[가을 수련회 신청]',
+      '이름: ' + name,
+      '연락처: ' + phone,
+      '구역: ' + area,
+      '참석 일정: ' + val('sched'),
+      '차량: ' + val('car')
+    ];
+    var note = $('note').value.trim();
+    if(note) lines.push('하고 싶은 말: ' + note);
+    return lines.join('\n');
+  }
+
+  $('f').addEventListener('submit', function(e){
+    e.preventDefault();
+    var text = build(); if(!text) return;
+    var ios = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    var sep = ios ? '&' : '?';
+    location.href = 'sms:' + PHONE + sep + 'body=' + encodeURIComponent(text);
+    show('문자 창이 열리면 "보내기"를 눌러 주세요. 문자 창이 안 열리면 아래 "신청 내용 복사"를 눌러 주세요.');
+  });
+
+  $('copy').addEventListener('click', function(){
+    var text = build(); if(!text) return;
+    var done = function(){ show('복사되었어요. 카카오톡이나 문자에 붙여넣어 담당자(010-0000-0000)에게 보내 주세요.'); };
+    if(navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(text).then(done, function(){ fallback(text) ? done() : show('복사가 안 되었어요. 화면을 캡처해서 보내 주세요.', true); });
+    } else {
+      fallback(text) ? done() : show('복사가 안 되었어요. 화면을 캡처해서 보내 주세요.', true);
+    }
+  });
+
+  function fallback(text){
+    var t = document.createElement('textarea');
+    t.value = text; t.setAttribute('readonly',''); t.style.position='fixed'; t.style.opacity='0';
+    document.body.appendChild(t); t.select();
+    var ok = false; try { ok = document.execCommand('copy'); } catch(e){}
+    document.body.removeChild(t); return ok;
+  }
+</script>
+</body>
+</html>
