@@ -174,15 +174,15 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
    <div id="pubin">
    <input id="pem" type="email" placeholder="내 이메일" autocomplete="email" autocapitalize="off" style="width:100%;margin-bottom:6px">
    <div class="row2">
-    <input id="pc" type="password" placeholder="발행 코드 (처음엔 1339)" autocomplete="off">
+    <input id="pc" type="password" placeholder="발행 코드 (처음엔 saga121)" autocomplete="off">
     <button id="pubb" class="pri" type="button">발행하기</button>
    </div>
    </div>
-   <p class="hint" style="margin-top:6px">처음엔 <b>내 이메일 + 기본 코드 1339</b>로 발행합니다. 나오는 인터넷 주소를 카톡이나 유튜브 설명란에 붙이면 끝입니다.</p>
+   <p class="hint" style="margin-top:6px">처음엔 <b>내 이메일 + 기본 코드 saga121</b>로 발행합니다. 나오는 인터넷 주소를 카톡이나 유튜브 설명란에 붙이면 끝입니다.</p>
    <details id="mycode" style="margin-top:8px;font-size:13px">
     <summary style="cursor:pointer;color:var(--muted)">내 발행 코드 만들기 · 바꾸기 · 잊었을 때</summary>
     <p class="hint" style="margin:6px 0">내 코드로 바꾸면 이 이메일로 낸 책은 <b>다른 PC에서도 이메일·코드만으로</b> 고칠 수 있습니다.</p>
-    <div class="row2"><input id="cold" type="password" placeholder="지금 코드 (처음이면 1339, 임시 코드)" autocomplete="off"><input id="cnew" type="password" placeholder="새 코드 (4자 이상)" autocomplete="new-password"></div>
+    <div class="row2"><input id="cold" type="password" placeholder="지금 코드 (처음이면 saga121, 임시 코드)" autocomplete="off"><input id="cnew" type="password" placeholder="새 코드 (4자 이상)" autocomplete="new-password"></div>
     <button id="cchg" type="button" style="margin-top:6px">내 코드로 바꾸기</button>
     <p class="hint" style="margin:12px 0 0"><b>코드를 잊었을 때</b> 관리자(대표)에게 이메일을 알려 주면 <b>임시 코드</b>를 받습니다. 임시 코드를 "지금 코드"에 넣고 새 코드로 바꾸세요.</p>
    </details>
@@ -215,7 +215,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  var ti=$('ti'),au=$('au'),su=$('su'),ci=$('ci'),dt=$('dt'),md=$('md'),lk=$('lk'),lc=$('lc'),pv=$('pv'),stat=$('stat'),toast=$('toast');
  var TPL=null, KEY='ebook_maker_draft', KEYP='ebook_maker_pub';
  var PUBLISH_FN='https://dxhmprqfgigljgbstqrg.supabase.co/functions/v1/webbook-publish';
- var ACCOUNT_FN='https://dxhmprqfgigljgbstqrg.supabase.co/functions/v1/webbook-account', KEYE='ebook_maker_email', DEF_CODE='1339';
+ var ACCOUNT_FN='https://dxhmprqfgigljgbstqrg.supabase.co/functions/v1/webbook-account', KEYE='ebook_maker_email', DEF_CODE='saga121';
  var SAMPLE=[
   '# 시작하기 전에',
   '## 이 책은 무엇인가',
@@ -607,7 +607,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   var sk=$('showkey'); if(sk) sk.onclick=function(e){e.preventDefault();var b=$('keybox');b.style.display=b.style.display==='none'?'block':'none';};
  }
  showPub();
- // ── 내 발행 코드: 기본 코드(1339)에서 내 코드로 바꾸기, 잊었을 때는 관리자가 임시 코드 (admin.html) ──
+ // ── 내 발행 코드: 기본 코드(saga121)에서 내 코드로 바꾸기, 잊었을 때는 관리자가 임시 코드 (admin.html) ──
  var pem=$('pem'); try{pem.value=localStorage.getItem(KEYE)||'';}catch(e){}
  function acct(btn,data,done){
   var email=pem.value.trim(); if(!email){say('위 칸에 내 이메일을 먼저 넣어 주세요.');pem.focus();return;}
@@ -618,7 +618,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   .catch(function(e){say(e.message||'연결이 안 됐어요.');})
   .then(function(){btn.disabled=false;});
  }
- function setDone(v){ pc.value=v; ['cold','cnew'].forEach(function(i){$(i).value='';}); $('mycode').open=false; say('내 코드로 바꿨어요. 이제 이 이메일과 새 코드로 발행하세요. 기본 코드 1339는 이 이메일에서 더 이상 안 됩니다.'); }
+ function setDone(v){ pc.value=v; ['cold','cnew'].forEach(function(i){$(i).value='';}); $('mycode').open=false; say('내 코드로 바꿨어요. 이제 이 이메일과 새 코드로 발행하세요. 기본 코드 saga121는 이 이메일에서 더 이상 안 됩니다.'); }
  $('cchg').onclick=function(){ var n=$('cnew').value.trim(); if(n.length<4){say('새 코드는 4자 이상으로 정해 주세요.');return;} acct(this,{action:'change',old:$('cold').value.trim(),code:n},function(){setDone(n);}); };
  // 다른 PC에서 발행한 책을 이 브라우저에 연결한다 (책 주소 끝부분 + 수정 열쇠)
  $('ago').onclick=function(){
@@ -639,7 +639,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
  pubb.onclick=async function(){
   var code=pc.value.trim(), email=pem.value.trim();
   if(!email){say('내 이메일을 넣어 주세요.');pem.focus();return;}
-  if(!code){say('발행 코드를 넣어 주세요. 처음이면 1339 입니다.');pc.focus();return;}
+  if(!code){say('발행 코드를 넣어 주세요. 처음이면 saga121 입니다.');pc.focus();return;}
   try{localStorage.setItem(KEYE,email);}catch(e){}
   var o=await output(); if(!o)return;
   pubb.disabled=true; var old=pubb.textContent; pubb.textContent='올리는 중…';
@@ -664,6 +664,7 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   var t=raw.replace(/\r/g,'');
   var m=t.match(/^((?:(?:책 제목|글쓴이|부제|표지 그림|날짜|간격)\s*:.*\n)+)\s*\n/);
   if(m){
+   ti.value=au.value=su.value=ci.value=dt.value='';   // 새 원고의 책 정보로 바꾼다 (앞 원고의 표지 그림 등이 남지 않게)
    m[1].trim().split('\n').forEach(function(line){
     var i=line.indexOf(':'); if(i<0)return;
     var k=line.slice(0,i).trim(), v=line.slice(i+1).trim();
@@ -675,6 +676,8 @@ details td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,monospa
   say(m?'원고와 책 정보를 불러왔어요.':'원고를 불러왔어요. 책 정보는 직접 넣어 주세요.');
   if(!m) $('bookinfo').open=true;
  }
+ // 원고 칸에 "책 제목:" 으로 시작하는 원고를 붙여넣으면 책 정보 칸도 채운다 (AI가 준 답을 그대로 붙일 때)
+ md.addEventListener('paste',function(){ setTimeout(function(){ var v=md.value.replace(/^\s+/,''); if(/^(책 제목|글쓴이|부제|표지 그림|날짜|간격)\s*:/.test(v)) applyText(v); },0); });
  $('loadb').onclick=function(){ $('loadf').click(); };
  $('loadf').onchange=function(e){
   var f=e.target.files&&e.target.files[0]; if(!f)return;
